@@ -178,7 +178,7 @@ Features is given below:
 
 1. 🌐 Dynamic Products from Shopify Storefront API
 2. 💸 Checkout and Payments
-3. 🌞 Automatic Light/Dark Mode
+3. 🌞 Automatic Light/Dark Mode (Based on time )
 4. 🚀 Fetching and Caching Paradigms
 5. 🔐 User Authentication
 6. 🧩 Similar Products Suggestions
