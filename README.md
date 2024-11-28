@@ -6,7 +6,7 @@
 ## ECOMMERCE SCHEMA
 <br>
 
-### User Schema
+### 👤User Schema
 ```javaScript
 const UserSchema = {
   _id: ObjectId,
@@ -40,7 +40,7 @@ const UserSchema = {
   lastLogin: Date
 }
 ```
-### Product Schema
+### 🎁Product Schema
 ```javaScript
 const ProductSchema = {
   _id: ObjectId,
@@ -72,7 +72,7 @@ const ProductSchema = {
   virtualTryOnEnabled: Boolean
 }
 ```
-### Review Schema
+### 🌟Review Schema
 ```javaScript
 const ReviewSchema = {
   _id: ObjectId,
@@ -90,7 +90,7 @@ const ReviewSchema = {
   createdAt: Date
 }
 ```
-### Order Schema
+### 📦Order Schema
 ```javaScript
 const OrderSchema = {
   _id: ObjectId,
@@ -132,7 +132,7 @@ const OrderSchema = {
   }
 }
 ```
-### AI Recommendation Schema
+### 🤖AI Recommendation Schema
 ```javaScript
 const AIRecommendationSchema = {
   userId: ObjectId,
@@ -148,7 +148,7 @@ const AIRecommendationSchema = {
   }
 }
 ```
-### Analytics Schema
+### 💻Analytics Schema
 ```javaScript
 const AnalyticsSchema = {
   date: Date,
@@ -168,3 +168,29 @@ const AnalyticsSchema = {
   }
 }
 ```
+
+<hr>
+
+### ✨ Key Features
+<hr>
+Features is given below:
+
+
+1. 🌐 Dynamic Products from Shopify Storefront API
+2. 💸 Checkout and Payments
+3. 🌞 Automatic Light/Dark Mode
+4. 🚀 Fetching and Caching Paradigms
+5. 🔐 User Authentication
+6. 🧩 Similar Products Suggestions
+7. 🔍 Search, Sort, Different Views Functionality
+8. 🏷️ Tags & Categories & Vendors & Price Range & Product Variants Functionality
+9. 🖼️ Single Product Image Zoom, Hover Effect, Slider
+10. 🛒 Cart & Easy editing options for cart items
+11. 📝 Product Description on Multiple Tabs
+12. 📞 Support Contact Form
+13. 📱 Fully Responsive
+14. 🔄 Dynamic Home Banner Slider
+15. 📦Add to Cart
+16. 🌠Wishlist
+17. 🚲Order Tracking Update(delivery,out for delivery,packing)
+
