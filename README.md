@@ -193,4 +193,4 @@ Features is given below:
 15. 📦Add to Cart
 16. 🌠Wishlist
 17. 🚲Order Tracking Update(delivery,out for delivery,packing)
-
+18. 💵Payment Gateway
