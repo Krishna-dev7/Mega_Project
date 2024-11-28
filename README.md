@@ -194,3 +194,9 @@ Features is given below:
 16. 🌠Wishlist
 17. 🚲Order Tracking Update(delivery,out for delivery,packing)
 18. 💵Payment Gateway
+
+<hr>
+
+### Schema Integration
+<hr>
+<img src="https://iili.io/2lAPXcJ.jpg" alt-text="Schema-integration" style="width:100%;height:auto;"/>
