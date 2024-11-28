@@ -177,7 +177,7 @@ Features is given below:
 
 
 1. 🌐 Dynamic Products from Shopify Storefront API
-2. 💸 Checkout and Payments
+2. 💸 Checkout and Payments gateway 
 3. 🌞 Automatic Light/Dark Mode (Based on time )
 4. 🚀 Fetching and Caching Paradigms
 5. 🔐 User Authentication
@@ -193,7 +193,6 @@ Features is given below:
 15. 📦Add to Cart
 16. 🌠Wishlist
 17. 🚲Order Tracking Update(delivery,out for delivery,packing)
-18. 💵Payment Gateway
 
 <hr>
 
