@@ -15,7 +15,7 @@ const signupSchema = z.object({
     .string()
     .length(10, {message: "must be 10 character long"})
     .regex(/^[0-9]*$/, "only numbers are allowed"),
-  role: z.string(),
+  role: z.string().regex(/(user)|(seller)/, "only user or seller is allowed"),
   password: z
     .string()
     .min(6, "password must be at least 6 character long ")

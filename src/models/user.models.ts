@@ -9,6 +9,11 @@ interface UserVerification {
     forgotPasswordTokenExpiry: Date
 }
 
+export const enum enumProvider {
+    "CREDENTIALS" = "credentials",
+    "GITHUB" = "github"
+}
+
 interface UserSchema extends Schema, UserVerification {
     username: string
     fullname: string
@@ -17,6 +22,7 @@ interface UserSchema extends Schema, UserVerification {
     avatar: string
     phoneNumber: string
     role: ("user" | "seller")
+    provider: enumProvider
 }
 
 const userSchema = new Schema<UserSchema>({
@@ -29,7 +35,6 @@ const userSchema = new Schema<UserSchema>({
     },
     fullname: {
         type: String,
-        required: true,
         trim: true
     },
     email: {
@@ -37,10 +42,7 @@ const userSchema = new Schema<UserSchema>({
         required: true,
         unique: true
     },
-    password: {
-        type: String,
-        required: true
-    },
+    password: String,
     avatar: String,
     phoneNumber: String,
     role: String,
@@ -53,6 +55,10 @@ const userSchema = new Schema<UserSchema>({
     verifyCodeExpiry: Date,
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
+    provider: {
+        type: String,
+        enum: ["credentials", "github"]
+    }
 }, { timestamps: true});
 
 

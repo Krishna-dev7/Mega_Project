@@ -4,6 +4,7 @@ import User from "@/models/user.models";
 import type { UserSchema } from "@/models/user.models";
 import bcrypt from "bcryptjs";
 import sendVerificationEmail from "@/helpers/sendVerificationEmail";
+import { enumProvider } from "@/models/user.models";
 
 await connectDB();
 
@@ -58,7 +59,8 @@ const handler = async (req: NextRequest) => {
                 fullname: data.fullname,
                 role: data.role,
                 avatar: data.avatar,
-                phoneNumber: data.phoneNumber
+                phoneNumber: data.phoneNumber,
+                provider: enumProvider.CREDENTIALS
             });
         }
 

@@ -3,7 +3,7 @@ import { NextAuthOptions } from "next-auth";
 import Github from "next-auth/providers/github";
 import conf from "@/helpers/conf";
 import connectDB from "@/db/connect";
-import User, { UserSchema } from "@/models/user.models";
+import User, { enumProvider, UserSchema } from "@/models/user.models";
 import bcrypt from "bcryptjs";
 
 await connectDB();
@@ -54,7 +54,7 @@ const authOptions: NextAuthOptions = {
 	],
 	pages: {
 		signIn: "/signin",
-    error: "/error"
+		error: "/error",
 	},
 	callbacks: {
 		async session({ session, token }) {
@@ -68,19 +68,36 @@ const authOptions: NextAuthOptions = {
 			return session;
 		},
 
-		async jwt({ token, user}) {
+		async jwt({ token, user }) {
 			if (user) {
 				token._id = user._id;
 				token.email = user.email;
 				token.phoneNumber = user.phoneNumber;
 				token.username = user.username;
 				token.role = user.role;
-			} 
+			}
 
 			console.log("token: ", token);
 			return token;
 		},
-		
+
+		async signIn({ account, profile }) {
+			const email = profile?.email;
+
+			const existingUser = await User.findOne<UserSchema>({ email });
+			if (!existingUser && account?.provider.includes('github') ) {
+				const user = await User.create<UserSchema>({
+					username: profile?.name,
+					email,
+					role: "user",
+					avatar: profile?.image,
+					provider: enumProvider.GITHUB,
+					isVerified: true
+				});
+			}
+
+			return true;
+		},
 	},
 	session: {
 		strategy: "jwt",

@@ -9,7 +9,6 @@ import {
   Form,
   FormControl,
   FormField,
-  FormDescription,
   FormLabel,
   FormMessage,
   FormItem
@@ -221,96 +220,7 @@ const LoginPage: React.FC = () => {
       </div>
     </div>
   </BackgroundLines>
-
 };
 
-
-{/* return (
-    <div className="flex flex-col items-center justify-center h-screen md:bg-white lg:bg-gray-50">
-      <Toaster />
-      <div className="w-full max-w-md bg-white p-8 lg:shadow-lg rounded-lg">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 uppercase mb-6">
-          Login
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <label
-              htmlFor="loginEmail"
-              className="block text-sm font-medium text-gray-700 uppercase">
-              Email
-            </label>
-            <input
-              type="email"
-              id="loginEmail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"
-            />
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="loginPassword"
-              className="block text-sm font-medium text-gray-700 uppercase">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="loginPassword"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-gray-800"
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-          </div>
-          <div className="text-right">
-            <a
-              href="#"
-              id="forgotPassword"
-              className="text-sm text-gray-600 hover:underline">
-              Forgot your password?
-            </a>
-          </div>
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-3 text-white bg-gray-800 rounded-md shadow-md hover:bg-gray-900 uppercase font-medium tracking-wide disabled:opacity-50 disabled:cursor-not-allowed">
-            {isLoading ? "Signing In..." : "Sign In"}
-          </button>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600 mb-2">Or sign in with:</p>
-          <button
-            onClick={handleGitHubSignIn}
-            disabled={isLoading}
-            className="flex items-center justify-center w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed">
-            <Github className="mr-2" size={20} />
-            GitHub
-          </button>
-        </div>
-        <div className="mt-6 text-center border-t border-gray-200 pt-4">
-          <p className="text-sm text-gray-600">New customer?</p>
-          <a
-            href="/register"
-            id="switchToRegister"
-            className="text-sm font-medium text-gray-800 hover:underline">
-            Create your account
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}; */}
 
 export default LoginPage;
