@@ -1,16 +1,10 @@
 import mongoose, {Schema} from "mongoose";
 
-const enum status {
-    'rejected',
-    'pending',
-    'verified'
-}
-
 // interface to build perfect userSchema
 interface UserVerification {
-    verifyToken: string
-    verifyTokenExpiry: Date
-    verificationStatus: status
+    verifyCode: string
+    isVerified: boolean
+    verifyCodeExpiry: Date
     forgotPasswordToken: string
     forgotPasswordTokenExpiry: Date
 }
@@ -30,7 +24,8 @@ const userSchema = new Schema<UserSchema>({
         type: String,
         required: true,
         trim: true,
-        minlength: 2
+        minlength: 2,
+        unique: true
     },
     fullname: {
         type: String,
@@ -39,7 +34,8 @@ const userSchema = new Schema<UserSchema>({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -47,12 +43,25 @@ const userSchema = new Schema<UserSchema>({
     },
     avatar: String,
     phoneNumber: String,
-    role: String
+    role: String,
+    verifyCode: String,
+    isVerified: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    verifyCodeExpiry: Date,
+    forgotPasswordToken: String,
+    forgotPasswordTokenExpiry: Date,
 }, { timestamps: true});
 
 
 const User = mongoose.models.User || 
-    mongoose.model("User", userSchema);
+    mongoose.model<UserSchema>("User", userSchema);
 
 
 export default User;
+export type {
+    UserSchema,
+    UserVerification,
+};

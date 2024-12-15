@@ -1,4 +1,4 @@
-import conf from "@/utils/conf";
+import conf from "@/helpers/conf";
 import mongoose, {connection} from "mongoose";
 
 const connectDB = async () => {
