@@ -9,7 +9,7 @@ export const usernameValidation = z
 
 const signupSchema = z.object({
   username: usernameValidation,
-  fullname: usernameValidation,
+  fullname: z.string().regex(/^[a-zA-z\s]{4,12}$/, "fullname can contain only letters"),
   email: z.string().email(),
   phoneNumber: z
     .string()

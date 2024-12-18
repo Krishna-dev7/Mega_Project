@@ -85,14 +85,14 @@ const authOptions: NextAuthOptions = {
 			const email = profile?.email;
 
 			const existingUser = await User.findOne<UserSchema>({ email });
-			if (!existingUser && account?.provider.includes('github') ) {
+			if (!existingUser && account?.provider.includes("github")) {
 				const user = await User.create<UserSchema>({
 					username: profile?.name,
 					email,
 					role: "user",
 					avatar: profile?.image,
 					provider: enumProvider.GITHUB,
-					isVerified: true
+					isVerified: true,
 				});
 			}
 

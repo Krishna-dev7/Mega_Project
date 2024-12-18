@@ -32,6 +32,7 @@ import conf from '@/helpers/conf';
 import ApiResponse from '@/types/ApiResponse';
 import { FileUpload } from '@/components/ui/file-upload';
 import Link from 'next/link';
+import { Feather } from 'lucide-react';
 import { BackgroundLines } from '@/components/ui/background-lines';
 
 function Register() {
@@ -56,9 +57,15 @@ function Register() {
   ) => {
     try {
       setIsLoading(true);
+      console.log(data);
       const res = await axios.postForm<ApiResponse>(
         `${conf.url}/api/signup`,
-        data
+        JSON.stringify(data),
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
       )
 
       if (!res.data.success) {
@@ -73,7 +80,7 @@ function Register() {
         title: "Success",
         description: res.data.message
       })
-      redirect(`${conf.url}/`);
+      redirect(`${conf.url}/verify?email=${data.email}`);
 
     } catch (error: any) {
       console.log("error in signup form: ", error.message);
@@ -89,23 +96,23 @@ function Register() {
   }
 
   return (
-    <BackgroundLines className="flex justify-center items-center w-full max-h-fit h-fit py-10 min-h-screen px-4 ">
-      <div className="w-full max-w-md min-h-screen h-fit max-h-fit lg:max-w-xl bg-white p-6 md:p-8 rounded-lg shadow-lg space-y-6">
-        <h2 className="text-center text-3xl font-bold uppercase tracking-wider text-gray-900 mb-6">
-          Create Account
+    <div className="flex justify-center items-center w-full max-h-fit h-fit py-10 min-h-screen lg:px-2 px-3 ">
+      <div className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg bg-white lg:shadow-sm rounded-lg">
+        <h2 className="text-center text-2xl font-bold text-gray-900 mb-6">
+           <Feather className="inline" size={24} /> Signup
         </h2>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(submitForm)}
-            className="space-y-5"
+            className=""
           >
             {/* Username */}
             <FormField
               name="username"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold text-base text-gray-700">Username</FormLabel>
+                <FormItem className='mb-4' >
+                  <FormLabel className="font-semibold text-sm text-gray-700">Username</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -125,8 +132,8 @@ function Register() {
             <FormField
               name="fullname"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold text-base text-gray-700">Full Name</FormLabel>
+                <FormItem className='mb-4'>
+                  <FormLabel className="font-semibold text-sm text-gray-700">Full Name</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -146,8 +153,8 @@ function Register() {
             <FormField
               name="email"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold text-base text-gray-700">Email</FormLabel>
+                <FormItem className='mb-4'>
+                  <FormLabel className="font-semibold text-sm text-gray-700">Email</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -167,8 +174,8 @@ function Register() {
             <FormField
               name="password"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold text-base text-gray-700">Password</FormLabel>
+                <FormItem className='mb-4'>
+                  <FormLabel className="font-semibold text-sm text-gray-700">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -189,8 +196,8 @@ function Register() {
             <FormField
               name="phoneNumber"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold text-base text-gray-700">Phone Number</FormLabel>
+                <FormItem className='mb-4'>
+                  <FormLabel className="font-semibold text-sm text-gray-700">Phone Number</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -210,8 +217,8 @@ function Register() {
             <FormField
               name="role"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-bold text-base text-gray-700">Role</FormLabel>
+                <FormItem className='mb-4'>
+                  <FormLabel className="font-semibold text-sm text-gray-700">Role</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={(value) => field.onChange(value)}
@@ -233,7 +240,7 @@ function Register() {
 
             {/* File Upload */}
             <div className="w-full border border-dashed mt-5 bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-              <FormLabel className="font-bold text-base text-gray-700 block mb-3">Avatar</FormLabel>
+              <FormLabel className="font-semibold text-sm text-gray-700 block mb-3">Avatar</FormLabel>
               <FileUpload
                 key="fileupload"
                 onChange={(files: File[]) => setAvatar(files[0])}
@@ -244,7 +251,7 @@ function Register() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-md uppercase tracking-wider py-3.5 text-base transition-colors duration-300 ease-in-out"
+              className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-md tracking-wider py-6 transition-colors duration-300 ease-in-out text-sm"
             >
               {isLoading ? 'Creating...' : 'Create Account'}
             </Button>
@@ -253,7 +260,7 @@ function Register() {
             <div className="text-center mt-4 pt-4 border-t border-gray-200">
               <Link
                 className="text-gray-600 hover:text-gray-900 hover:underline text-base"
-                href={`${conf.url}/signin`}
+                href={`/signin`}
               >
                 Already have an account? Return to Login
               </Link>
@@ -261,7 +268,7 @@ function Register() {
           </form>
         </Form>
       </div>
-    </BackgroundLines>
+    </div>
   );
 }
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Eye, EyeOff, Github, Icon, User } from "lucide-react";
+import { Eye, EyeOff, Github, ArrowLeft, Icon, User, Feather } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
@@ -118,12 +118,25 @@ const LoginPage: React.FC = () => {
   }
 
 
-  return <BackgroundLines
+  return <div
     className="flex flex-col items-center justify-center h-screen  ">
     <Toaster />
-    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md bg-white p-8 lg:shadow-lg rounded-lg">
-      <h2 className="text-2xl font-semibold text-center text-gray-800 uppercase mb-6">
-        Login
+
+    {/* Back Button */}
+    <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
+      <Link
+        href="/"
+        className="flex items-center text-gray-700 hover:text-gray-900 font-medium transition duration-150 ease-in-out"
+      >
+        <ArrowLeft size={20} className="mr-2" />
+        <span className="text-sm sm:text-base">Back</span>
+      </Link>
+    </div>
+
+
+    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md bg-white p-8 lg:shadow-md rounded-lg">
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+        <Feather className="inline" size={24} /> Welcome Back
       </h2>
 
       <Form {...form}>
@@ -137,7 +150,7 @@ const LoginPage: React.FC = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder="demo@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -176,18 +189,16 @@ const LoginPage: React.FC = () => {
 
           {/* Forgot Password */}
           <div className="text-right mt-2">
-            <Link href={`${conf.url}/api/auth/forgotPassword`} >
+            <Link href={`${conf.url}/forgotPassword`} >
               Forgot your password ?
             </Link>
           </div>
-
-
 
           {/* Submit Button */}
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-6"
+            className="w-full mt-6 py-6"
           >
             {isLoading ? "Signing In..." : "Sign In"}
           </Button>
@@ -213,13 +224,13 @@ const LoginPage: React.FC = () => {
       <div className="mt-6 text-center border-t border-gray-200 pt-4">
         <p className="text-sm text-gray-600">New customer?</p>
         <Link
-          href={`${conf.url}/signup`}
-          className="text-lg text-center py-5 font-bold text-gray-800 hover:underline" >
+          href={`/signup`}
+          className="text-sm text-center py-5 font-semibold text-gray-800 hover:underline" >
           Create your Account <User className="inline" size={20} />
         </Link>
       </div>
     </div>
-  </BackgroundLines>
+  </div>
 };
 
 

@@ -1,8 +1,7 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
-import React from "react"
-import { redirect } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import React, {useState} from "react"
 import {
   Form,
   FormField,
@@ -41,11 +40,13 @@ const VerifyPage: React.FC = () => {
   const email = searchParams.get('email');
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isResending, setIsResending] = useState(false)
   const url = `${conf.url}/api/verify`;
+  const router = useRouter();
 
   if (!email) {
-    const message = "You are not allowed to access this page";
-    redirect(`${process.env.NEXT_PUBLIC_APP_URL}/error?error=${encodeURIComponent(message)}&errorCode=400`);
+    router.push(`/not-found`);
+    return;
   }
 
   // Create form using useForm hook
@@ -72,11 +73,10 @@ const VerifyPage: React.FC = () => {
         description: res.data?.message || "OTP verified successfully",
       });
 
-      setIsSubmitting(false);
-      redirect("/");
+      router.push(`/`);
 
     } catch (error:any) {
-      console.error("Error during OTP verification", error);
+      console.error("Error during OTP verification", error.message);
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Verification Failed", 
@@ -88,10 +88,50 @@ const VerifyPage: React.FC = () => {
     }
   }
 
+  // function to resend otp
+  const resendOTP = async () => {
+    try {
+      
+      setIsResending(true)
+      const res = await axios.get(
+        `${conf.url}/api/verify?email=${encodeURIComponent(email)}`
+      )
+
+      if(res.status < 400) {
+        toast({
+          title: "success",
+          description: res.data.message || "request has been sent"
+        })
+        return;
+      }
+
+      toast({
+        title: "Error",
+        variant: "destructive",
+        description: res.data.message || "Failed to send OTP"
+      })
+
+    } catch (error:any) {
+      console.log(error.message);
+
+      const axiosError = error as AxiosError<ApiResponse>;
+
+      toast({
+        title: "error",
+        variant: "destructive",
+        description: axiosError?.response?.data.message || "resendOTP error"
+      })
+    } finally {
+      setIsResending(false);
+    }
+  }
+
   return (
-    <div className="flex bg-neutral-100 w-screen items-center justify-center min-h-screen bg-background">
+    <div className="flex bg-neutral-100 w-screen items-center 
+    justify-center min-h-screen bg-background">
       <Toaster />
-      <Card className="w-full border-none shadow-sm bg-neutral-100 text-dark font-bold max-w-md">
+      <Card className="w-full border-none shadow-sm bg-neutral-100
+       text-dark font-bold max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Verify Your Account</CardTitle>
           <CardDescription className="text-sm text-dark">
@@ -139,6 +179,13 @@ const VerifyPage: React.FC = () => {
               >
                 {isSubmitting ? "Verifying..." : "Submit"}
               </Button>
+
+              <button
+                onClick={resendOTP}
+                type="button"
+                className="bg-transparent text-black ml-6 text-sm border-black border px-3 py-2 rounded-md" >
+                {isResending ? "sending...." : "resend"}
+              </button>
             </form>
           </Form>
         </CardContent>
