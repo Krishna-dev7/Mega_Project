@@ -24,21 +24,18 @@ import {
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import signupSchema from '@/schemas/signup.schem';
 import axios, { AxiosError } from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import conf from '@/helpers/conf';
 import ApiResponse from '@/types/ApiResponse';
-import { FileUpload } from '@/components/ui/file-upload';
 import Link from 'next/link';
-import { Feather } from 'lucide-react';
-import { BackgroundLines } from '@/components/ui/background-lines';
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const [avatar, setAvatar] = useState<File>();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -46,7 +43,6 @@ function Register() {
       email: "",
       password: "",
       username: "",
-      phoneNumber: "",
       fullname: "",
       role: ""
     }
@@ -80,7 +76,11 @@ function Register() {
         title: "Success",
         description: res.data.message
       })
-      redirect(`${conf.url}/verify?email=${data.email}`);
+      
+      
+      router
+        .push(`/verify?email=${encodeURIComponent(data.email)}`)
+      return null;
 
     } catch (error: any) {
       console.log("error in signup form: ", error.message);
@@ -96,10 +96,12 @@ function Register() {
   }
 
   return (
-    <div className="flex justify-center items-center w-full max-h-fit h-fit py-10 min-h-screen lg:px-2 px-3 ">
-      <div className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg bg-white lg:shadow-sm rounded-lg">
+    <div className="flex justify-center items-center w-full max-h-screen h-screen py-10 min-h-screen lg:px-2 px-3 ">
+      <div 
+      className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg bg-white lg:shadow-md
+      lg:py-5 lg:px-10 rounded-lg">
         <h2 className="text-center text-2xl font-bold text-gray-900 mb-6">
-           <Feather className="inline" size={24} /> Signup
+           Signup
         </h2>
 
         <Form {...form}>
@@ -192,27 +194,7 @@ function Register() {
               )}
             />
 
-            {/* Phone Number */}
-            <FormField
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem className='mb-4'>
-                  <FormLabel className="font-semibold text-sm text-gray-700">Phone Number</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                      <Input
-                        {...field}
-                        placeholder="86293XXXX"
-                        className="pl-10 py-2.5 text-base border-gray-300 focus:ring-2 focus:ring-gray-500"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage className="text-sm text-red-500" />
-                </FormItem>
-              )}
-            />
-
+            
             {/* User Role */}
             <FormField
               name="role"
@@ -238,14 +220,6 @@ function Register() {
               )}
             />
 
-            {/* File Upload */}
-            <div className="w-full border border-dashed mt-5 bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-              <FormLabel className="font-semibold text-sm text-gray-700 block mb-3">Avatar</FormLabel>
-              <FileUpload
-                key="fileupload"
-                onChange={(files: File[]) => setAvatar(files[0])}
-              />
-            </div>
 
             {/* Submit Button */}
             <Button

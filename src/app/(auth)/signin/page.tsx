@@ -4,7 +4,7 @@ import { Eye, EyeOff, Github, ArrowLeft, Icon, User, Feather } from "lucide-reac
 import { signIn } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -14,7 +14,6 @@ import {
   FormItem
 } from "@/components/ui/form";
 
-import { BackgroundLines } from "@/components/ui/background-lines";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginSchema from "@/schemas/login.schema";
@@ -27,10 +26,9 @@ import { Button } from "@/components/ui/button";
 
 const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -66,7 +64,8 @@ const LoginPage: React.FC = () => {
         description: res?.ok && "login successfully"
       });
 
-      redirect(`${conf.url}/`)
+      router.push(`/`)
+      return;
 
     } catch (error: any) {
       console.log("signin form error: ", error.message);
@@ -104,7 +103,8 @@ const LoginPage: React.FC = () => {
         title: "Login Success",
         description: res?.ok && "login successfully"
       })
-      redirect(`${conf.url}/`)
+      router.push(`/`);
+      return null;
     } catch (error: any) {
       console.log("some error has been occurred", error);
       toast({
@@ -136,7 +136,7 @@ const LoginPage: React.FC = () => {
 
     <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md bg-white p-8 lg:shadow-md rounded-lg">
       <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
-        <Feather className="inline" size={24} /> Welcome Back
+        Welcome Back
       </h2>
 
       <Form {...form}>
@@ -147,8 +147,8 @@ const LoginPage: React.FC = () => {
           <FormField
             name="email"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
+              <FormItem className="mb-3" >
+                <FormLabel >Email</FormLabel>
                 <FormControl>
                   <Input placeholder="demo@gmail.com" {...field} />
                 </FormControl>
@@ -156,7 +156,6 @@ const LoginPage: React.FC = () => {
               </FormItem>
             )}
           />
-
 
           {/* Password field  */}
           <FormField

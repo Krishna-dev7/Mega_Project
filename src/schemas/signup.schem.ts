@@ -11,10 +11,6 @@ const signupSchema = z.object({
   username: usernameValidation,
   fullname: z.string().regex(/^[a-zA-z\s]{4,12}$/, "fullname can contain only letters"),
   email: z.string().email(),
-  phoneNumber: z
-    .string()
-    .length(10, {message: "must be 10 character long"})
-    .regex(/^[0-9]*$/, "only numbers are allowed"),
   role: z.string().regex(/(user)|(seller)/, "only user or seller is allowed"),
   password: z
     .string()
@@ -23,3 +19,9 @@ const signupSchema = z.object({
 })
 
 export default signupSchema;
+
+
+  // phoneNumber: z
+  //   .string()
+  //   .length(10, {message: "must be 10 character long"})
+  //   .regex(/^[0-9]*$/, "only numbers are allowed"),
