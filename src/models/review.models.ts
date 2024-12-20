@@ -1,6 +1,9 @@
-import mongoose, {Schema, Types} from "mongoose";
+import mongoose, {
+  Schema, 
+  Types,
+  Document} from "mongoose";
 
-interface IReview extends Schema {
+interface IReview extends Document {
   userId: Types.ObjectId,
   productId: Types.ObjectId,
   rating: number,

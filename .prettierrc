@@ -1,5 +1,9 @@
 {
   "useTabs": true,
   "tabWidth": 2,
-  "bracketSameLine": true
+  "bracketSameLine": true,
+  "trailingComma": "all",
+  "printWidth": 50,
+  "arrowParens": "always",
+  "endOfLine": "lf"
 }

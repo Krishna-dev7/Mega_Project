@@ -1,20 +1,22 @@
 import mongoose, {
   CallbackWithoutResultAndOptionalError,
   Schema, 
+  Document,
   Types,
 } from "mongoose";
+import Product from "./product.models";
 
 export enum OrderStatus {
   PENDING = "pending",
-  CONFIRMED = "confirmed",
   SHIPPED = "shipped",
+  CONFIRMED = "confirmed",
   DELIVERED = "delivered",
   CANCELLED = "cancelled"
 }
 
-interface IOrder extends Schema {
+interface IOrder extends Document {
   userId: Types.ObjectId,
-  totalAmmount: number,
+  totalAmount: number,
   status: OrderStatus,
   products: [{
     productId: Types.ObjectId,
@@ -29,7 +31,7 @@ const orderSchema = new Schema<IOrder>({
     ref: "User",
     required: true
   },
-  totalAmmount: {
+  totalAmount: {
     type: Number,
     required: true,
     min: 1
@@ -61,7 +63,19 @@ const handleProductStock = async function(this: IOrder,
 ) {
   try {
 
-    
+    // reduce quantity of products in stock
+    this.products.forEach( async (product) => {
+      const productDoc = await Product
+        .findById({_id: product.productId});
+
+      if(productDoc) {
+        productDoc.countInStock -= product.quantity;
+        await productDoc.save();
+        // also calculates the total amount of the order
+        this.totalAmount 
+          = productDoc.price * product.quantity; 
+      }
+    })
     
   } catch (error:any) {
     console.log("order pre hook error: ", error.message);
@@ -70,7 +84,6 @@ const handleProductStock = async function(this: IOrder,
 }
 
 orderSchema.pre("save", handleProductStock); 
-
 
 const Order = mongoose.models.Order
   || mongoose.model("Order", orderSchema);

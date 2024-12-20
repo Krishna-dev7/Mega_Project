@@ -1,4 +1,10 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { 
+	Document,
+	CallbackWithoutResultAndOptionalError, 
+	Schema } from "mongoose";
+
+import SellerProfile, {SellerProfileSchema} from "./sellerProfile.models";
+import UserProfile, { UserProfileSchema } from "./userProfile.models";
 
 // interface to build perfect userSchema
 interface UserVerification {
@@ -10,11 +16,11 @@ interface UserVerification {
 }
 
 export const enum enumProvider {
-	"CREDENTIALS" = "credentials",
-	"GITHUB" = "github",
+	CRENDENTIALS = "credentials",
+	GITHUB = "github",
 }
 
-interface UserSchema extends Schema, UserVerification {
+interface UserSchema extends Document, UserVerification {
 	username: string;
 	fullname: string;
 	email: string;
@@ -61,6 +67,48 @@ const userSchema = new Schema<UserSchema>({
 		},
 	},{ timestamps: true },
 );
+
+
+userSchema.index({
+	email: 1,
+	username: 1
+})
+
+userSchema.post('createCollection',
+	async function(
+		this:UserSchema, 
+		err: NativeError,
+		next: CallbackWithoutResultAndOptionalError) {
+			try {
+
+				if(err) {
+					console.log("user models post middleware error: " + err.message)
+					throw new Error(err.message);
+				}
+
+				if(this.role == "seller") {
+					await SellerProfile.create<SellerProfileSchema>({
+						userId: this._id,
+						accountNumber: "",
+						totalProducts: 0,
+						totalRevenue: 0,
+						brandName: this.username
+					})
+				} else {
+					await UserProfile.create<UserProfileSchema>({
+						userId: this._id,
+						address: "",
+						totalSpent: 0
+						// add other necessary fields here
+					})
+				}
+
+			} catch (error:any) {
+				console.log("user models pre middleware error: " + error.message)
+				next(error);
+			}
+		}
+)
 
 const User =
 	mongoose.models.User || mongoose.model<UserSchema>("User", userSchema);

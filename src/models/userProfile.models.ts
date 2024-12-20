@@ -1,6 +1,9 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { 
+	Schema, 
+	Types,
+	Document } from "mongoose";
 
-interface UserProfileSchema extends Schema {
+interface UserProfileSchema extends Document {
 	userId: Types.ObjectId;
 	address: string;
 	totalSpent: number;
@@ -27,3 +30,6 @@ const UserProfile =
 	mongoose.model<UserProfileSchema>("UserProfile", userProfileSchema);
 
 export default UserProfile;
+export type {
+	UserProfileSchema
+}

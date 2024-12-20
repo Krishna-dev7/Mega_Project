@@ -1,6 +1,9 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { 
+  Schema, 
+  Types,
+  Document } from "mongoose";
 
-interface ProductSchema extends Schema {
+interface ProductSchema extends Document {
   brand: string;
   category: Types.ObjectId;
   countInStock: number;
@@ -65,6 +68,10 @@ const productSchema = new Schema<ProductSchema>({
     ref: "Seller",
   },
 }, {timestamps: true});
+
+productSchema.index({
+  slug: 1
+})
 
 const Product = mongoose.models.Product
   || mongoose.model("Product", productSchema);
