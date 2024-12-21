@@ -12,6 +12,7 @@ export default function Home() {
 
       {/* Navbar */}
       <Header />
+      {/* <Navbar /> */}
 
       {/* Featured Products Section */}
       <Hero />

@@ -119,7 +119,7 @@ const LoginPage: React.FC = () => {
 
 
   return <div
-    className=" flex flex-col items-center bg-[#E7E4C4] justify-center h-screen  ">
+    className=" flex flex-col items-center justify-center h-screen  ">
     <Toaster />
 
     {/* Back Button */}
@@ -134,7 +134,7 @@ const LoginPage: React.FC = () => {
     </div>
 
 
-    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md bg-[#E7E4C6] p-8 lg:shadow-lg rounded-lg">
+    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md  p-8 lg:shadow-lg rounded-lg">
       <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
         Welcome Back
       </h2>

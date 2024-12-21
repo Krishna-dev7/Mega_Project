@@ -112,9 +112,9 @@ function Register() {
 	};
 
 	return (
-		<div className="flex justify-center bg-[#E7E4C4] items-center w-full max-h-screen h-screen py-10 min-h-screen lg:px-2 px-3 ">
+		<div className="flex justify-center  items-center w-full max-h-screen h-screen py-10 min-h-screen lg:px-2 px-3 ">
 			<div
-				className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg bg-[#E7E4C6] lg:shadow-lg
+				className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg lg:shadow-lg
       lg:py-5 lg:px-10 rounded-lg">
 				<h2 className="text-center text-2xl font-bold text-gray-900 mb-6">
 					Signup
