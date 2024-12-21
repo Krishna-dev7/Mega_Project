@@ -3,7 +3,7 @@
   "tabWidth": 2,
   "bracketSameLine": true,
   "trailingComma": "all",
-  "printWidth": 50,
+  "printWidth": 30,
   "arrowParens": "always",
   "endOfLine": "lf"
 }
