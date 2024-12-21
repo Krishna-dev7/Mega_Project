@@ -110,8 +110,8 @@ userSchema.post('createCollection',
 		}
 )
 
-const User =
-	mongoose.models.User || mongoose.model<UserSchema>("User", userSchema);
+const User = mongoose.models.User
+	 || mongoose.model<UserSchema>("User", userSchema);
 
 export default User;
 export type { UserSchema, UserVerification };
