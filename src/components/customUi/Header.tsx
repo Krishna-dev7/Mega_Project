@@ -20,7 +20,7 @@ const Header: React.FC = () => {
 			</div>
 
 			{/* Header Section */}
-			<header className="sticky top-0 bg-white justify-center flex items-center shadow-sm z-50">
+			<header className="sticky top-0 mb-0 bg-slate-50 justify-center flex items-center shadow-sm z-50">
 				<nav className="flex justify-between w-full transition-all ease-in-out duration-100 lg:w-2/3 items-center px-6 py-4">
 					{/* Logo */}
 					<div className="text-xl font-semibold text-gray-900">
@@ -29,12 +29,12 @@ const Header: React.FC = () => {
 
 					{/* Navigation Links */}
 					<ul
-						className={`lg:flex lg:justify-center absolute lg:static text-gray-900 bg-white w-full lg:w-2/3 
+						className={`lg:flex lg:justify-center absolute lg:static text-gray-900 w-full lg:w-2/3 
 						left-0 top-16 lg:top-auto transition-transform transform ${
 							isNavOpen ? "translate-x-0" : "-translate-x-full"
 						} lg:translate-x-0 shadow-md lg:shadow-none py-4 lg:py-0`}>
 						{navItems.map((item, index) => (
-							<li key={index} className="text-center p-1 sm:px-6 sm:py-2 hover:text-gray-600">
+							<li key={index} className="text-center text-md text-pretty p-1 sm:px-6 sm:py-2 hover:text-gray-600">
 								<Link href={item.href}>{item.slug}</Link>
 							</li>
 						))}

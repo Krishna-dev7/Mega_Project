@@ -1,49 +1,81 @@
-import Description from './Description';
-import React from 'react';
+"use client"
+
+import conf from '@/helpers/conf';
+import {IProduct} from '@/models/product.models';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+
 
 const ProductDetailPage = () => {
+
+  const [image, setImg]
+     = useState<string>("https://i.pinimg.com/736x/48/2d/d1/482dd1c72acfdd9859a7cdb35b5dc70f.jpg");
+
+  const [products, setProducts] 
+    = useState<Array<IProduct>>([])
+
+
+  useEffect(() => {
+    // fetch product from api
+    axios
+      .get(`${conf.url}/api/products`)
+      .then( res => {
+        console.log("Products: ", res);
+        setProducts(prev => [...prev, ...res.data.data])
+      })
+      .catch( err => {
+        console.log(err.message);
+      })
+    
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#e7e4c4] max-h-fit h-fit ">
-      {/* Header */}
-      <header className="flex items-center justify-between px-8 py-4 bg-[#e7e4c4] shadow">
-        <h1 className="text-2xl font-bold">BR.F</h1>
-        <input
-          type="text"
-          placeholder="Search"
-          className="px-4 py-2 border rounded-lg focus:outline-none"
-        />
-        <div className="flex items-center space-x-4">
-          <button className="font-medium">Cart</button>
-          <button className="font-medium">Favorites</button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#e7e4c4] py-14 max-h-fit h-screen ">
 
       {/* Main Content */}
-      <div className="container mx-auto mt-8 flex gap-8">
+      <div className="container bg-[#e7e4c4] mx-auto flex gap-8">
         {/* Product Images */}
         <div className="flex-1">
           <div className="p-4 bg-[#e7e4c4] rounded-lg shadow">
             <img
-              src="/shoe-main.jpg"
+              src={image}
               alt="Main Product"
-              className="w-full h-auto rounded-lg"
+              className="w-96 h-96 rounded-l-3xl"
             />
-            <div className="flex mt-4 space-x-4">
-              <img
-                src="/shoe-thumb1.jpg"
+            <div className="flex mt-4 object-cover space-x-4">
+
+                { products.length > 0 && products
+                  .map((product: IProduct) => (
+                    <img
+                      key={product._id?.toString()}
+                      src={product.images[0].url}
+                      alt={product.slug}
+                      onClick={() => setImg(product.images[0].url)}
+                      className="w-20 h-20 rounded-lg cursor-pointer"
+                    />
+                  ))
+                }
+
+              {/* <img
+                onClick={() => setImg("https://i.pinimg.com/736x/4b/dd/de/4bdddea313df938b2df1ee57a586214a.jpg")}
+                src="https://i.pinimg.com/736x/4b/dd/de/4bdddea313df938b2df1ee57a586214a.jpg"
+                alt="Thumbnail"
+                className="w-20 h-20 rounded-lg cursor-pointer"
+              /> */}
+              {/* <img
+                onClick={() => 
+                  setImg("https://i.pinimg.com/236x/a6/b9/66/a6b966a3acdc46972ec67e2528d721db.jpg")}
+                src="https://i.pinimg.com/236x/a6/b9/66/a6b966a3acdc46972ec67e2528d721db.jpg"
                 alt="Thumbnail"
                 className="w-20 h-20 rounded-lg cursor-pointer"
               />
               <img
-                src="/shoe-thumb2.jpg"
+              onClick={() => 
+                setImg("https://i.pinimg.com/236x/73/15/15/73151521154828afd5e8174b66f76958.jpg")}
+                src="https://i.pinimg.com/236x/73/15/15/73151521154828afd5e8174b66f76958.jpg"
                 alt="Thumbnail"
                 className="w-20 h-20 rounded-lg cursor-pointer"
-              />
-              <img
-                src="/shoe-thumb3.jpg"
-                alt="Thumbnail"
-                className="w-20 h-20 rounded-lg cursor-pointer"
-              />
+              /> */}
             </div>
           </div>
         </div>
@@ -80,20 +112,22 @@ const ProductDetailPage = () => {
       </div>
 
       {/* Reviews */}
-      {/* <div className="container mx-auto mt-8 p-4 bg-white rounded-lg shadow">
+      <div className="container mx-auto mt-8 p-4 bg-[#e7e4bb] rounded-lg shadow-lg">
         <h3 className="text-2xl font-bold">Reviews</h3>
         <div className="mt-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-start gap-5 justify-between">
             <div>
               <h4 className="text-lg font-medium">Helen M.</h4>
               <p className="text-sm text-gray-500">Yesterday</p>
             </div>
-            <p className="text-sm text-gray-700">Excellent running shoes. It turns very sharply on the foot.</p>
+            <p className="text-md text-gray-700">
+              Excellent running shoes. It turns very sharply on the foot.
+            </p>
           </div>
         </div>
-      </div> */}
+      </div>
 
-      <Description />
+      {/* <Description /> */}
     </div>
   );
 };

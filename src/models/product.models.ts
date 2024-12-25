@@ -3,21 +3,34 @@ import mongoose, {
   Types,
   Document } from "mongoose";
 
-interface ProductSchema extends Document {
+interface IProduct extends Document {
   brand: string;
-  category: Types.ObjectId;
+  category: Categories,
   countInStock: number;
   description: string;
-  images: string[];
+  images: Array<{url: string, color?: string}>;
   slug: string;
-  numReviews: Types.ObjectId;
   price: number;
   rating: number;
-  owner: Types.ObjectId;
+  owner?: Types.ObjectId;
   discount: number;
 }
 
-const productSchema = new Schema<ProductSchema>({
+export enum Categories {
+  BAGS = "bags",
+  DRINKWARE = "drinkware",
+  ELECTRONICS = "electronics",
+  FOOTWEAR = "footwear",
+  HEADWEAR = "headwear",
+  HOODIES = "hoodies",
+  JACKETS = "jackets",
+  KIDS = "kids",
+  PETS = "pets",
+  SHIRTS = "shirts",
+  STICKERS = "stickers"
+}
+
+const productSchema = new Schema<IProduct>({
   slug: {
     type: String,
     required: true,
@@ -28,8 +41,9 @@ const productSchema = new Schema<ProductSchema>({
     trim: true,
   }, 
   category: {
-    type: Schema.Types.ObjectId,
-    ref: "Category",
+    type: String,
+    required: true,
+    enum: Object.values(Categories),
   },
   discount: {
     type: Number,
@@ -45,11 +59,8 @@ const productSchema = new Schema<ProductSchema>({
     required: true
   },
   images: [{
-      type: String,
-  }],
-  numReviews:[{
-      type: Schema.Types.ObjectId,
-      ref: "Review",
+      url: String,
+      color: String,
   }],
   price: {
     type: Number,
@@ -73,8 +84,13 @@ productSchema.index({
   slug: 1
 })
 
-const Product = mongoose.models.Product
+console.log("Product model", mongoose.models)
+
+const Product = mongoose.models?.Product 
   || mongoose.model("Product", productSchema);
 
 
 export default Product;
+export type {
+  IProduct
+}

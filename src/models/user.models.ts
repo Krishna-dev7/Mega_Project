@@ -16,7 +16,7 @@ interface UserVerification {
 }
 
 export const enum enumProvider {
-	CRENDENTIALS = "credentials",
+	CREDENTIALS = "credentials",
 	GITHUB = "github",
 }
 
@@ -74,17 +74,11 @@ userSchema.index({
 	username: 1
 })
 
-userSchema.post('createCollection',
+userSchema.pre('save',
 	async function(
 		this:UserSchema, 
-		err: NativeError,
 		next: CallbackWithoutResultAndOptionalError) {
 			try {
-
-				if(err) {
-					console.log("user models post middleware error: " + err.message)
-					throw new Error(err.message);
-				}
 
 				if(this.role == "seller") {
 					await SellerProfile.create<SellerProfileSchema>({

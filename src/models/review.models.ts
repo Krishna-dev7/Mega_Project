@@ -36,3 +36,6 @@ const Review = mongoose.models.Review
   || mongoose.model("Review", reviewSchema);
 
 export default Review;
+export type {
+  IReview
+}

@@ -18,6 +18,7 @@ export default function ErrorPage({
         </h1>
 
         <p className="text-gray-600 text-lg">
+          <span> {error.digest} </span>
           {error.message || "We encountered an unexpected error."}
         </p>
 
