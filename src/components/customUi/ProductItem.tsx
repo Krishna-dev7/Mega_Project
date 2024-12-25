@@ -11,6 +11,8 @@ import {
   CardContent 
 } from "../ui/card";
 import conf from "@/helpers/conf";
+// import { Badge } from "../ui/badge";
+import BadgeComponent from "./Badge";
 
 type Props = {
   product: IProduct;
@@ -29,8 +31,8 @@ const ProductItem: React.FC<Props> = ({
     <Card
       onClick={() => 
         router.push(`${conf.url}/products/${product._id?.toString()}`) }
-      className={`rounded-lg p-4 hover:shadow-cyan-300 hover:shadow-md overflow-hidden cursor-pointer shadow-sm ${className} 
-      sm:w-[14rem] sm:h-[20rem] md:w-[18rem] md:h-[24rem] lg:w-[22rem] lg:h-[28rem] w-full h-auto
+      className={`rounded-lg p-4 sm:p-2 hover:shadow-cyan-300 hover:shadow-md overflow-hidden cursor-pointer shadow-sm ${className} 
+      sm:w-[14  rem] sm:h-[20rem] md:w-[18rem] md:h-[24rem] lg:w-[22rem] lg:h-[28rem] w-full h-auto
       hover:border-cyan-600`}
     >
       <CardHeader className="p-0">
@@ -43,19 +45,25 @@ const ProductItem: React.FC<Props> = ({
         </div>
       </CardHeader>
       <CardContent 
-        className="flex flex-col lg:py-5 mt-2 justify-between p-4">
-        <p className="text-xl my-5 font-bold ">
+        className="flex flex-col lg:py-5 mt-1 justify-between p-4">
+        <p className="text-xl my-2 font-bold ">
           ${product.price}
         </p>
+        <span>
+          <BadgeComponent
+            category={product.category}>
+              {product.category}
+          </BadgeComponent>
+        </span>
         <p className="description text-sm text-gray-700 truncate mb-2">
           {product.description}
         </p>
-        <div className="text-center lg:px-1 mt-3">
+        <div className="text-center lg:px-1 sm:mt-1 lg:mt-3">
           <Link
             href={`${conf.url}/api/products/${product._id?.toString()}`}
             passHref
           >
-            <Button className="w-full text-sm py-5">Buy Now</Button>
+            <Button className="w-full text-sm md:py-3 sm-py-1 lg:py-5">Buy Now</Button>
           </Link>
         </div>  
       </CardContent>

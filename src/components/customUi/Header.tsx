@@ -33,7 +33,7 @@ const Header: React.FC =
 				</div>
 
 				{/* Header Section */}
-				<header className="sticky top-0 mb-0 bg-slate-50 justify-center flex items-center shadow-sm z-50">
+				<header className="sticky top-0 mb-0 bg-neutral-50 justify-center flex items-center shadow-sm z-50">
 					<nav className="flex justify-between w-full transition-all ease-in-out duration-100 lg:w-2/3 items-center px-6 py-4">
 						{/* Logo */}
 						<div className="text-xl font-semibold text-gray-900">

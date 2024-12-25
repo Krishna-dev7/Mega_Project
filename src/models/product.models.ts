@@ -93,5 +93,6 @@ const Product = mongoose.models?.Product
 
 export default Product;
 export type {
-  IProduct
+  IProduct,
+  productSchema
 }
