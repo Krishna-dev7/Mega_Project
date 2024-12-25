@@ -27,12 +27,14 @@ const ProductItem: React.FC<Props> = ({
 
   return (
     <Card
-      onClick={() => router.push(`${conf.url}/products/${product._id?.toString()}`) }
-      className={`rounded-md overflow-hidden cursor-pointer shadow-lg ${className} 
-      sm:w-[14rem] sm:h-[20rem] md:w-[18rem] md:h-[24rem] lg:w-[22rem] lg:h-[28rem] w-full h-auto`}
+      onClick={() => 
+        router.push(`${conf.url}/products/${product._id?.toString()}`) }
+      className={`rounded-lg p-4 hover:shadow-cyan-300 hover:shadow-md overflow-hidden cursor-pointer shadow-sm ${className} 
+      sm:w-[14rem] sm:h-[20rem] md:w-[18rem] md:h-[24rem] lg:w-[22rem] lg:h-[28rem] w-full h-auto
+      hover:border-cyan-600`}
     >
       <CardHeader className="p-0">
-        <div className="relative w-full h-48 sm:h-40 md:h-48 lg:h-60 bg-gray-100">
+        <div className="relative w-full h-48 sm:h-40 md:h-48 lg:h-60">
           <img
             src={product.images[0]?.url || placeholderImage}
             alt={product.description || "Product Image"}
@@ -40,21 +42,22 @@ const ProductItem: React.FC<Props> = ({
           />
         </div>
       </CardHeader>
-      <CardContent className="flex flex-col lg:py-10 justify-between p-4">
+      <CardContent 
+        className="flex flex-col lg:py-5 mt-2 justify-between p-4">
         <p className="text-xl my-5 font-bold ">
           ${product.price}
         </p>
         <p className="description text-sm text-gray-700 truncate mb-2">
           {product.description}
         </p>
-        <div className="text-center">
+        <div className="text-center lg:px-1 mt-3">
           <Link
             href={`${conf.url}/api/products/${product._id?.toString()}`}
             passHref
           >
-            <Button className="w-full text-sm py-2">Buy Now</Button>
+            <Button className="w-full text-sm py-5">Buy Now</Button>
           </Link>
-        </div>
+        </div>  
       </CardContent>
     </Card>
   );

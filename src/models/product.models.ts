@@ -27,7 +27,8 @@ export enum Categories {
   KIDS = "kids",
   PETS = "pets",
   SHIRTS = "shirts",
-  STICKERS = "stickers"
+  STICKERS = "stickers",
+  FASHION = "fashion"
 }
 
 const productSchema = new Schema<IProduct>({

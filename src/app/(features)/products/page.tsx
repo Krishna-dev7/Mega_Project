@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,23 +32,30 @@ import { Categories, IProduct } from "@/models/product.models";
 import axios from "axios";
 import conf from "@/helpers/conf";
 import ProductItem from "@/components/customUi/ProductItem";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const ProductPage = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [selectedCategories, setSelectedCategories] 
+    = useState<Array<Categories>>([]);
   const [products, setProducts]
     = useState<Array<IProduct>>([]);
 
-  useEffect(() => {
+  const fetchProducts = useMemo(() => {
     axios
-      .get(`${conf.url}/api/products`)
-      .then(res =>
-        setProducts(prev => [...prev, ...res.data.data])
-      )
-      .catch(err =>
-        console.log("product fetch error: ", err.message)
-      )
+    .get(`${conf.url}/api/products`)
+    .then(res =>
+      setProducts(prev => [...res.data.data])
+    )
+    .catch(err =>
+      console.log("product fetch error: ", err.message)
+    )
   }, [])
+
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [])
 
 
   const categories = Object.values(Categories)
@@ -61,8 +68,22 @@ const ProductPage = () => {
           {categories.map((category) => (
             <div key={category} className="flex items-center justify-between">
               <label className="flex items-center cursor-pointer">
-                <input type="checkbox" className="mr-3 h-4 w-4" />
-                <span className="text-sm">{category}</span>
+                {/* <input type="checkbox" className="mr-3 h-4 w-4" /> */}
+                <Checkbox 
+                  onSelect={ () =>
+                    setSelectedCategories( prev => { 
+                      if(!prev.includes(category)) {
+                        prev.push(category);
+                      } else {
+                        let idx = prev.indexOf(category);
+                        prev.splice(idx,1);
+                      }
+                      return [...prev];
+                    }                    )
+                  }
+                  checked={selectedCategories.includes(category)}
+                  value={category}/>
+                <span className="text-sm ml-2">{category}</span>
               </label>
             </div>
           ))}
@@ -151,64 +172,13 @@ const ProductPage = () => {
                   className=""
                   key={product._id?.toString()}
                   product={product} />
-                // <Card key={product._id?.toString()} className="border-0 shadow-none hover:shadow-md transition-shadow">
-                //   <CardContent className="p-0">
-                //     <div className="aspect-[3/4] relative overflow-hidden mb-4">
-                //       <img
-                //         src={product.images[0].url}
-                //         alt={product.slug}
-                //         className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                //       />
-                //     </div>
-                //     <div className="px-2">
-                //       <p className="text-sm text-gray-500 mb-1">{product.category}</p>
-                //       <h3 className="text-base font-normal mb-2">{product.slug}</h3>
-                //       <p className="text-sm text-gray-900">₹{product.price.toLocaleString()}</p>
-                //     </div>
-                //   </CardContent>
-                // </Card>
               ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Search Modal */}
-      {isSearchOpen && (
-        <div className="fixed inset-0 bg-white z-50">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between mb-6">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full text-lg border-none outline-none placeholder:text-gray-400"
-                autoFocus
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSearchOpen(false)}
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-sm text-gray-500">Popular Searches</h3>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant="outline"
-                    className="rounded-full text-sm"
-                  >
-                    {category}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+     
     </main>
   );
 };
