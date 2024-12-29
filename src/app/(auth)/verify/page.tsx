@@ -196,6 +196,8 @@ const VerifyPage: React.FC = () => {
   );
 }
 
-export default <Suspense fallback={<div>Loading....</div>}  >
+const VerifyPageWrapper:React.FC = () => (<Suspense fallback={<div>Loading....</div>}  >
   <VerifyPage />
-</Suspense>;
+</Suspense>);
+
+export default VerifyPageWrapper;
