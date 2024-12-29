@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import React, {useState} from "react"
+import React, {Suspense, useState} from "react"
 import {
   Form,
   FormField,
@@ -196,4 +196,6 @@ const VerifyPage: React.FC = () => {
   );
 }
 
-export default VerifyPage;
+export default <Suspense fallback={<div>Loading....</div>}  >
+  <VerifyPage />
+</Suspense>;
