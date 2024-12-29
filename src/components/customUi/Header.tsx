@@ -1,112 +1,131 @@
-"use client";
-
-import React, {
-	useState,
-} from "react";
-import {
-	User,
-	ShoppingCart,
-	Search,
-} from "lucide-react";
-import navItems from "@/helpers/navConfig";
+"use client"
+import React, { useState } from "react";
+import { User, ShoppingCart, Search } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import navItems from "@/helpers/navConfig";
+// import { useAppSelector, useAppDispatch } from "@/store/store";
 
-const Header: React.FC =
-	() => {
-		const [
-			isNavOpen,
-			setIsNavOpen,
-		] = useState(false);
+const Header = () => {
 
-		const toggleNav = () => {
-			setIsNavOpen(
-				!isNavOpen,
-			);
-		};
+  const currentTab = usePathname();
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(currentTab);
+  const router = useRouter();
 
-		return (
-			<>
-				{/* Announcement Bar */}
-				<div className="bg-gray-900 text-white text-center py-2 text-xs">
-					Free Shipping on
-					Orders Above ₹5000
-				</div>
+  return (
+    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center">
+      {/* Announcement Bar */}
+      {/* <div className="w-full bg-black text-white text-center py-1.5 text-xs font-light">
+        Free Shipping on Orders Above ₹5000
+      </div> */}
 
-				{/* Header Section */}
-				<header className="sticky top-0 mb-0 bg-neutral-50 justify-center flex items-center shadow-sm z-50">
-					<nav className="flex justify-between w-full transition-all ease-in-out duration-100 lg:w-2/3 items-center px-6 py-4">
-						{/* Logo */}
-						<div className="text-xl font-semibold text-gray-900">
-							NOVA.
-						</div>
+      <div className="w-full flex justify-center p-4">
+        <header className="relative w-full max-w-2xl">
+          {/* Main Floating Navbar */}
+          <div className="relative sm:top-1 lg:top-1">
+            {/* Background Blur Effect */}
+            <div className="absolute inset-0 bg-white/20 backdrop-blur-lg rounded-full" />
 
-						{/* Navigation Links */}
-						<ul
-							className={`lg:flex lg:justify-center absolute lg:static text-gray-900 w-full lg:w-2/3 
-						left-0 top-16 lg:top-auto transition-transform transform ${
-							isNavOpen
-								? "translate-x-0"
-								: "-translate-x-full"
-						} lg:translate-x-0 shadow-md lg:shadow-none py-4 lg:py-0`}>
-							{navItems.map(
-								(
-									item,
-									index,
-								) => (
-									<li
-										key={
-											index
-										}
-										className="text-center text-md text-pretty p-1 sm:px-6 sm:py-2 hover:text-gray-600">
-										<Link
-											href={
-												item.href
-											}>
-											{ item.slug }
-										</Link>
-									</li>
-								),
-							)}
-						</ul>
+            {/* Glass Morphism Effect */}
+            <nav className="relative flex items-center bg-white/50 shadow-lg rounded-full border border-white/20 p-2">
+              {/* Logo */}
+              <div className="px-6 text-lg font-semibold text-gray-900">
+                NOVA.
+              </div>	
 
-						{/* Icons Section */}
-						<div className="flex items-center space-x-4">
-							<a
-								href="#search"
-								className="text-gray-900 hover:text-gray-700">
-								<Search className="w-5 h-5" />
-							</a>
-							<a
-								href="#account"
-								className="text-gray-900 hover:text-gray-700">
-								<User className="w-5 h-5" />
-							</a>
-							<div className="relative text-gray-900 hover:text-gray-700">
-								<a href="#cart">
-									<ShoppingCart className="w-5 h-5" />
-									<span
-										className="absolute -top-2 -right-2 bg-red-500 text-white text-xs 
-										rounded-full w-4 h-4 flex items-center justify-center">
-											0
-									</span>
-								</a>
-							</div>
-						</div>
+              {/* Center Navigation */}
+              <div className="hidden md:flex flex-1 justify-center">
+                <div className="bg-gray-100/70 rounded-full p-1">
+                  {navItems.map((item, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+												setActiveTab(item.href)
+												router.push(item.href);
+											}}
+                      className={`relative px-4 py-1.5 text-sm font-medium transition-all duration-300 ${
+                        activeTab === item.href ? "text-white" : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      {activeTab === item.href && (
+                        <span className="absolute inset-0 bg-black rounded-full" />
+                      )}
+                      <span className="relative">{item.slug}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-						{/* Hamburger Menu */}
-						<button
-							className="lg:hidden focus:outline-none"
-							onClick={
-								toggleNav
-							}>
-							<span className="block w-6 h-0.5 bg-gray-900 mb-1"></span>
-							<span className="block w-6 h-0.5 bg-gray-900 mb-1"></span>
-							<span className="block w-6 h-0.5 bg-gray-900"></span>
-						</button>
-					</nav>
-				</header>
-			</>
-		);
-	};
+              {/* Right Icons */}
+              <div className="flex items-center justify-end sm:flex-1 lg:flex-grow-0 gap-4 px-6">
+                <button className="hidden md:flex text-gray-700 hover:text-gray-900 transition-colors">
+                  <Search className="w-4 h-4" />
+                </button>
+                
+                <button className="text-gray-700 hover:text-gray-900 transition-colors">
+                  <User className="w-4 h-4" />
+                </button>
+                
+                <button className="relative text-gray-700 hover:text-gray-900 transition-colors">
+                  <ShoppingCart className="w-4 h-4" />
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                    0
+                  </span>
+                </button>
+
+                {/* Mobile Menu Button */}
+                <button 
+                  className="md:hidden relative z-50 text-gray-700"
+                  onClick={() => setIsNavOpen(!isNavOpen)}
+                >
+                  <div className="space-y-1">
+                    <span className={`block w-4 h-0.5 bg-current transition-all duration-300 ${
+                      isNavOpen ? 'rotate-45 translate-y-1.5' : ''
+                    }`} />
+                    <span className={`block w-4 h-0.5 bg-current transition-all duration-300 ${
+                      isNavOpen ? 'opacity-0' : ''
+                    }`} />
+                    <span className={`block w-4 h-0.5 bg-current transition-all duration-300 ${
+                      isNavOpen ? '-rotate-45 -translate-y-1.5' : ''
+                    }`} />
+                  </div>
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          {/* Mobile Navigation Menu */}
+          <div className={`md:hidden absolute top-full left-0 right-0 mt-2 overflow-hidden transition-all duration-300 ${
+            isNavOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+          }`}>
+            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg borde border-white/20 p-4">
+              <ul className="space-y-2">
+                {navItems.map((item, index) => (
+                  <li key={index}>
+                    <Link 
+                      href={item.href}
+                      className={`block py-2 px-4 text-sm rounded-lg transition-colors ${
+                        activeTab === item.slug 
+                          ? 'bg-black text-white' 
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                      onClick={() => {
+                        setActiveTab(item.slug);
+                        setIsNavOpen(false);
+                      }}
+                    >
+                      {item.slug}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </header>
+      </div>
+    </div>
+  );
+};
 
 export default Header;

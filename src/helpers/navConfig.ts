@@ -1,12 +1,20 @@
-const navItems = [
-	{
-		slug: "Home",
-		href: "#Home",
+import conf from "./conf";
+
+const navItems = [{ 
+		slug: "Home", 
+		href: `${conf.url}/` 
 	},
-	{
-		slug: "Products",
-		href: "/products",
+	{ 
+		slug: "Shop", 
+		href: "/products" 
 	},
-];
+	{ 
+		slug: "Login", 
+		href: "/signin" 
+	},
+	{ 
+		slug: "About", 
+		href: "/about" 
+}];
 
 export default navItems;

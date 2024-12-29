@@ -5,7 +5,6 @@ import {
 	User,
 	Mail,
 	Lock,
-	Phone,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -112,7 +111,7 @@ function Register() {
 	};
 
 	return (
-		<div className="flex justify-center  items-center w-full max-h-screen h-full py-10 min-h-full lg:px-2 px-3 ">
+		<div className="flex justify-center items-center w-full max-h-screen h-screen py-10 min-h-full lg:px-2 px-3 ">
 			<div
 				className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg lg:shadow-lg
       lg:py-5 lg:px-10 rounded-lg">

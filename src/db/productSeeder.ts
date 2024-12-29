@@ -1,6 +1,6 @@
 import connectDB from "./connect";
 import Product, { IProduct, Categories } from "@/models/product.models";
-import mongoose, {Types} from "mongoose";
+import {Types} from "mongoose";
 
 
 async function seedProducts() {

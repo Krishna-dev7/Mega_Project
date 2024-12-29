@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Eye, EyeOff, Github, ArrowLeft, Icon, User, Feather } from "lucide-react";
+import { Eye, EyeOff, Github, User } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
@@ -119,20 +119,8 @@ const LoginPage: React.FC = () => {
 
 
   return <div
-    className=" flex flex-col items-center justify-center h-screen  ">
-    <Toaster />
-
-    {/* Back Button */}
-    <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-      <Link
-        href="/"
-        className="flex items-center text-gray-700 hover:text-gray-900 font-medium transition duration-150 ease-in-out"
-      >
-        <ArrowLeft size={20} className="mr-2" />
-        <span className="text-sm sm:text-base">Back</span>
-      </Link>
-    </div>
-
+    className=" flex flex-col text-black items-center justify-center h-screen  ">
+    <Toaster /> 
 
     <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md  p-8 lg:shadow-lg rounded-lg">
       <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">

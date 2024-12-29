@@ -44,18 +44,20 @@ const VerifyPage: React.FC = () => {
   const url = `${conf.url}/api/verify`;
   const router = useRouter();
 
+    // Create form using useForm hook
+    const form = useForm<z.infer<typeof otpFormSchema>>({
+      resolver: zodResolver(otpFormSchema),
+      defaultValues: {
+        otp: "",
+      }
+    });
+
   if (!email) {
     router.push(`/not-found`);
     return;
   }
 
-  // Create form using useForm hook
-  const form = useForm<z.infer<typeof otpFormSchema>>({
-    resolver: zodResolver(otpFormSchema),
-    defaultValues: {
-      otp: "",
-    }
-  });
+
 
   // Function to handle form submission
   const submitOtp = async (data: z.infer<typeof otpFormSchema>) => {

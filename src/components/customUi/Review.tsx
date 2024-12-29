@@ -1,10 +1,12 @@
 "use client"
 
 import { StarIcon } from "lucide-react"
+import { useId } from "react";
 
 
 function Review() {
 
+    const id = useId();
   const reviews = [
     {
       name: "John Doe",
@@ -39,11 +41,11 @@ function Review() {
       <div className="left w-2/3 px-10 " >
         {/* Review Section */}
         { reviews.map( review => (
-            <div className="flex flex-col items-start text-lg gap-5 justify-between mb-20">
+            <div key={review.name} className="flex flex-col items-start text-lg gap-5 justify-between mb-20">
               <h3>{review.name}</h3>
                 <div className="flex space-x-2">
                   { Array(review.rating).fill(0).map( () => (
-                    <StarIcon />
+                    <StarIcon key={id} />
                   )) } 
                 </div>
                 <p> {review.comment} </p>

@@ -8,7 +8,7 @@ import Product, { IProduct } from "@/models/product.models";
 connectDB();
 
 const handler 
-  = async function(req: NextRequest) : Promise<NextResponse> {
+  = async function() : Promise<NextResponse> {
     try {  
       // get all products then send it to the product page
       const products:Array<IProduct> 

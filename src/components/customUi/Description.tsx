@@ -4,13 +4,13 @@ import Review from "./Review";
 
 function Description() {
 
-  const tabs = [
-    {
-      title: "Reviews",
-      value: "reviews",
-      content: <Review />
-    }
-  ]
+  // const tabs = [
+  //   {
+  //     title: "Reviews",
+  //     value: "reviews",
+  //     content: <Review />
+  //   }
+  // ]
 
   return <>
     <section 

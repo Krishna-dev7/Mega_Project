@@ -1,0 +1,152 @@
+[
+  {
+    "slug": "product-1",
+    "brand": "Brand A",
+    "category": "electronics",
+    "description": "High-quality electronic device with advanced features.",
+    "price": 199,
+    "countInStock": 12,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/dc/0b/f5/dc0bf5b589da1e690f6f7a5e32d2eac2.jpg",
+        "color": "black"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-2",
+    "brand": "Brand B",
+    "category": "footwear",
+    "description": "Stylish and durable footwear for daily use.",
+    "price": 89,
+    "countInStock": 20,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/19/f0/aa/19f0aae7bc6ab392a49979f8e61be91e.jpg",
+        "color": "white"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-3",
+    "brand": "Brand C",
+    "category": "fashion",
+    "description": "Trendy and comfortable fashion accessory.",
+    "price": 49,
+    "countInStock": 15,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/97/78/26/97782616d8c5b44108cef9ff8b25a392.jpg",
+        "color": "blue"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-4",
+    "brand": "Brand D",
+    "category": "bags",
+    "description": "Durable and spacious bag for everyday use.",
+    "price": 129,
+    "countInStock": 10,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/a0/e6/37/a0e6373860a25f5d1213b06c91bc653e.jpg",
+        "color": "red"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-5",
+    "brand": "Brand E",
+    "category": "drinkware",
+    "description": "Stylish and eco-friendly drinkware.",
+    "price": 39,
+    "countInStock": 25,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/ac/60/ae/ac60ae700ecb08f4379105b35bf5560d.jpg",
+        "color": "green"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-6",
+    "brand": "Brand F",
+    "category": "hoodies",
+    "description": "Comfortable and warm hoodie for casual wear.",
+    "price": 59,
+    "countInStock": 18,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/c1/4e/c5/c14ec52cb1fae6a66e1e0db8804cfb56.jpg",
+        "color": "gray"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-7",
+    "brand": "Brand G",
+    "category": "shirts",
+    "description": "Premium quality shirt with modern design.",
+    "price": 99,
+    "countInStock": 22,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/ce/8f/98/ce8f98445c7e7ef35f6aa17a5de17c50.jpg",
+        "color": "pink"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-8",
+    "brand": "Brand H",
+    "category": "stickers",
+    "description": "Creative and fun stickers for all ages.",
+    "price": 9,
+    "countInStock": 50,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/ac/ba/10/acba1016262b93839596192f81a3b4b7.jpg",
+        "color": "yellow"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-9",
+    "brand": "Brand I",
+    "category": "jackets",
+    "description": "Stylish and durable jacket for cold weather.",
+    "price": 149,
+    "countInStock": 7,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/bf/da/d9/bfdad99d6bc9aaf8b03bdd84f3b30b4c.jpg",
+        "color": "brown"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-10",
+    "brand": "Brand J",
+    "category": "headwear",
+    "description": "Comfortable and stylish headwear.",
+    "price": 29,
+    "countInStock": 30,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/53/14/2b/53142b99d1158514048b78c0b5897862.jpg",
+        "color": "orange"
+      }
+    ],
+    "owner": "userId"
+  }
+]

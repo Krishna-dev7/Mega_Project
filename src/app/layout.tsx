@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/customUi/Header";
 import Footer from "@/components/customUi/Footer";
 import ThemeProvider from "@/components/customUi/ThemeProvider";
+import RootProvider from "@/components/customUi/RootProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,14 +31,18 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 w-screen antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-[#D6CABA] w-screen antialiased`}
       >
-        {/* Navbar */}
-        <Header />
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="dark" >
+          <RootProvider>
+            {/* Navbar */}
+            <Header />
+            {children}
 
-        {/* Footer Section */}
-        <Footer />
+            {/* Footer Section */}
+            <Footer />
+          </RootProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
