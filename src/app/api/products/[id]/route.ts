@@ -15,11 +15,12 @@ type paramType = {
 }
 
 const handler 
-  = async function(_:NextRequest, context:paramType) : Promise<NextResponse> {
+  = async function(req:NextRequest) : Promise<NextResponse> {
     try {  
       // get only single product
 
-      const {id} = await context.params;
+      const {searchParams} = new URL(req.url)
+      const id = searchParams.get('id');
 
       if(!id) {
         return NextResponse.json({

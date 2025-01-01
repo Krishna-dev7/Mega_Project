@@ -22,7 +22,7 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
   return (
     <Card
       onClick={() =>{
-        router.push(`${conf.url}/products/${product._id?.toString()}`)
+        router.push(`${conf.url}/products?id=${product._id?.toString()}`)
         dispatch(selectProduct(product._id))
       }}
       className={`rounded-lg p-4 sm:p-2 bg-gray-800
