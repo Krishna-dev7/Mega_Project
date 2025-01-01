@@ -36,6 +36,7 @@ import { useToast } from "@/hooks/use-toast";
 import conf from "@/helpers/conf";
 import ApiResponse from "@/types/ApiResponse";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/toaster";
 
 function Register() {
 	const [isLoading, setIsLoading] =
@@ -112,6 +113,7 @@ function Register() {
 
 	return (
 		<div className="flex justify-center items-center w-full max-h-screen h-screen py-10 min-h-full lg:px-2 px-3 ">
+			<Toaster />
 			<div
 				className="lg:z-10 md:z-0 sm:z-0 w-full text-sm max-w-lg lg:shadow-lg
       lg:py-5 lg:px-10 rounded-lg">
@@ -142,7 +144,7 @@ function Register() {
 											<Input
 												{...field}
 												placeholder="Enter your username"
-												className="pl-10 py-2.5 text-base border-gray-300 focus:ring-2 focus:ring-gray-500"
+												className="pl-10 py-2.5 text-base border-gray-800 focus:ring-2 focus:ring-gray-500  "
 											/>
 										</div>
 									</FormControl>
@@ -168,7 +170,7 @@ function Register() {
 											<Input
 												{...field}
 												placeholder="Enter your full name"
-												className="pl-10 py-2.5 text-base border-gray-300 focus:ring-2 focus:ring-gray-500"
+												className="pl-10 py-2.5 text-base border-gray-800 focus:ring-2 focus:ring-gray-500"
 											/>
 										</div>
 									</FormControl>
@@ -194,7 +196,7 @@ function Register() {
 											<Input
 												{...field}
 												placeholder="Enter your email"
-												className="pl-10 py-2.5 text-base border-gray-300 focus:ring-2 focus:ring-gray-500"
+												className="pl-10 py-2.5 text-base border-gray-800 focus:ring-2 focus:ring-gray-500"
 											/>
 										</div>
 									</FormControl>
@@ -221,7 +223,7 @@ function Register() {
 												{...field}
 												type="password"
 												placeholder="Enter your password"
-												className="pl-10 py-2.5 text-base border-gray-300 focus:ring-2 focus:ring-gray-500"
+												className="pl-10 py-2.5 text-base border-gray-800 focus:ring-2 focus:ring-gray-500"
 											/>
 										</div>
 									</FormControl>
@@ -244,7 +246,7 @@ function Register() {
 												field.onChange(value)
 											}
 											defaultValue={field.value}>
-											<SelectTrigger className="w-full pl-3 py-2.5 text-base">
+											<SelectTrigger className="w-full border-gray-800 pl-3 py-2.5 text-base">
 												<SelectValue placeholder="Select Role" />
 											</SelectTrigger>
 											<SelectContent>

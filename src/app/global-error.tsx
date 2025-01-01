@@ -17,7 +17,7 @@ const GlobalError: React.FC<props> = ({
 
   return <html>
     <body>
-      <div className="flex items-center justify-center min-h-screen bg-neutral-50">
+      <div className="flex items-center justify-center min-h-screen bg-transparent">
         <div className="text-center space-y-6 max-w-md px-4">
           <h1 className="text-4xl font-bold text-gray-800">
             Oops! Something went wrong

@@ -3,8 +3,8 @@ import mongoose, {
 	CallbackWithoutResultAndOptionalError, 
 	Schema } from "mongoose";
 
-import SellerProfile, {SellerProfileSchema} from "./sellerProfile.models";
-import UserProfile, { UserProfileSchema } from "./userProfile.models";
+import SellerProfile, {ISeller} from "./sellerProfile.models";
+import UserProfile, { IUserProfile } from "./userProfile.models";
 
 // interface to build perfect userSchema
 interface UserVerification {
@@ -73,36 +73,6 @@ userSchema.index({
 	email: 1,
 	username: 1
 })
-
-userSchema.pre('save',
-	async function(
-		this:UserSchema, 
-		next: CallbackWithoutResultAndOptionalError) {
-			try {
-
-				if(this.role == "seller") {
-					await SellerProfile.create<SellerProfileSchema>({
-						userId: this._id,
-						accountNumber: "",
-						totalProducts: 0,
-						totalRevenue: 0,
-						brandName: this.username
-					})
-				} else {
-					await UserProfile.create<UserProfileSchema>({
-						userId: this._id,
-						address: "",
-						totalSpent: 0
-						// add other necessary fields here
-					})
-				}
-
-			} catch (error:any) {
-				console.log("user models pre middleware error: " + error.message)
-				next(error);
-			}
-		}
-)
 
 const User = mongoose.models.User
 	 || mongoose.model<UserSchema>("User", userSchema);

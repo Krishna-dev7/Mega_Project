@@ -3,13 +3,13 @@ import mongoose, {
 	Types,
 	Document } from "mongoose";
 
-interface UserProfileSchema extends Document {
+interface IUserProfile extends Document {
 	userId: Types.ObjectId;
 	address: string;
 	totalSpent: number;
 }
 
-const userProfileSchema = new Schema<UserProfileSchema>({
+const userProfileSchema = new Schema<IUserProfile>({
 	userId: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
@@ -27,9 +27,9 @@ const userProfileSchema = new Schema<UserProfileSchema>({
 
 const UserProfile =
 	mongoose.models.UserProfile ||
-	mongoose.model<UserProfileSchema>("UserProfile", userProfileSchema);
+	mongoose.model<IUserProfile>("UserProfile", userProfileSchema);
 
 export default UserProfile;
 export type {
-	UserProfileSchema
+	IUserProfile
 }

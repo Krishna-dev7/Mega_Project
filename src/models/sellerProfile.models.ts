@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-interface SellerProfileSchema extends Document  {
+interface ISeller extends Document  {
 	userId: Types.ObjectId;
 	accountNumber: string;
 	totalProducts: number;
@@ -8,7 +8,7 @@ interface SellerProfileSchema extends Document  {
 	brandName: string;
 }
 
-const sellerProfileSchema = new Schema<SellerProfileSchema>(
+const sellerProfileSchema = new Schema<ISeller>(
 	{
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +17,6 @@ const sellerProfileSchema = new Schema<SellerProfileSchema>(
 		},
 		accountNumber: {
 			type: String,
-			required: true,
 		},
 		totalProducts: {
 			type: Number,
@@ -37,9 +36,9 @@ const sellerProfileSchema = new Schema<SellerProfileSchema>(
 
 const SellerProfile =
 	mongoose.models.SellerProfile ||
-	mongoose.model<SellerProfileSchema>("SellerProfile", sellerProfileSchema);
+	mongoose.model("SellerProfile", sellerProfileSchema);
 
 export default SellerProfile;
 export type {
-	SellerProfileSchema
+	ISeller
 }

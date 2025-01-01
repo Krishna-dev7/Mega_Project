@@ -5,6 +5,8 @@ import type { UserSchema } from "@/models/user.models";
 import bcrypt from "bcryptjs";
 import sendVerificationEmail from "@/helpers/sendVerificationEmail";
 import { enumProvider } from "@/models/user.models";
+import SellerProfile, { ISeller } from "@/models/sellerProfile.models";
+import UserProfile from "@/models/userProfile.models";
 
 await connectDB();
 
@@ -35,6 +37,7 @@ const handler = async (req: NextRequest) => {
 		// generate otp
 		const verifyCode = Math.floor(Math.random() * 9000 + 1000);
 		const verifyCodeExpiry = new Date(Date.now() + 3600 * 24 * 60);
+		let user = null;
 
 		if (userExistByEmail) {
 			if (userExistByEmail.isVerified) {
@@ -54,7 +57,7 @@ const handler = async (req: NextRequest) => {
 			}
 		} else {
 			const hashedPassword = await bcrypt.hash(password, 10);
-			await User.create({
+			user = await User.create({
 				username,
 				email,
 				password: hashedPassword,
@@ -66,6 +69,25 @@ const handler = async (req: NextRequest) => {
 				verifyCode,
 				verifyCodeExpiry
 			});
+		}
+
+		// create seller or user profile based on their role
+		if(user) {
+			if(user.role == "seller") {
+				await SellerProfile.create<ISeller>({
+					userId: user._id,
+					accountNumber: "",
+					totalProducts: 0,
+					totalRevenue: 0,
+					brandName: "Addidas"
+				})
+			} else {
+				await UserProfile.create({
+					userId: user._id,
+					address: "",
+					totalSpent: 0
+				})
+			}
 		}
 
 		// send verification email

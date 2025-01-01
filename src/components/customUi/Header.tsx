@@ -58,7 +58,7 @@ const Header = () => {
               </div>
 
               {/* Right Icons */}
-              <div className="flex items-center justify-end sm:flex-1 lg:flex-grow-0 gap-4 px-6">
+              <div className="flex items-end sm:items-center justify-end flex-1 sm:flex-grow-0 gap-4 px-6">
                 <button className="hidden md:flex text-gray-700 hover:text-gray-900 transition-colors">
                   <Search className="w-4 h-4" />
                 </button>

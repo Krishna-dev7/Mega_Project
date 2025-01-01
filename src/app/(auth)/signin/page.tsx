@@ -138,7 +138,7 @@ const LoginPage: React.FC = () => {
               <FormItem className="mb-3" >
                 <FormLabel >Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="demo@gmail.com" {...field} />
+                  <Input className="border border-black" placeholder="demo@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,6 +155,7 @@ const LoginPage: React.FC = () => {
                   <div className="relative">
                     <Input
                       {...field}
+                      className="border border-black"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       required
@@ -212,8 +213,8 @@ const LoginPage: React.FC = () => {
         <p className="text-sm text-gray-600">New customer?</p>
         <Link
           href={`/signup`}
-          className="text-sm text-center py-5 font-semibold text-gray-800 hover:underline" >
-          Create your Account <User className="inline" size={20} />
+          className="text-sm text-pretty flex items-center justify-center py-5 font-semibold text-gray-800 hover:underline" >
+          Create your Account
         </Link>
       </div>
     </div>
