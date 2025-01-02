@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet"
 import InteractiveHoverButton from "../ui/interactive-hover-button";
 import ShinyButton from "../ui/shiny-button";
+import CartItem from "./CartItem";
 // import { useAppSelector, useAppDispatch } from "@/store/store";
 
 const Header = () => {
@@ -75,9 +76,20 @@ const Header = () => {
                   <Search className="w-4 h-4" />
                 </button>
                 
-                <button className="text-gray-700 hover:text-gray-900 transition-colors">
-                  <User className="w-4 h-4" />
-                </button>
+                {/* user icon  */}
+
+                <Sheet>
+                  <SheetTrigger>
+                    <button className="text-gray-700 hover:text-gray-900 transition-colors">
+                      <User className="w-4 h-4" />
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetTitle> Hello 🖖 </SheetTitle>
+                    <SheetHeader></SheetHeader>
+                    <SheetFooter></SheetFooter>
+                  </SheetContent>
+                </Sheet>
                 
                 <div className="relative flex items-center text-gray-700 hover:text-gray-900 transition-colors">
                  <Sheet >
@@ -87,25 +99,80 @@ const Header = () => {
                       0
                     </span>
                   </SheetTrigger>
-                  <SheetContent className="text-sm " >
+                  {/* <SheetContent className="text-sm " >
                     <SheetTitle  >Your Cart 👋</SheetTitle>
                     <SheetHeader 
                       className="text-sm text-start mt-1 mb-4 text-gray-400" >
                       Cart details
                     </SheetHeader>
 
-                    <div>
-                      <h1>Cart 1</h1>
-                    </div>
+                   <div>
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                    <CartItem />
+                   </div>
 
                     <SheetFooter className="border-t w-full sm:flex flex-col-reverse items-center gap-2
                      text-pretty justify-evenly  flex-nowrap text-sm border-gray-500 py-5 mt-5" >
                       <p>Total Cost : <span className="text-yellow-300 " >$450</span> </p>
-                      <ShinyButton className="text-sm " > 
+                      <ShinyButton className=" " > 
                         <span className="text-sm text-[.6rem] text-fuchsia-400" >Checkout</span> 
                       </ShinyButton> 
                     </SheetFooter>
+                  </SheetContent> */}
+
+                  <SheetContent className="text-sm">
+                    <SheetTitle>Your Cart 👋</SheetTitle>
+                    <SheetHeader className="text-sm text-start mt-1 mb-4 text-gray-400">
+                      Cart details
+                    </SheetHeader>
+
+                    {/* Scrollable Cart Item Container */}
+                    <div
+                      className="max-h-96 overflow-y-auto space-y-4 px-2"
+                      style={{
+                        scrollbarWidth: "none", // For Firefox
+                        msOverflowStyle: "none", // For IE and Edge
+                      }}
+                    >
+                      <style jsx>{`
+                        /* For Webkit Browsers (Chrome, Safari, etc.) */
+                        div::-webkit-scrollbar {
+                          display: none;
+                        }
+                      `}</style>
+                      {Array.from({ length: 10 }).map((_, index) => (
+                        <CartItem key={index} />
+                      ))}
+                    </div>
+
+                    {/* Footer */}
+                    <SheetFooter
+                      className="border-t w-full sm:flex flex-col-reverse items-center gap-2
+                        text-pretty justify-evenly flex-nowrap text-sm border-gray-500 py-5 mt-5"
+                    >
+                      <p>
+                        Total Cost: <span className="text-yellow-300">$450</span>
+                      </p>
+                      <ShinyButton>
+                        <span className="text-xs text-fuchsia-400">Checkout</span>
+                      </ShinyButton>
+                    </SheetFooter>
                   </SheetContent>
+
                  </Sheet>
                 </div>
 

@@ -3,10 +3,20 @@ import mongoose, {
   Types,
   Document } from "mongoose";
 
+  export enum Size {
+    XS = "Extra Small",
+    S = "Small",
+    M = "Medium",
+    L = "Large",
+    XL = "Extra Large",
+    XXL = "Double Extra Large"
+  }
+
 interface ICart extends Document {
   userId: Types.ObjectId;
   product: Types.ObjectId,
-  quantity: number;
+  quantity: number,
+  productSize: Size
 };
 
 
@@ -21,6 +31,11 @@ const cartSchema = new Schema<ICart>({
     ref: "Product",
     required: true
   },
+  productSize: {
+    type: String,
+    enum: Object.values(Size),
+    default: Size.L
+  },
   quantity: {
     type: Number,
     required: true,
@@ -34,3 +49,6 @@ const Cart = mongoose.models.Cart
 
 
 export default Cart;
+export type  {
+  ICart
+}

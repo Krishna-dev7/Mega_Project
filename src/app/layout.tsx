@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} selection:text-black
-         selection:bg-pink-300 bg-[#D6CABA] w-screen antialiased`}
+         selection:bg-pink-300 text-xs bg-[#D6CABA] w-screen antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" >
           <RootProvider>

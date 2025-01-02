@@ -128,15 +128,15 @@ const ProductDetail: React.FC = () => {
 
   function Review() {
     return <div className="reviews flex sm:flex-row flex-col-reverse justify-center text-center w-full 
-    max-w-7xl py-10  sm:border dark:border-gray-400 border border-black rounded-lg
-     shadow-md mx-auto px-2 sm:px-6 lg:px-2">
+    max-w-7xl py-10 text-[.8rem]  sm:border dark:border-gray-400 border border-black rounded-lg
+     shadow-md mx-auto px-2 sm:px-6 mt-10 lg:px-2">
     
       <div className="left sm:w-2/3 w-full h-full items-center  px-2  ">
         <h1 className="text-xl my-2 mb-4" >Reviews</h1>
 
         {product && dummyReviews.map((review, idx) => (
           <div key={idx} className="review p-4 mx-auto w-full mb-2 dark:border-gray-500 border sm:m-3 rounded-md">
-            <div className="profile mb-4 bg-purple-400 dark:text-black text-sm rounded-sm w-fit px-5 py-2 border border-black flex items-center gap-1" >
+            <div className="profile mb-4 dark:text-gray-300 text-sm rounded-sm w-fit py-2 border border-black flex items-center gap-1" >
               <Avatar>
                 <AvatarImage
                   className="w-6 h-6 rounded-full"
@@ -151,7 +151,7 @@ const ProductDetail: React.FC = () => {
             <p className="flex items-center gap-1 my-2">
               {new Array(review.rating).fill(0).map((item, idx) => (
                 <Star 
-                  className="dark:fill-green-400 dark:text-green-400"
+                  className="dark:fill-gray-300 dark:text-gray-400"
                   key={idx} 
                   fill={idx < review.rating ? "black" : ""} 
                    size={14} />
@@ -185,9 +185,9 @@ const ProductDetail: React.FC = () => {
 
   return (
     product && <div className="min-h-screen dark:bg-[#121212] px-1 pt-24">
-      <ShineBorder
-        color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-        className="max-w-7xl sm:text-sm text-[.7rem] sm:border dark:border-gray-400 border-black rounded-lg shadow-md
+      <div
+        
+        className="max-w-7xl sm:text-sm text-xs sm:border dark:border-gray-400 border-black rounded-lg shadow-md
          mx-auto px-4 sm:px-6 lg:px-8">
 
       {/* <DotPattern
@@ -229,8 +229,8 @@ const ProductDetail: React.FC = () => {
                       onClick={() => setActiveImage(image.url)}
                       className={`flex-shrink-0 sm:w-20 sm:h-20 w-14 h-14 rounded-lg
                        overflow-hidden transition-all duration-200 ${activeImage === image.url
-                          ? 'ring-2 ring-blue-500 ring-offset-2'
-                          : 'ring-1 ring-gray-200'
+                          ? 'ring-2 ring-gray-300'
+                          : ''
                         }`}
                     >
                       <img
@@ -267,7 +267,7 @@ const ProductDetail: React.FC = () => {
                   </BadgeComponent>
 
                   <div className="flex items-center gap-5" >
-                    <p className="flex items-center border-r " >
+                    <p className="flex items-center  " >
                       {(new Array(5)).fill(0).map((item, idx) => (
                         <Star
                           className=" dark:text-gray-400 text-black my-3"
@@ -298,11 +298,11 @@ const ProductDetail: React.FC = () => {
                         
                <div className="flex gap-3">
                 <ShinyButton >
-                  <span  className="text-sm text-yellow-400 text-[.6rem]">Purchase</span>
+                  <span  className="text-[.6rem] text-yellow-400 ">Purchase</span>
                 </ShinyButton>
 
                 <ShinyButton className="bg-gray-300" >
-                  <span  className="text-sm  text-black text-[.6rem]">Add To Cart</span>
+                  <span  className="text-[.6rem]  text-black">Add To Cart</span>
                 </ShinyButton>
                </div>
                 {/* <Button className="w-20 border-none px-12 py-5 bg-pink-400 hover:bg-pink-400 rounded-sm
@@ -314,7 +314,7 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
         </div>
-      </ShineBorder>
+      </div>
 
       {/* Product description and Review */}
      

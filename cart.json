@@ -1,0 +1,20 @@
+[
+  {
+    "userId": "6773b3f02734dfbf89b5e812",
+    "product": "507f191e810c19729de860ea",
+    "productSize": "M",
+    "quantity": 2
+  },
+  {
+    "userId": "6773b3f02734dfbf89b5e812",
+    "product": "5f2a1a1c30d4700148f1b2c3",
+    "productSize": "L",
+    "quantity": 1
+  },
+  {
+    "userId": "6773b3f02734dfbf89b5e812",
+    "product": "6a7b8c9d1234567890abcdef",
+    "productSize": "XL",
+    "quantity": 3
+  }
+]

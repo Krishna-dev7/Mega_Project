@@ -135,7 +135,9 @@ const BadgeComponent: React.FC<props> = ({
 
   return (
     <Badge className={badgeClasses}>
-      <Circle className={`inline-block fill-${baseColors.textColor} dark:fill-${baseColors.darkTextColor}`} size={8} /> {children}
+      {/* <Circle className={`inline-block fill-${baseColors.textColor}
+       dark:fill-${baseColors.darkTextColor}`} size={8} /> {children} */}
+       ✨&nbsp;{children}
     </Badge>
   );
 }

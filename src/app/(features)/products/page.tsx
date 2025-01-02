@@ -76,21 +76,22 @@ const ProductPage = () => {
 
   const HorizontalFilters = () => (
     <div className="relative mt-14">
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-300/10 
-      to-transparent blur-xl dark:from-orange-500/10"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-300/10 
+      to-transparent blur-xl dark:from-gray-300/10"></div>
       <div className="relative flex flex-wrap items-center gap-4 p-4 bg-transparent
-       dark:bg-black/40 backdrop-blur-xl rounded-xl border border-gray-300 dark:border-orange-500/20">
+       dark:bg-black/40 backdrop-blur-xl rounded-xl border border-gray-300 dark:border-gray-300/20">
         <Popover>
           <PopoverTrigger asChild>
             <Button 
               variant="outline" 
-              className="border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-orange-500/30 dark:text-orange-500 dark:hover:bg-orange-500/10 dark:hover:border-orange-500/50"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100 
+              dark:border-gray-300/30 dark:text-gray-300 dark:hover:bg-gray-300/10 dark:hover:border-gray-500/50"
             >
               Categories
               <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-64 p-4 dark:bg-black/90 backdrop-blur-xl border-gray-300 dark:border-orange-500/20">
+          <PopoverContent className="w-64 p-4 dark:bg-black/90 backdrop-blur-xl border-gray-300 dark:border-gray-300/30 dark:text-gray-300">
             <div className="space-y-2">
               {categories.map((category) => (
                 <div key={category} className="flex items-center">
@@ -103,7 +104,8 @@ const ProductPage = () => {
                       })
                     }
                     checked={selectedCategories.includes(category)}
-                    className="mr-2 border-gray-300 dark:border-orange-500/50 data-[state=checked]:bg-orange-300 dark:data-[state=checked]:bg-orange-500"
+                    className="mr-2 border-gray-300 dark:border-gray-300/50
+                     data-[state=checked]:bg-gray-300 dark:data-[state=checked]:bg-gray-300"
                   />
                   <span className="text-sm text-gray-700 dark:text-orange-50">{category}</span>
                 </div>
@@ -116,13 +118,14 @@ const ProductPage = () => {
           <PopoverTrigger asChild>
             <Button 
               variant="outline" 
-              className="border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-orange-500/30 dark:text-orange-500 dark:hover:bg-orange-500/10 dark:hover:border-orange-500/50"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-300/30 dark:text-gray-300 dark:hover:bg-orange-500/10 dark:hover:border-gray-300/50"
             >
               Price Range
               <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-64 p-4 bg-yellow-400 dark:bg-black/90 backdrop-blur-xl border-gray-300 dark:border-orange-500/20">
+          <PopoverContent className="w-64 p-4  dark:bg-black/90 backdrop-blur-xl
+           border-gray-300 dark:border-gray-300/30 dark:text-gray-300">
             <Slider
               defaultValue={[0, 5000]}
               max={5000}
@@ -140,7 +143,9 @@ const ProductPage = () => {
         <Select
           onValueChange={(value) => setSortBy(value)}
           defaultValue={sortBy}>
-          <SelectTrigger className="w-40 bg-white dark:bg-black/40 border-gray-300 text-gray-700 dark:border-orange-500/30 dark:text-orange-50 hover:border-gray-400 dark:hover:border-orange-500/50">
+          <SelectTrigger className="w-40 bg-white dark:bg-black/40 border-gray-300
+           text-gray-700 dark:border-gray-300/30 dark:text-gray-300 hover:border-gray-400
+            dark:hover:border-gray-300/50">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
           <SelectContent className="bg-white dark:bg-black/90 backdrop-blur-xl border-gray-300 dark:border-orange-500/20">
@@ -156,8 +161,8 @@ const ProductPage = () => {
               <Badge
                 key={category}
                 className="px-2 py-1 bg-gray-200 text-gray-700 border border-gray-300 flex 
-                items-center gap-1 hover:bg-gray-300 dark:bg-orange-500/10 dark:text-orange-500 
-                dark:border-orange-500/30 dark:hover:bg-orange-500/20 cursor-pointer"
+                items-center gap-1 hover:bg-gray-300 dark:bg-orange-500/10 dark:text-gray-300 
+                dark:border-gray-300/30 dark:hover:bg-gray-300/20 cursor-pointer"
                 onClick={() => setSelectedCategories(prev => prev.filter(c => c !== category))}
               >
                 {category}

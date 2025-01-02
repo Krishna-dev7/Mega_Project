@@ -40,9 +40,9 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
           />
         </div>
       </CardHeader>
-      <CardContent className="flex flex-row lg:py-2 mt-5 items-start justify-between py-2 p-4">
+      <CardContent className="flex flex-row text-sm lg:py-2 mt-5 items-start justify-between py-2 p-4">
        
-        <p className="text-xl flex  font-bold dark:text-gray-100">
+        <p className="text-lg flex  font-bold dark:text-gray-100">
             ${product.price}
             <span className="px-3">
               <BadgeComponent category={product.category}>
@@ -50,7 +50,7 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
               </BadgeComponent>
             </span>
           </p>
-          <h2 className="dark:text-white text-ellipsis overflow-hidden " >{product.slug}</h2>
+          <h2 className="dark:text-white text-ellipsis overflow-hidden  text-sm line-clamp-1 " >{product.slug}</h2>
         {/* <div className="text-center">
           <Link href={`${conf.url}/api/products/${product._id?.toString()}`} passHref>
             <Button className="w-full text-sm md:py-3 border-none sm-py-1 lg:py-3 bg-yellow-500
