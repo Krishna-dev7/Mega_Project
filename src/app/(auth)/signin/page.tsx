@@ -22,6 +22,7 @@ import conf from "@/helpers/conf";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Ripple from "@/components/ui/ripple";
 
 
 const LoginPage: React.FC = () => {
@@ -119,11 +120,11 @@ const LoginPage: React.FC = () => {
 
 
   return <div
-    className=" flex flex-col text-black items-center justify-center h-screen  ">
+    className=" dark:bg-[#121212] flex flex-col text-black items-center justify-center h-screen  ">
     <Toaster /> 
 
-    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md  p-8 lg:shadow-lg rounded-lg">
-      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md border border-gray-400 dark:text-white p-8 lg:shadow-lg rounded-lg">
+      <h2 className="text-2xl  font-semibold text-center dark:text-gray-400 text-gray-800 mb-6">
         Welcome Back
       </h2>
 
@@ -138,7 +139,7 @@ const LoginPage: React.FC = () => {
               <FormItem className="mb-3" >
                 <FormLabel >Email</FormLabel>
                 <FormControl>
-                  <Input className="border border-black" placeholder="demo@gmail.com" {...field} />
+                  <Input className="border dark:border-gray-400 border-black" placeholder="demo@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,7 +156,7 @@ const LoginPage: React.FC = () => {
                   <div className="relative">
                     <Input
                       {...field}
-                      className="border border-black"
+                      className="border dark:border-gray-400 border-black"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       required

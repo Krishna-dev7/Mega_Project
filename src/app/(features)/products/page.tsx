@@ -29,6 +29,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/store/store";
 import { setProducts as dispatchProducts } from "@/store/productSlice";
+import GridPattern from "@/components/ui/grid-pattern";
+import { cn } from "@/lib/utils";
 
 const ProductPage = () => {
   // const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -170,6 +172,7 @@ const ProductPage = () => {
 
   return (
     <main className="min-h-screen  dark:bg-[#121212]">
+      
       <div className="container mx-auto px-4 py-6 ">
         <HorizontalFilters />
 

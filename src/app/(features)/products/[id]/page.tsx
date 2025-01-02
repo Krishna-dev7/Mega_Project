@@ -11,6 +11,12 @@ import badgeConfig from "@/helpers/badgeConfig";
 import { UserSchema } from "@/models/user.models";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Progress } from "@/components/ui/progress";
+import ShineBorder from "@/components/ui/shine-border";
+import InteractiveHoverButton from "@/components/ui/interactive-hover-button";
+import GridPattern from "@/components/ui/grid-pattern";
+import { cn } from "@/lib/utils";
+import ShinyButton from "@/components/ui/shiny-button";
+import DotPattern from "@/components/ui/dot-pattern";
 
 type customType = {
   owner: UserSchema
@@ -81,8 +87,9 @@ const ProductDetail: React.FC = () => {
   };
 
   function Description() {
-    return <div
-      className="max-w-7xl py-10  mt-10 sm:border dark:border-gray-400 border-black rounded-lg
+    return <ShineBorder
+    color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+      className="max-w-7xl py-10 w-full mt-10 sm:border dark:border-gray-400 border-black rounded-lg
         shadow-md mx-auto px-4 sm:px-6 lg:px-8 " >
       <div className="description w-full h-full ">
         <div className="profile w-fit px-4 py-2 dark:text-black bg-green-300 flex
@@ -115,14 +122,15 @@ const ProductDetail: React.FC = () => {
           {product?.description}
         </div>
       </div>
-    </div>
+    </ShineBorder>
 
   }
 
   function Review() {
     return <div className="reviews flex sm:flex-row flex-col-reverse justify-center text-center w-full 
-    max-w-7xl py-10 my-20 sm:border dark:border-gray-400 border border-black rounded-lg
+    max-w-7xl py-10  sm:border dark:border-gray-400 border border-black rounded-lg
      shadow-md mx-auto px-2 sm:px-6 lg:px-2">
+    
       <div className="left sm:w-2/3 w-full h-full items-center  px-2  ">
         <h1 className="text-xl my-2 mb-4" >Reviews</h1>
 
@@ -176,10 +184,18 @@ const ProductDetail: React.FC = () => {
 
 
   return (
-    product && <div className="min-h-screen dark:bg-[#121212] pt-24">
-      <div
-        className="max-w-7xl sm:border dark:border-gray-400 border-black rounded-lg shadow-md
+    product && <div className="min-h-screen dark:bg-[#121212] px-1 pt-24">
+      <ShineBorder
+        color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+        className="max-w-7xl sm:text-sm text-[.7rem] sm:border dark:border-gray-400 border-black rounded-lg shadow-md
          mx-auto px-4 sm:px-6 lg:px-8">
+
+      {/* <DotPattern
+        className={cn(
+          "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
+        )}
+      /> */}
+
         <div className="  overflow-hidden">
           <div className="flex flex-col lg:flex-row">
             {/* Image Section */}
@@ -211,7 +227,7 @@ const ProductDetail: React.FC = () => {
                     <button
                       key={index}
                       onClick={() => setActiveImage(image.url)}
-                      className={`flex-shrink-0 w-20 h-20 rounded-lg
+                      className={`flex-shrink-0 sm:w-20 sm:h-20 w-14 h-14 rounded-lg
                        overflow-hidden transition-all duration-200 ${activeImage === image.url
                           ? 'ring-2 ring-blue-500 ring-offset-2'
                           : 'ring-1 ring-gray-200'
@@ -240,7 +256,7 @@ const ProductDetail: React.FC = () => {
             <div className="lg:w-3/4 p-6 lg:p-8 ">
               <div className="space-y-6  sm:px-10 ">
                 <div className="space-y-2">
-                  <h1 className="text-3xl mb-4" >
+                  <h1 className="sm:text-2xl text-lg  mb-4" >
                     <span className="uppercase mb-4 block" >{product.slug}</span>
                     ${product?.price}
                   </h1>
@@ -250,48 +266,55 @@ const ProductDetail: React.FC = () => {
                     {product?.category}
                   </BadgeComponent>
 
-                  <p className="flex items-center" >
-                    {(new Array(5)).fill(0).map((item, idx) => (
-                      <Star
-                        className=" dark:text-green-400 text-black my-3"
-                        key={idx}
-                        fill={idx < (product?.rating ?? 0) ? "black" : "transparent"}
-                        size={16} />
-                    ))}
-                  </p>
+                  <div className="flex items-center gap-5" >
+                    <p className="flex items-center border-r " >
+                      {(new Array(5)).fill(0).map((item, idx) => (
+                        <Star
+                          className=" dark:text-gray-400 text-black my-3"
+                          key={idx}
+                          fill={idx < (product?.rating ?? 0) ? "black" : "transparent"}
+                          size={14} />
+                      ))}
+                    </p>
 
-                  <div className="profile flex items-center gap-1" >
-                    <Avatar>
-                      <AvatarImage
-                        className="w-6 h-6 rounded-full"
-                        src={product.owner?.avatar
-                          || "https://i.pinimg.com/736x/7d/9f/7b/7d9f7b3a201aa53213edad9e56b7fb1e.jpg"} />
-                      <AvatarFallback about="av" />
-                    </Avatar>
+                    <div className="profile flex border-l border-yellow-400 px-5 items-center gap-1" >
+                      <Avatar>
+                        <AvatarImage
+                          className="w-6 h-6 rounded-full"
+                          src={product.owner?.avatar
+                            || "https://i.pinimg.com/736x/7d/9f/7b/7d9f7b3a201aa53213edad9e56b7fb1e.jpg"} />
+                        <AvatarFallback about="av" />
+                      </Avatar>
 
-                    <span>{product.owner?.username || "Random"}</span>
+                      <span>{product.owner?.username || "Random"}</span>
+                    </div>
                   </div>
                 </div>
 
 
-                <div>
-
-                </div>
-
                 <p className="dark:text-gray-400 text-black text-ellipsis line-clamp-3 leading-relaxed">
                   {product?.description}
                 </p>
+                        
+               <div className="flex gap-3">
+                <ShinyButton >
+                  <span  className="text-sm text-yellow-400 text-[.6rem]">Purchase</span>
+                </ShinyButton>
 
-                <Button className="w-20 border-none px-12 py-5 bg-pink-400 hover:bg-pink-400 rounded-sm
+                <ShinyButton className="bg-gray-300" >
+                  <span  className="text-sm  text-black text-[.6rem]">Add To Cart</span>
+                </ShinyButton>
+               </div>
+                {/* <Button className="w-20 border-none px-12 py-5 bg-pink-400 hover:bg-pink-400 rounded-sm
                  text-sm md:py-3 sm-py-1 lg:py-3  text-gray-900 border-2 dark:bg-gradient-to-r
                   dark:from-orange-400 dark:to-orange-600  duration-300 hover:text-black ">
                   Buy Now
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ShineBorder>
 
       {/* Product description and Review */}
      

@@ -4,6 +4,18 @@ import { User, ShoppingCart, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import navItems from "@/helpers/navConfig";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import InteractiveHoverButton from "../ui/interactive-hover-button";
+import ShinyButton from "../ui/shiny-button";
 // import { useAppSelector, useAppDispatch } from "@/store/store";
 
 const Header = () => {
@@ -58,7 +70,7 @@ const Header = () => {
               </div>
 
               {/* Right Icons */}
-              <div className="flex items-end sm:items-center justify-end flex-1 sm:flex-grow-0 gap-4 px-6">
+              <div className="flex  items-center justify-end flex-1 sm:flex-grow-0 gap-4 px-6">
                 <button className="hidden md:flex text-gray-700 hover:text-gray-900 transition-colors">
                   <Search className="w-4 h-4" />
                 </button>
@@ -67,12 +79,35 @@ const Header = () => {
                   <User className="w-4 h-4" />
                 </button>
                 
-                <button className="relative text-gray-700 hover:text-gray-900 transition-colors">
-                  <ShoppingCart className="w-4 h-4" />
-                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-3.5 h-3.5 flex items-center justify-center">
-                    0
-                  </span>
-                </button>
+                <div className="relative flex items-center text-gray-700 hover:text-gray-900 transition-colors">
+                 <Sheet >
+                  <SheetTrigger>
+                    <ShoppingCart className="w-4 h-4" />
+                    <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-3.5 h-3.5 flex items-center justify-center">
+                      0
+                    </span>
+                  </SheetTrigger>
+                  <SheetContent className="text-sm " >
+                    <SheetTitle  >Your Cart 👋</SheetTitle>
+                    <SheetHeader 
+                      className="text-sm text-start mt-1 mb-4 text-gray-400" >
+                      Cart details
+                    </SheetHeader>
+
+                    <div>
+                      <h1>Cart 1</h1>
+                    </div>
+
+                    <SheetFooter className="border-t w-full sm:flex flex-col-reverse items-center gap-2
+                     text-pretty justify-evenly  flex-nowrap text-sm border-gray-500 py-5 mt-5" >
+                      <p>Total Cost : <span className="text-yellow-300 " >$450</span> </p>
+                      <ShinyButton className="text-sm " > 
+                        <span className="text-sm text-[.6rem] text-fuchsia-400" >Checkout</span> 
+                      </ShinyButton> 
+                    </SheetFooter>
+                  </SheetContent>
+                 </Sheet>
+                </div>
 
                 {/* Mobile Menu Button */}
                 <button 

@@ -77,7 +77,7 @@ const productSchema = new Schema<IProduct>({
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "Seller",
+    ref: "User",
   },
 }, {timestamps: true});
 
