@@ -3,20 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import conf from "@/helpers/conf";
-import { Categories, IProduct } from "@/models/product.models";
-import { ChevronLeft, ChevronRight, Circle, Star, StarIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { IProduct } from "@/models/product.models";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import BadgeComponent from "@/components/customUi/Badge";
-import badgeConfig from "@/helpers/badgeConfig";
 import { UserSchema } from "@/models/user.models";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Progress } from "@/components/ui/progress";
 import ShineBorder from "@/components/ui/shine-border";
-import InteractiveHoverButton from "@/components/ui/interactive-hover-button";
-import GridPattern from "@/components/ui/grid-pattern";
-import { cn } from "@/lib/utils";
 import ShinyButton from "@/components/ui/shiny-button";
-import DotPattern from "@/components/ui/dot-pattern";
+
 
 type customType = {
   owner: UserSchema
@@ -128,7 +123,7 @@ const ProductDetail: React.FC = () => {
 
   function Review() {
     return <div className="reviews flex sm:flex-row flex-col-reverse justify-center text-center w-full 
-    max-w-7xl py-10 text-[.8rem]  sm:border dark:border-gray-400 border border-black rounded-lg
+    max-w-7xl py-10 text-[.8rem] sm:border dark:border-gray-400 border border-black rounded-lg
      shadow-md mx-auto px-2 sm:px-6 mt-10 lg:px-2">
     
       <div className="left sm:w-2/3 w-full h-full items-center  px-2  ">

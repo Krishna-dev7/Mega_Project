@@ -65,6 +65,8 @@ const authOptions: NextAuthOptions = {
 				session.user.phoneNumber = token.phoneNumber;
 			}
 
+			console.log("Your bearer token ✨ ", token)
+
 			return session;
 		},
 

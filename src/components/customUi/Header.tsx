@@ -14,9 +14,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import InteractiveHoverButton from "../ui/interactive-hover-button";
 import ShinyButton from "../ui/shiny-button";
 import CartItem from "./CartItem";
+import Profile from "./Profile";
 // import { useAppSelector, useAppDispatch } from "@/store/store";
 
 const Header = () => {
@@ -84,10 +84,17 @@ const Header = () => {
                       <User className="w-4 h-4" />
                     </button>
                   </SheetTrigger>
-                  <SheetContent>
-                    <SheetTitle> Hello 🖖 </SheetTitle>
-                    <SheetHeader></SheetHeader>
-                    <SheetFooter></SheetFooter>
+                  <SheetContent className="h-full text-xs flex flex-col justify-between" >
+                    <SheetTitle> Hello Panda 🖖 </SheetTitle>
+                    <SheetHeader className="text-xs -mt-1 text-start text-gray-400 " >
+                      Your Detail
+                    </SheetHeader>
+
+                      <Profile />
+
+                    <SheetFooter className=" sm:text-smtext-pretty text-fuchsia-400" >
+                      <p className="mx-auto" >&copy;&nbsp;Built with love by Krishna & Suraj ❤️</p>
+                    </SheetFooter>
                   </SheetContent>
                 </Sheet>
                 
@@ -164,7 +171,7 @@ const Header = () => {
                       className="border-t w-full sm:flex flex-col-reverse items-center gap-2
                         text-pretty justify-evenly flex-nowrap text-sm border-gray-500 py-5 mt-5"
                     >
-                      <p>
+                      <p className="mx-auto" >
                         Total Cost: <span className="text-yellow-300">$450</span>
                       </p>
                       <ShinyButton>
