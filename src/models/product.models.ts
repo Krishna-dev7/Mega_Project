@@ -89,7 +89,7 @@ console.log("Product model", mongoose.models)
 
 const Product = mongoose.models?.Product 
   || mongoose.model("Product", productSchema);
-
+Product.init
 
 export default Product;
 export type {

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Eye, EyeOff, Github, User } from "lucide-react";
-import { signIn } from "next-auth/react";
+import { Eye, EyeOff, Github } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -22,14 +21,13 @@ import conf from "@/helpers/conf";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Ripple from "@/components/ui/ripple";
-
+import accountService from "@/services/AccountService";
 
 const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -45,11 +43,13 @@ const LoginPage: React.FC = () => {
     try {
 
       setIsLoading(true);
-      const res = await signIn('credentials', {
+      const res = await accountService.loginUser(data)
+
+      /*  await signIn('credentials', {
         redirect: false,
         email: data.email,
         password: data.password
-      })
+      }) */
 
       if (res?.error) {
         toast({
@@ -62,7 +62,7 @@ const LoginPage: React.FC = () => {
 
       toast({
         title: "Login Success",
-        description: res?.ok && "login successfully"
+        description: res?.success && "login successfully"
       });
 
       router.push(`/`)
@@ -86,9 +86,11 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const res = await signIn('github', {
+      const res = await accountService.githubLogin()
+
+      /* await signIn('github', {
         redirect: false
-      });
+      }); */
       console.log(res);
 
       if (res?.error) {
@@ -101,11 +103,12 @@ const LoginPage: React.FC = () => {
       }
 
       toast({
-        title: "Login Success",
-        description: res?.ok && "login successfully"
+        title: "Success 👋",
+        description: res?.success && "login successfully"
       })
       router.push(`/`);
       return null;
+      
     } catch (error: any) {
       console.log("some error has been occurred", error);
       toast({
@@ -120,12 +123,13 @@ const LoginPage: React.FC = () => {
 
 
   return <div
-    className=" dark:bg-[#121212] flex flex-col text-black items-center justify-center h-screen  ">
-    <Toaster /> 
+    className=" bg-[#F5EFFF] sm:text-sm  text-pretty flex flex-col 
+    text-black items-center justify-center h-screen py-4 px-2">
 
-    <div className=" lg:z-10 md:z-0 sm:z-0 w-full max-w-md border border-gray-400 dark:text-white p-8 lg:shadow-lg rounded-lg">
-      <h2 className="text-2xl  font-semibold text-center dark:text-gray-400 text-gray-800 mb-6">
-        Welcome Back
+    <div className=" w-full max-w-md border border-gray-400 
+    p-8 lg:shadow-md rounded-lg">
+      <h2 className="text-2xl  font-semibold text-center text-gray-800 mb-6">
+        Welcome Back 👋
       </h2>
 
       <Form {...form}>
@@ -139,7 +143,7 @@ const LoginPage: React.FC = () => {
               <FormItem className="mb-3" >
                 <FormLabel >Email</FormLabel>
                 <FormControl>
-                  <Input className="border dark:border-gray-400 border-black" placeholder="demo@gmail.com" {...field} />
+                  <Input className="border border-black" placeholder="demo@gmail.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,7 +160,7 @@ const LoginPage: React.FC = () => {
                   <div className="relative">
                     <Input
                       {...field}
-                      className="border dark:border-gray-400 border-black"
+                      className="borderborder-black"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       required
@@ -187,7 +191,7 @@ const LoginPage: React.FC = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-6 py-6"
+            className="w-full border border-gray-400 bg-transparent  mt-6 py-6"
           >
             {isLoading ? "Signing In..." : "Sign In"}
           </Button>
@@ -201,7 +205,7 @@ const LoginPage: React.FC = () => {
           onClick={e => githubSigin(e)}
           disabled={isLoading}
           variant="secondary"
-          className="w-full flex items-center justify-center gap-2"
+          className="w-full py-6 flex items-center justify-center gap-2"
         >
           <Github size={20} />
           GitHub

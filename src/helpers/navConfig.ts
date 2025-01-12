@@ -2,7 +2,7 @@ import conf from "./conf";
 
 const navItems = [{ 
 		slug: "Home", 
-		href: `${conf.url}/` 
+		href: `${conf.url}/`
 	},
 	{ 
 		slug: "Shop", 

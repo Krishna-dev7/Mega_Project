@@ -1,11 +1,9 @@
 import React from "react";
-import { Button } from "../ui/button";
 import { IProduct } from "@/models/product.models";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardContent } from "../ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import conf from "@/helpers/conf";
-import BadgeComponent from "./Badge";
+import BadgeComponent from "@/components/customUi/product/Badge";
 import { useAppDispatch } from "@/store/store";
 import { selectProduct } from "@/store/productSlice";
 

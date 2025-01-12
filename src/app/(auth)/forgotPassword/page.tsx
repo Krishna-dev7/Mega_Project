@@ -32,6 +32,8 @@ import Link from "next/link";
 import axios from "axios";
 import ApiResponse from "@/types/ApiResponse";
 import conf from "@/helpers/conf";
+import accountService from "@/services/AccountService";
+import ShinyButton from "@/components/ui/shiny-button";
 
 const ForgotPasswordPage: React.FC = () => {
 
@@ -54,10 +56,8 @@ const ForgotPasswordPage: React.FC = () => {
     try {
       setIsLoading(true);
       // console.log(data);
-      const res = await axios.postForm<ApiResponse>(
-        `${conf.url}/api/forgotPassword`,
-        data
-      )
+      const res 
+        = await accountService.forgotPassword(data);
 
       if (!res.data.success) {
         toast({
@@ -92,7 +92,6 @@ const ForgotPasswordPage: React.FC = () => {
 
   return <div
     className="flex bg-neutral-100 w-screen items-center justify-center min-h-screen bg-background" >
-    <Toaster />
 
     {/* Back Button */}
     <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
@@ -106,9 +105,9 @@ const ForgotPasswordPage: React.FC = () => {
     </div>
 
 
-    <Card className="w-full border-none shadow-sm bg-neutral-100 text-dark font-bold max-w-md">
+    <Card className="w-full border shadow-sm bg-neutral-100 text-gray-800 font-bold max-w-md">
       <CardHeader>
-        <CardTitle className="text-center text-2xl mb-3" >Forgot Password</CardTitle>
+        <CardTitle className="text-center text-2xl mb-3" >Forgot Password ⚡</CardTitle>
         <CardDescription
           className="text-sm text-center">
           Enter your email and new password to reset your password.
@@ -117,7 +116,9 @@ const ForgotPasswordPage: React.FC = () => {
 
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(submitForm)} >
+          <form 
+            className="space-y-6"
+            onSubmit={form.handleSubmit(submitForm)} >
             <FormField
               name="email"
               render={({ field }) => (
@@ -158,9 +159,11 @@ const ForgotPasswordPage: React.FC = () => {
               )}
             />
 
-            <Button type="submit" className="w-full" >
-              {isLoading ? "Changing..." : "Change"}
-            </Button>
+            <ShinyButton type="submit" className=" bg-gray-900  text-white py-3" >
+              <span className="text-sm capitalize">
+                {isLoading ? "Changing..." : "Change"}
+                </span>
+            </ShinyButton>
           </form>
         </Form>
       </CardContent>

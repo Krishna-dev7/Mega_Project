@@ -34,6 +34,7 @@ import {
   CardHeader, 
   CardTitle } from "@/components/ui/card";
 import conf from "@/helpers/conf";
+import ShinyButton from "@/components/ui/shiny-button";
 
 const VerifyPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -96,13 +97,13 @@ const VerifyPage: React.FC = () => {
       
       setIsResending(true)
       const res = await axios.get(
-        `${conf.url}/api/verify?email=${encodeURIComponent(email)}`
+        `${url}?email=${encodeURIComponent(email)}`
       )
 
       if(res.status < 400) {
         toast({
-          title: "success",
-          description: res.data.message || "request has been sent"
+          title: "success 🎊",
+          description: "otp has been sent"
         })
         return;
       }
@@ -119,7 +120,7 @@ const VerifyPage: React.FC = () => {
       const axiosError = error as AxiosError<ApiResponse>;
 
       toast({
-        title: "error",
+        title: "Error",
         variant: "destructive",
         description: axiosError?.response?.data.message || "resendOTP error"
       })
@@ -131,12 +132,11 @@ const VerifyPage: React.FC = () => {
   return (
     <div className="flex bg-neutral-100 w-screen items-center 
     justify-center min-h-screen bg-background">
-      <Toaster />
-      <Card className="w-full border-none shadow-sm bg-neutral-100
+      <Card className="w-full border border-gray-500 shadow-sm bg-neutral-100
        text-dark font-bold max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl">Verify Your Account</CardTitle>
-          <CardDescription className="text-sm text-dark">
+          <CardTitle className="text-2xl text-gray-700">Verify Your Account</CardTitle>
+          <CardDescription className="text-sm text-gray-700">
             Enter the 4-digit code sent to your email
           </CardDescription>
         </CardHeader>
@@ -156,9 +156,9 @@ const VerifyPage: React.FC = () => {
                       <InputOTP
                         maxLength={4}
                         {...field}
-                        className="mx-auto justify-center flex"
+                        className="mx-auto text-gray-800 justify-center flex"
                       >
-                        <InputOTPGroup className="justify-center">
+                        <InputOTPGroup className="justify-center text-gray-800">
                           <InputOTPSlot className="border-black" index={0} />
                           <InputOTPSlot className="border-black"  index={1} />
                           <InputOTPSlot className="border-black"  index={2} />
@@ -174,13 +174,15 @@ const VerifyPage: React.FC = () => {
                 )}
               />
 
-              <Button
+              <ShinyButton
                 type="submit"
-                className=" py-5 px-5 text-sm"
+                className={`bg-black py-3 ${!isSubmitting && "text-gray-700"} `} 
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Verifying..." : "Submit"}
-              </Button>
+                <span className={`text-gray-200 ${isSubmitting && "text-gray-400"} `} >
+                  {isSubmitting ? "Verifying..." : "Submit"}
+                  </span>
+              </ShinyButton>
 
               <button
                 onClick={resendOTP}

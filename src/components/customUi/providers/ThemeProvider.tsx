@@ -15,7 +15,8 @@ function ThemeProvider({ children, ...props }: any) {
     return <>{children}</>;
   }
 
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return <NextThemesProvider {...props}>
+    {children}</NextThemesProvider>;
 }
 
 export default ThemeProvider;

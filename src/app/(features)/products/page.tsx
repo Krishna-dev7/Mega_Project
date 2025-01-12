@@ -1,5 +1,4 @@
 "use client";
-
 import React, { 
   useState, 
   useEffect, useMemo } from "react";
@@ -24,13 +23,12 @@ import {
 import { Categories, IProduct } from "@/models/product.models";
 import axios from "axios";
 import conf from "@/helpers/conf";
-import ProductItem from "@/components/customUi/ProductItem";
+import ProductItem from "@/components/customUi/product/ProductItem";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/store/store";
 import { setProducts as dispatchProducts } from "@/store/productSlice";
-import GridPattern from "@/components/ui/grid-pattern";
-import { cn } from "@/lib/utils";
+
 
 const ProductPage = () => {
   // const [isSearchOpen, setIsSearchOpen] = useState(false);

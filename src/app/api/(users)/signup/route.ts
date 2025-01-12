@@ -72,22 +72,30 @@ const handler = async (req: NextRequest) => {
 		}
 
 		// create seller or user profile based on their role
-		if(user) {
-			if(user.role == "seller") {
-				await SellerProfile.create<ISeller>({
-					userId: user._id,
-					accountNumber: "",
-					totalProducts: 0,
-					totalRevenue: 0,
-					brandName: "Addidas"
-				})
-			} else {
-				await UserProfile.create({
-					userId: user._id,
-					address: "",
-					totalSpent: 0
-				})
+		try {
+			if(user) {
+				if(user.role == "seller") {
+					await SellerProfile.create<ISeller>({
+						userId: user._id,
+						accountNumber: "",
+						totalProducts: 0,
+						totalRevenue: 0,
+						brandName: "Addidas"
+					})
+				} else {
+					await UserProfile.create({
+						userId: user._id,
+						address: "",
+						totalSpent: 0
+					})
+				}
 			}
+		} catch (profileError) {
+			// If profile creation fails, delete the user
+			if (user) {
+				await User.findByIdAndDelete(user._id);
+			}
+			throw profileError;
 		}
 
 		// send verification email

@@ -88,13 +88,13 @@ const config: Config = {
   			},
   			shine: {
   				'0%': {
-  					'background-position': '0% 0%'
+  					backgroundPosition: '0% 0%'
   				},
   				'50%': {
-  					'background-position': '100% 100%'
+  					backgroundPosition: '100% 100%'
   				},
-  				to: {
-  					'background-position': '0% 0%'
+  				'100%': {
+  					backgroundPosition: '0% 0%'
   				}
   			},
   			ripple: {
@@ -104,44 +104,63 @@ const config: Config = {
   				'50%': {
   					transform: 'translate(-50%, -50%) scale(0.9)'
   				}
+  			},
+  			marquee: {
+  				from: {
+  					transform: 'translateX(0)'
+  				},
+  				to: {
+  					transform: 'translateX(calc(-100% - var(--gap)))'
+  				}
+  			},
+  			'marquee-vertical': {
+  				from: {
+  					transform: 'translateY(0)'
+  				},
+  				to: {
+  					transform: 'translateY(calc(-100% - var(--gap)))'
+  				}
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			shine: 'shine var(--duration) infinite linear',
-  			ripple: 'ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite'
+  			ripple: 'ripple var(--duration, 2s) ease calc(var(--i, 0) * 0.2s) infinite',
+  			marquee: 'marquee var(--duration) infinite linear',
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
   		}
   	}
   },
   plugins: [
     tailwindcssAnimate,
     addVariablesForColors,
-    function ({ matchUtilities, theme }:PluginAPI) {
+    function ({ matchUtilities, theme }: PluginAPI) {
       matchUtilities(
         {
           "bg-dot-thick": (value) => ({
             backgroundImage: `url("${svgToDataUri(
-              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="2.5"></circle></svg>`
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" cx="10" cy="10" r="2.5"></circle></svg>`
             )}")`,
           }),
         },
-        { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
+        {
+          values: flattenColorPalette(theme("backgroundColor")),
+          type: "color",
+        }
       );
     },
   ],
 };
 
-// This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
+// Plugin to add each Tailwind color as a global CSS variable
 function addVariablesForColors({ addBase, theme }: any) {
   const allColors = flattenColorPalette(theme("colors"));
   const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
   );
 
-  addBase({
-    ":root": newVars,
-  });
+  addBase({ ":root": newVars });
 }
 
 export default config;

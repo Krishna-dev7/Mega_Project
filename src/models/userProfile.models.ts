@@ -17,7 +17,7 @@ const userProfileSchema = new Schema<IUserProfile>({
 	},
 	address: {
 		type: String,
-		required: true,
+		default: ""
 	},
 	totalSpent: {
 		type: Number,

@@ -1,10 +1,6 @@
 import mongoose, { 
 	Document,
-	CallbackWithoutResultAndOptionalError, 
 	Schema } from "mongoose";
-
-import SellerProfile, {ISeller} from "./sellerProfile.models";
-import UserProfile, { IUserProfile } from "./userProfile.models";
 
 // interface to build perfect userSchema
 interface UserVerification {

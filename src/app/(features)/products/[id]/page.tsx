@@ -5,12 +5,17 @@ import axios from "axios";
 import conf from "@/helpers/conf";
 import { IProduct } from "@/models/product.models";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import BadgeComponent from "@/components/customUi/Badge";
+import BadgeComponent from "@/components/customUi/product/Badge";
 import { UserSchema } from "@/models/user.models";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Progress } from "@/components/ui/progress";
-import ShineBorder from "@/components/ui/shine-border";
 import ShinyButton from "@/components/ui/shiny-button";
+import Review from "@/components/customUi/product/Review";
+import Description from "@/components/customUi/product/Description";
+import cartService from "@/services/CartService";
+import { useSession } from "next-auth/react";
+import { useToast } from "@/hooks/use-toast";
+import { useAppDispatch } from "@/store/store";
+import { setCart } from "@/store/cartSlice";
 
 
 type customType = {
@@ -23,37 +28,17 @@ const ProductDetail: React.FC = () => {
   const [product, setProduct] = useState<ProductType>(null);
   const [activeImage, setActiveImage] = useState<string>("");
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [reviewCount, setReviewCount] = useState(new Array<number>(5).fill(0))
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { id } = useParams();
-
-  const dummyReviews = [
-    { userId: '64a5f86eb5d9b8e8a1c7e9c1', productId: '64a5f86eb5d9b8e8a1c7e9c2', comment: 'Excellent product!', rating: 5 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9c3', productId: '64a5f86eb5d9b8e8a1c7e9c4', comment: 'Good quality, but shipping was late.', rating: 4 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9c5', productId: '64a5f86eb5d9b8e8a1c7e9c6', comment: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', rating: 2 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9c7', productId: '64a5f86eb5d9b8e8a1c7e9c8', comment: 'Great value for money!', rating: 5 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9c9', productId: '64a5f86eb5d9b8e8a1c7e9ca', comment: 'Average, nothing special.', rating: 3 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9cb', productId: '64a5f86eb5d9b8e8a1c7e9cc', comment: 'Horrible quality, do not buy!', rating: 1 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9cd', productId: '64a5f86eb5d9b8e8a1c7e9ce', comment: 'Fast delivery, good packaging.', rating: 4 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9cf', productId: '64a5f86eb5d9b8e8a1c7e9d0', comment: 'Exceeded expectations!', rating: 5 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9d1', productId: '64a5f86eb5d9b8e8a1c7e9d2', comment: 'Okay product for the price.', rating: 3 },
-    { userId: '64a5f86eb5d9b8e8a1c7e9d3', productId: '64a5f86eb5d9b8e8a1c7e9d4', comment: 'Fantastic! Will buy again.', rating: 5 },
-  ];
+  const session = useSession();
+  const {toast} = useToast();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     axios
       .get(`${conf.url}/api/products/${id}`)
       .then((res) => {
         setProduct(res.data.data);
-        // count reviews
-        dummyReviews.forEach(element => {
-          setReviewCount( prev => {
-            const copy = [...prev];
-            console.log("Review count length: ", prev)
-            copy[element.rating-1]++;
-            return [...copy];
-          } );
-        });
 
         if (res.data.data.images[0]) {
           setActiveImage(res.data.data.images[0].url);
@@ -81,102 +66,30 @@ const ProductDetail: React.FC = () => {
     setScrollPosition(newPosition);
   };
 
-  function Description() {
-    return <ShineBorder
-    color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-      className="max-w-7xl py-10 w-full mt-10 sm:border dark:border-gray-400 border-black rounded-lg
-        shadow-md mx-auto px-4 sm:px-6 lg:px-8 " >
-      <div className="description w-full h-full ">
-        <div className="profile w-fit px-4 py-2 dark:text-black bg-green-300 flex
-         text-sm sm:text-md border border-black rounded-sm
-       text-pretty border-separate items-center gap-1" >
-          <Avatar>
-            <AvatarImage
-              className="w-6 h-6 rounded-full"
-              src={product?.owner?.avatar
-                || "https://i.pinimg.com/736x/7d/9f/7b/7d9f7b3a201aa53213edad9e56b7fb1e.jpg"} />
-            <AvatarFallback about="av" />
-          </Avatar>
+  const createCart = async () => {
+    if (session && session.status == "unauthenticated") {
+      return toast({
+        title: "Unauthenticated 😡",
+        description: "Signin before adding Cart"
+      });
+    }
+  
+    if (session.data?.user._id && product?._id) {
+      const cart = await cartService.createCart({
+        userId: session.data?.user._id,
+        productId: product?._id.toString()
+      });
 
-          <span>
-            {product?.owner?.username || "Random"}
-          </span>
-
-          <p className="flex items-center px-2 border-l border-black" >
-            {(new Array(5)).fill(0).map((item, idx) => (
-              <Star
-                key={idx}
-                color="black"
-                fill={idx < (product?.rating ?? 0) ? "black" : "transparent"}
-                size={15} />
-            ))}
-          </p>
-        </div>
-
-        <div className="mt-5" >
-          {product?.description}
-        </div>
-      </div>
-    </ShineBorder>
-
-  }
-
-  function Review() {
-    return <div className="reviews flex sm:flex-row flex-col-reverse justify-center text-center w-full 
-    max-w-7xl py-10 text-[.8rem] sm:border dark:border-gray-400 border border-black rounded-lg
-     shadow-md mx-auto px-2 sm:px-6 mt-10 lg:px-2">
-    
-      <div className="left sm:w-2/3 w-full h-full items-center  px-2  ">
-        <h1 className="text-xl my-2 mb-4" >Reviews</h1>
-
-        {product && dummyReviews.map((review, idx) => (
-          <div key={idx} className="review p-4 mx-auto w-full mb-2 dark:border-gray-500 border sm:m-3 rounded-md">
-            <div className="profile mb-4 dark:text-gray-300 text-sm rounded-sm w-fit py-2 border border-black flex items-center gap-1" >
-              <Avatar>
-                <AvatarImage
-                  className="w-6 h-6 rounded-full"
-                  src={product.owner?.avatar
-                    || "https://i.pinimg.com/736x/7d/9f/7b/7d9f7b3a201aa53213edad9e56b7fb1e.jpg"} />
-                <AvatarFallback about="av" />
-              </Avatar>
-
-              <span>{product.owner?.username || "Random"}</span>
-            </div>
-
-            <p className="flex items-center gap-1 my-2">
-              {new Array(review.rating).fill(0).map((item, idx) => (
-                <Star 
-                  className="dark:fill-gray-300 dark:text-gray-400"
-                  key={idx} 
-                  fill={idx < review.rating ? "black" : ""} 
-                   size={14} />
-              ))}
-            </p>
-
-            <p className="flex items-center text-center gap-2" >
-              {/* <Circle className="w-10" size={8} fill="black" />  */}
-              <span className="text-pretty text-justify" > {review.comment} </span>
-            </p>
-
-            <p className="text-light text-gray-400 text-start mt-2" > 24 days ago </p>
-          </div>
-        ))}
-      </div>
-      <div className="right w-full mx-auto sm:mb-5 mb-10 sm:w-1/3 items-center px-5">
-        <h1 className="text-xl my-2 mb-4">Review Stats</h1>
-        {Array.from({ length: 5 }, (_, i) => (
-          <div key={5 - i} className="flex items-center gap-2 mb-2">
-            <span>{5 - i}:</span>
-            <Progress
-              className="w-2/3 "
-              value={Math.floor((reviewCount[4 - i] / 10) * 100)} />
-            {reviewCount[4 - i]}
-          </div>
-        ))}
-      </div>
-    </div>
-  }
-
+      console.log("Cart 😄", cart);
+      if (cart) {
+        dispatch(setCart(cart));
+        toast({
+          title: "Cart 😄",
+          description: "Cart added successfully"
+        })
+      }
+    }
+  };
 
   return (
     product && <div className="min-h-screen dark:bg-[#121212] px-1 pt-24">
@@ -185,11 +98,6 @@ const ProductDetail: React.FC = () => {
         className="max-w-7xl sm:text-sm text-xs sm:border dark:border-gray-400 border-black rounded-lg shadow-md
          mx-auto px-4 sm:px-6 lg:px-8">
 
-      {/* <DotPattern
-        className={cn(
-          "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
-        )}
-      /> */}
 
         <div className="  overflow-hidden">
           <div className="flex flex-col lg:flex-row">
@@ -240,8 +148,7 @@ const ProductDetail: React.FC = () => {
                 <button
                   onClick={() => scroll('right')}
                   className="absolute border border-black right-0 top-1/2 -translate-y-1/2
-                  rounded-full p-1 shadow-md hover:bg-white transition-colors z-10"
-                >
+                  rounded-full p-1 shadow-md hover:bg-white transition-colors z-10" >
                   <ChevronRight className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
@@ -296,7 +203,9 @@ const ProductDetail: React.FC = () => {
                   <span  className="text-[.6rem] text-yellow-400 ">Purchase</span>
                 </ShinyButton>
 
-                <ShinyButton className="bg-gray-300" >
+                  <ShinyButton
+                    onClick={createCart}
+                  className="bg-gray-300" >
                   <span  className="text-[.6rem]  text-black">Add To Cart</span>
                 </ShinyButton>
                </div>
@@ -330,7 +239,7 @@ const ProductDetail: React.FC = () => {
       </div>
 
 
-      {isReviewOpen ? <Review /> : <Description />}
+      {isReviewOpen ? <Review product={product} /> : <Description product={product} />}
      
     </div>
   );

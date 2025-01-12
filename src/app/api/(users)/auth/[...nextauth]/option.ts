@@ -79,7 +79,7 @@ const authOptions: NextAuthOptions = {
 				token.role = user.role;
 			}
 
-			console.log("token: ", token);
+			// console.log("token: ", token);
 			return token;
 		},
 

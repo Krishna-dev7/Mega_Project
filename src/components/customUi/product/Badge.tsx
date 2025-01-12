@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Categories } from "@/models/product.models";
 import { Circle } from "lucide-react";
@@ -121,7 +121,7 @@ const BadgeComponent: React.FC<props> = ({
 
   // Create the complete class string including hover and dark mode variants
   const badgeClasses = cn(
-    "py-1 mb-1 flex items-center w-fit gap-1 transition-colors",
+    "py-1 mb-1 flex text-xs font-normal text-pretty items-center w-fit gap-1 transition-colors",
     baseColors.bgColor,
     baseColors.textColor,
     // Add dark mode variants

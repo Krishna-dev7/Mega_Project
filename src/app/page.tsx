@@ -1,15 +1,12 @@
 "use client"
-import FeatureCategory from '@/components/customUi/Features';
-import Hero from '@/components/customUi/Hero';
+import FeatureCategory from '@/components/customUi/layouts/Features';
+import Hero from '@/components/customUi/layouts/Hero';
 import Moto from '@/components/customUi/Moto';
 import NewArrivals from '@/components/customUi/NewArrivals';
+import { useEffect } from 'react';
 
 
 export default function Home() {
-
-  // useEffect(() => {
-  //   seedProducts();
-  // }, [])
 
   return (
     <div className=" min-h-screen font-sans text-white">
