@@ -2,18 +2,17 @@ import {
   NextResponse, 
   NextRequest 
 } from "next/server";
-import { useSession } from "next-auth/react";
 
 const handler = async (req:NextRequest) => {
   try {
 
-    const { data, status } = useSession();
-    if(!status) {
-      return NextResponse.json({
-        success: false,
-        message: "Unauthorized user request"
-      }, {status: 401});
-    }
+    // const { data, status } = useSession();
+    // if(!status) {
+    //   return NextResponse.json({
+    //     success: false,
+    //     message: "Unauthorized user request"
+    //   }, {status: 401});
+    // }
 
     // extract userId from data
     //  data.user._id
