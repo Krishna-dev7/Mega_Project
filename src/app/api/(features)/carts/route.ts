@@ -87,6 +87,74 @@ export async function POST(req:NextRequest) {
   }
 }
 
+export async function DELETE(req:NextRequest) {
+  try {
+
+    const {searchParams} = new URL(req.url);
+    const id = searchParams.get('id');
+    const action = searchParams.get('action');
+    if(!(id || action)) {
+      return NextResponse.json({
+        success: false,
+        message: "missing required cartId"
+      }, {status: 400})
+    }
+
+    if(action == "removeAll") {
+      await Cart.deleteMany({});
+      return NextResponse.json({
+        success: true,
+        message: "Cart cleared"
+      }, {status: 200})
+    }
+
+    await Cart.findByIdAndDelete(id);
+    return NextResponse.json({
+      success: true,
+      message: "Cart deleted successfully"
+    }, {status: 200})
+    
+  } catch (err:any) {
+    console.log("Something went wrong on Cart route", err)
+    return NextResponse.json({
+      success: false,
+      message:  err.message
+         || "someting went wrong"
+    }, {status: 500});
+  }
+}
+
+export async function PUT(req:NextRequest) {
+  try {
+    
+    const body = await req.json();
+    const {cartId, quantity} = body
+    if(!(cartId && quantity)) {
+      return NextResponse.json({
+        success: false,
+        message: "Not received data: cartId and quantity"
+      }, {status: 200})
+    }
+
+    const result = await
+       Cart.findByIdAndUpdate(cartId, 
+        {$set: {quantity: quantity}}, {new: true})
+
+    return NextResponse.json({
+      success: true,
+      message: "updated cart successfully",
+      data: result
+    }, {status: 200})
+
+  } catch (err:any) {
+    console.log("Something went wrong on Cart route", err)
+    return NextResponse.json({
+      success: false,
+      message:  err.message
+         || "someting went wrong"
+    }, {status: 500});
+  }
+}
 
 export {
   handler as GET

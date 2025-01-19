@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, 
+  PayloadAction } from "@reduxjs/toolkit";
 import {ICart} from "@/models/cart.models";
 import { IProduct } from "@/models/product.models";
-import { toast } from "@/hooks/use-toast";
 
 type cartsType = {
   carts: Array<cartType>
@@ -13,7 +13,6 @@ export type cartType
 const initialState:cartsType = {
   carts: []
 }
-
 
 const cartSlice = createSlice({
   name: "cart",
@@ -51,7 +50,7 @@ const cartSlice = createSlice({
       const newCarts = state.carts.map(cart => {
         if(cart._id == action.payload) {
           return { ...cart,
-             quantity: cart.quantity++};
+             quantity: ++cart.quantity};
         }
         return cart;
       })
@@ -64,7 +63,7 @@ const cartSlice = createSlice({
       ) => {
         state.carts
           = state.carts.filter(
-            cart => cart._id == action.payload.id)
+            cart => cart._id != action.payload.id)
     },
 
     decQuantity: (
@@ -72,14 +71,18 @@ const cartSlice = createSlice({
       action:PayloadAction<{id: string}>
     ) => {
         const newCarts = state.carts.map(cart => {
-        if(cart._id == action.payload) {
+        if(cart._id == action.payload.id) {
           return { ...cart,
-             quantity: cart.quantity--};
+             quantity: --cart.quantity};
         }
         return cart;
       })
       state.carts = newCarts;
     },
+
+    clearCarts: (state) => {
+      state.carts = []
+    }
   }
 })
 
@@ -89,6 +92,7 @@ export const {
   setCart,
   delCart,
   decQuantity,
-  incQuantity
+  incQuantity,
+  clearCarts
  } = cartSlice.actions
 export default cartSlice.reducer;

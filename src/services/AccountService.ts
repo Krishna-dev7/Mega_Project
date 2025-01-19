@@ -7,12 +7,12 @@ import loginSchema from "@/schemas/login.schema";
 import { signIn, signOut } from "next-auth/react";
 import otpFormSchema from "@/schemas/otp.schema";
 import forgotSchema from "@/schemas/forgot.schema";
-import User, { UserSchema } from "@/models/user.models";
-import UserProfile, { IUserProfile } from "@/models/userProfile.models";
-import SellerProfile, { ISeller } from "@/models/sellerProfile.models";
+import { UserSchema } from "@/models/user.models";
+import { IUserProfile } from "@/models/userProfile.models";
+import { ISeller } from "@/models/sellerProfile.models";
 import { Session } from "next-auth";
-import connectDB from "@/db/connect";
 import { toast } from "@/hooks/use-toast";
+
 
 interface serviceResponse {
   success: boolean,
@@ -74,7 +74,7 @@ class AccountService {
     try {
       await signOut({callbackUrl: "/"});
       toast({
-        title: "Success 👋",
+        title: " ✨ Success ",
         description: "Logout Successfully"
       })
       return true

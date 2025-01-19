@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { Eye, EyeOff, Github } from "lucide-react";
-import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {

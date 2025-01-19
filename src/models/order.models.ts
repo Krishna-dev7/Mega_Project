@@ -90,3 +90,6 @@ const Order = mongoose.models.Order
 
 
 export default Order;
+export type {
+  IOrder
+}

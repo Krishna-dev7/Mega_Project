@@ -1,7 +1,6 @@
 "use client"
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetFooter,
   SheetHeader,
@@ -14,15 +13,22 @@ import { ShoppingCart } from "lucide-react"
 import { useEffect, useState } from "react"
 import CartItem from "./CartItem"
 import ShinyButton from "@/components/ui/shiny-button"
-import axios from "axios"
 import { 
-  incQuantity,
-  decQuantity,
-  delCart,
+  clearCarts,
   setCarts
  } from "@/store/cartSlice";
-import conf from "@/helpers/conf"
 import cartService from "@/services/CartService"
+import { AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogFooter
+ } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 const CartSheet:React.FC = () => {
 
@@ -60,10 +66,31 @@ const CartSheet:React.FC = () => {
     </span>
   </SheetTrigger>
 
-  <SheetContent className="text-sm">
+  <SheetContent  className="text-sm">
     <SheetTitle>Your Cart 👋</SheetTitle>
-    <SheetHeader className="text-sm text-start mt-1 mb-4 text-gray-400">
+    <SheetHeader className="text-sm text-start mt-1 mb-4 flex-row justify-between text-gray-400">
       Cart details
+        {carts.length > 0 && <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outline">Clear</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure? ✋</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                carts and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={() => {
+                cartService.deleteCarts();
+                dispatch(clearCarts());
+              }} >Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>}
     </SheetHeader>
 
     {/* Scrollable Cart Item Container */}
@@ -91,15 +118,15 @@ const CartSheet:React.FC = () => {
 
     {/* Footer */}
     <SheetFooter
-      className="border-t w-full flex flex-col-reverse items-center gap-2
-        text-pretty justify-evenly flex-nowrap text-sm border-gray-500 py-5 mt-5"
-    >
-      <p className="mx-auto sm:text-sm text-xs " >
+      className="border-t w-full text-pretty flex sm:flex-row flex-col items-center justify-between gap-4 border-gray-500 py-4 mt-5 px-4">
+      { carts.length > 0 ? <>
+        <p className="text-sm">
         Total Cost: <span className="text-yellow-300">${totalCost}</span>
       </p>
-      <ShinyButton>
+      <ShinyButton className="" >
         <span className="sm:text-xs text-pretty text-[.7rem] text-fuchsia-400">Checkout</span>
       </ShinyButton>
+      </> : <div className="text-center w-full" >Add some item 😊</div> }
     </SheetFooter>
   </SheetContent>
 

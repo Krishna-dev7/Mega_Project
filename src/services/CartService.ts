@@ -3,6 +3,7 @@ import Cart, { ICart, Size } from "@/models/cart.models";
 import ApiResponse from "@/types/ApiResponse";
 import axios from "axios";
 import { cartType } from "@/store/cartSlice";
+import { Types } from "mongoose";
 
 interface props {
   userId: string,
@@ -47,18 +48,39 @@ class CartService {
     }
   }
 
-  async deleteCart(){
+  async deleteCart(cartId:string)
+    : Promise<boolean>{
     try {
-      
+      const res = await axios.delete<ApiResponse>(
+        `${conf.url}/api/carts?id=${cartId}` )
+      return res.data.success
     } catch (err:any) {
       this.handleError(
         "DeleteCart",  err)
     }
   }
 
-  async updateCart(){
+  async deleteCarts():Promise<boolean> {
     try {
-      
+      const res = await axios.delete<ApiResponse>(
+        `${conf.url}/api/carts?action=removeAll` )
+      return res.data.success
+    } catch (err:any) {
+      this.handleError(
+        "DeleteCarts",  err)
+    }
+  }
+
+  async updateCart({ cartId, quantity}
+    : {cartId: string, quantity: number}
+  ): Promise<ApiResponse | false>{
+    try {
+      const res = await axios.put(
+        `${conf.url}/api/carts`,
+        {cartId, quantity}
+      )
+      console.log("CartService:UpdateCart0 " + res)
+      return res.data || false;
     } catch (err:any) {
       this.handleError(
         "UpdateCart",  err)
