@@ -1,7 +1,6 @@
 "use client"
 
 import { useAppSelector } from "@/store/store";
-import CartItem from "../headersUi/CartItem";
 import CheckoutItem from "./CheckoutItem";
 import ShippingAddress from "./ShippingAddress";
 import Schedule from "./Schedure";
@@ -12,14 +11,6 @@ const Checkout:React.FC = () => {
 
   return <div className=" flex sm:text-sm text-xs mt-10 max-w-screen      
      sm:w-[90%] w-full mx-auto items-center xm:px-16 px-0 " > 
-      {/* <div className="  rounded-sm justify-center gap-20 flex lg:flex-row flex-col mx-auto w-full px-4 items-center " >
-        <div className="left flex-grow w-screen md:w-screen">
-          <CheckoutItem />
-        </div>
-        <div className="righ w-1/2 h-fit"> 
-          Payment Details
-        </div>
-      </div> */}
 
       <div className="checkout-grid grid grid-cols-1 md:grid-rows-2 
         md:grid-cols-2 grid-rows-3  h-fit min-h-screen mb-20 rounded-lg 
@@ -27,16 +18,17 @@ const Checkout:React.FC = () => {
           <div className=" address w-full border rounded-lg " >
             <ShippingAddress />
           </div>
+
           <div className=" summary row-span-2 h-full w-full 
             border rounded-lg " >
             <span className="text-center w-full block" >Order summary</span>
             <CheckoutItem />
           </div>
+
           <div className=" info w-full rounded-lg" >
             <Schedule />
           </div>
       </div>
-
   </div>
 }
 

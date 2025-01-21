@@ -19,6 +19,45 @@ import { cartType, delCart } from "@/store/cartSlice";
 import cartService from "@/services/CartService";
 import DataTable from "@/components/customUi/checkout/DataTable";
 
+type props = {
+  product: cartType
+}
+
+export const ActionCell:React.FC<props> = ({
+  product
+}) => {
+
+  const dispatch = useAppDispatch();
+
+  return  <div className="text-right">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={async () => {
+            const res = await cartService
+              .deleteCart(product._id.toString());
+            res && dispatch(delCart({ id: product._id }));
+          }}
+          className="text-red-600" >
+          Delete
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => navigator.clipboard?.write(product._id)} >
+          Copy Product ID
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  </div>
+}
+
 export const columns: ColumnDef<cartType>[] = [
   {
     accessorKey: "product.images[0].url",
@@ -38,7 +77,8 @@ export const columns: ColumnDef<cartType>[] = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        onClick={() => column
+          .toggleSorting(column.getIsSorted() === "asc")}
         className="hover:bg-transparent"
       >
         Product
@@ -58,14 +98,18 @@ export const columns: ColumnDef<cartType>[] = [
         style: "currency",
         currency: "USD",
       }).format(amount);
-      return <div className="text-start w-full font-medium">{formatted}</div>;
+      return <div className="text-start w-full font-medium">
+        {formatted}
+      </div>;
     },
   },
   {
     accessorKey: "quantity",
     header: "Quantity",
     cell: ({ row }) => (
-      <div className="text-center font-medium">{row.original.quantity}</div>
+      <div className="text-center font-medium">
+        {row.original.quantity}
+      </div>
     ),
   },
   {
@@ -73,38 +117,7 @@ export const columns: ColumnDef<cartType>[] = [
     header: "action",
     cell: ({ row }) => {
       const product = row.original;
-      const dispatch = useAppDispatch();
-
-      return (
-        <div className="text-right">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={async () => {
-                  const res = await cartService.deleteCart(product._id.toString());
-                  res && dispatch(delCart({ id: product._id }));
-                }}
-                className="text-red-600"
-              >
-                Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard?.write(product._id)}
-              >
-                Copy Product ID
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
+      return <ActionCell product={product} />
     },
   },
 ];
