@@ -1,7 +1,6 @@
 "use client"
 
 import Checkout from "@/components/customUi/checkout/Checkout";
-import ProgressBar from "@/components/customUi/ProgressBar";
 
 const CheckoutPage:React.FC = () => {
 
