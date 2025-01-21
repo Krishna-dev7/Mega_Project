@@ -39,9 +39,17 @@ export default async function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} selection:text-black 
+        className={`${geistSans.variable} ${geistMono.variable}
+      selection:text-black
         overflow-x-hidden selection:bg-pink-300 text-xs dark:bg-[#121212] 
-        bg-[#D6CABA] w-screen antialiased`}>
+        bg-[#D6CABA] w-screen antialiased
+        [&::-webkit-scrollbar]:w-1
+        [&::-webkit-scrollbar-track]:bg-transparent
+        [&::-webkit-scrollbar-thumb]:bg-gray-400
+        [&::-webkit-scrollbar-thumb]:rounded-full
+        dark:[&::-webkit-scrollbar-thumb]:bg-gray-500
+        hover:[&::-webkit-scrollbar-thumb]:bg-gray-500
+        dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-500`}>
 
         <AccountProvider session={session}>
           <RootProvider>

@@ -8,7 +8,9 @@ type cartsType = {
 }
 
 export type cartType 
-  = ICart & {product: IProduct}
+  = ICart & {product: IProduct} & {
+    _id: any
+  }
 
 const initialState:cartsType = {
   carts: []

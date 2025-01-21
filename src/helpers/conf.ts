@@ -4,7 +4,9 @@ const conf = {
     githubClientID: process.env.GITHUB_CLIENT_ID,
     githubSecret: process.env.GITHUB_CLIENT_SECRET,
     url: process.env.NEXT_PUBLIC_APP_URL,
-    secret: process.env.NEXTAUTH_SECRET
+    secret: process.env.NEXTAUTH_SECRET,
+    stripe_secret_key: process.env.STRIPE_SECRET_KEY!,
+    stripe_publishable_key: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 }
 
 export default conf;

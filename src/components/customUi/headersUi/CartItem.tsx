@@ -3,11 +3,8 @@ import { ICart } from "@/models/cart.models";
 import { IProduct } from "@/models/product.models";
 import { decQuantity, delCart, incQuantity } from "@/store/cartSlice";
 import { useAppDispatch } from "@/store/store";
-import { Avatar, 
-  AvatarFallback, 
-  AvatarImage } from "@radix-ui/react-avatar";
-import { MinusCircleIcon,
- PlusCircleIcon } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { MinusCircleIcon, PlusCircleIcon } from "lucide-react";
 import React from "react";
 import cartService from "@/services/CartService";
 import CartSkeleton from "../skeletons/CartSkeleton";
@@ -17,7 +14,6 @@ type props = {
 }
 
 const CartItem:React.FC<props> = ({cart}) => {
-
   const dispatch = useAppDispatch();
   const incItem = async (cartId:string, quantity:number) => {
     try {
@@ -49,16 +45,15 @@ const CartItem:React.FC<props> = ({cart}) => {
     }
   }
 
-
   if (!cart) {
     return <CartSkeleton />
   }
 
-  return <div className="w-full box-border mx-auto py-4  flex justify-between gap-3 mb-8" >
+  return <div className="w-full box-border mx-auto py-4 flex justify-between gap-3 mb-8">
     <div className="sec1 flex-shrink-0 sm:text-sm text-xs">
       <Avatar>
         <AvatarImage 
-          className=" w-16 h-16 aspect-square rounded-lg"
+          className="w-16 h-16 aspect-square rounded-lg"
           src={cart?.product.images[0].url 
           || "https://i.pinimg.com/236x/25/2f/ae/252fae4c0fe38159bd193c94e25438a5.jpg"} />
         <AvatarFallback>CN</AvatarFallback>
