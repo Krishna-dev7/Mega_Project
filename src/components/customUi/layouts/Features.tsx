@@ -5,7 +5,7 @@ function FeatureCategory({ categories = [{
 }] }) {
   return (
     <section
-      className="py-16 bg-gray-50"
+      className="py-16 "
       aria-label="Featured Categories"
     >
       <h2 className="text-3xl font-semibold text-center mb-10">

@@ -128,7 +128,8 @@ const config: Config = {
   			shine: 'shine var(--duration) infinite linear',
   			ripple: 'ripple var(--duration, 2s) ease calc(var(--i, 0) * 0.2s) infinite',
   			marquee: 'marquee var(--duration) infinite linear',
-  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+  			aurora: 'aurora 30s infinite linear' // Slowed down aurora animation
   		}
   	}
   },
