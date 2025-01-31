@@ -4,27 +4,22 @@ import Hero from '@/components/customUi/layouts/Hero';
 import Moto from '@/components/customUi/Moto';
 import NewArrivals from '@/components/customUi/layouts/NewArrivals';
 import { useEffect } from 'react';
-import Benefits from '@/components/customUi/layouts/WhyUs';
-import Brand from '@/components/customUi/layouts/BrandCollaboration';
+import BenefitComponent from '@/components/customUi/layouts/WhyUs';
+import BrandComponent from '@/components/customUi/layouts/BrandCollaboration';
 import AboutUs from '@/components/customUi/layouts/AboutUs';
 
 
 export default function Home() {
 
   return (
-    <div className=" min-h-screen font-sans text-white">
+    <div className=" scroll-smooth min-h-screen text-white">
 
       {/* Featured Products Section */}
       <Hero />
-      {/* <HomeHero  /> */}
-      {/* <Moto /> */}
-      {/* Featured Categories Section */}
       <FeatureCategory />
-
-      {/* New arrivals section  */}
       <NewArrivals />
-      <Benefits />
-      <Brand />
+      <BenefitComponent />
+      <BrandComponent />
       {/* <AboutUs/> */}
     </div>
   );

@@ -107,7 +107,7 @@ function NewArrivals() {
     <section className="py-24 bg-transparent">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center mb-16">
-          <h2 className="font-display text-4xl text-white">New Arrivals</h2>
+          <h2 className=" text-4xl text-white">New Arrivals</h2>
           <button className="flex items-center text-luxury-gold hover:text-white transition-colors group">
             View Collection <ChevronRight size={20} className="ml-2 group-hover:translate-x-2 transition-transform" />
           </button>

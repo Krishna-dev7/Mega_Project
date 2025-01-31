@@ -10,9 +10,9 @@
   font-style: normal;
 } */
 
-* {
+/* * {
   font-family: Arial
-}
+} */
 
 
 img {
@@ -20,7 +20,7 @@ img {
 }
 
 body {
-  font-family: 'Geist Thin', Helvetica, sans-serif;
+  font-family: 'Geist', Helvetica, sans-serif;
 }
 
 .max-h-fit{
@@ -131,11 +131,11 @@ body {
 
 @layer base {
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Geist', sans-serif;
   }
   
   h1, h2, h3, h4 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Geist', 'Arial', serif;
   }
 }
 

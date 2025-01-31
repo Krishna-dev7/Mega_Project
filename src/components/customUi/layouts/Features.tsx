@@ -16,7 +16,7 @@ function FeatureCategory({ categories = [{
   description: "Statement Pieces"
 }] }) {
   return (
-    <section className="py-32 bg-black" aria-label="Featured Categories">
+    <section className="py-32" aria-label="Featured Categories">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
           <span className="text-luxury-gold text-sm tracking-[0.3em] uppercase mb-4 block">Discover</span>
@@ -37,7 +37,9 @@ function FeatureCategory({ categories = [{
                   alt={category.alt}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black  
+                via-black/40 to-transparent opacity-50 group-hover:opacity-70  
+                transition-opacity duration-500" />
                 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-end p-8">
