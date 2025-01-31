@@ -1,0 +1,198 @@
+[
+  {
+    "slug": "product-1",
+    "brand": "Brand A",
+    "category": "electronics",
+    "description": "High-quality electronic device with advanced features.",
+    "price": 199,
+    "countInStock": 12,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/43/c7/f3/43c7f3cb445d9c78757960094b72e01b.jpg",
+        "color": "black"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-2",
+    "brand": "Brand B",
+    "category": "footwear",
+    "description": "Stylish and durable footwear for daily use.",
+    "price": 89,
+    "countInStock": 20,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/d2/62/42/d26242a6b554b9a90d747228c2fc6af8.jpg",
+        "color": "white"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-3",
+    "brand": "Brand C",
+    "category": "fashion",
+    "description": "Trendy and comfortable fashion accessory.",
+    "price": 49,
+    "countInStock": 15,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/1d/07/1b/1d071b3af8d7f05d83919855b36dddeb.jpg",
+        "color": "blue"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-4",
+    "brand": "Brand D",
+    "category": "bags",
+    "description": "Durable and spacious bag for everyday use.",
+    "price": 129,
+    "countInStock": 10,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/8c/51/5f/8c515f272bd77704e6238cde35c0d153.jpg",
+        "color": "red"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-5",
+    "brand": "Brand E",
+    "category": "drinkware",
+    "description": "Stylish and eco-friendly drinkware.",
+    "price": 39,
+    "countInStock": 25,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/ac/60/ae/ac60ae700ecb08f4379105b35bf5560d.jpg",
+        "color": "green"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-6",
+    "brand": "Brand F",
+    "category": "hoodies",
+    "description": "Comfortable and warm hoodie for casual wear.",
+    "price": 59,
+    "countInStock": 18,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/b8/b3/da/b8b3da9efd6d527553dd75386cd7f0e1.jpg",
+        "color": "gray"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-7",
+    "brand": "Brand G",
+    "category": "shirts",
+    "description": "Premium quality shirt with modern design.",
+    "price": 99,
+    "countInStock": 22,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/ce/8f/98/ce8f98445c7e7ef35f6aa17a5de17c50.jpg",
+        "color": "pink"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-8",
+    "brand": "Brand H",
+    "category": "stickers",
+    "description": "Creative and fun stickers for all ages.",
+    "price": 9,
+    "countInStock": 50,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/ad/85/cd/ad85cdd6b85f63a5137371a4cb1d84a9.jpg",
+        "color": "yellow"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-9",
+    "brand": "Brand I",
+    "category": "jackets",
+    "description": "Stylish and durable jacket for cold weather.",
+    "price": 149,
+    "countInStock": 7,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/bf/da/d9/bfdad99d6bc9aaf8b03bdd84f3b30b4c.jpg",
+        "color": "brown"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-10",
+    "brand": "Brand J",
+    "category": "headwear",
+    "description": "Comfortable and stylish headwear.",
+    "price": 29,
+    "countInStock": 30,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/53/14/2b/53142b99d1158514048b78c0b5897862.jpg",
+        "color": "orange"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-11",
+    "brand": "Brand J",
+    "category": "headwear",
+    "description": "Comfortable and stylish headwear.",
+    "price": 29,
+    "countInStock": 30,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/736x/c1/f6/d8/c1f6d83223f1eff1875b256118d05d3d.jpg",
+        "color": "orange"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "IPhone 16 PRO",
+    "brand": "Brand J",
+    "category": "electronics",
+    "description": "The iPhone 16 Pro sets a new benchmark in smartphone innovation, combining sleek design with powerful performance. Featuring a stunning display, advanced camera technology, and seamless integration with the latest software, this device is crafted for those who demand the best. Whether you're capturing stunning photos, multitasking effortlessly, or enjoying immersive entertainment, the iPhone 16 Pro delivers on all fronts. With exceptional build quality and cutting-edge features, it provides a premium user experience. Its stylish design, paired with top-notch performance, makes it a perfect choice for professionals and tech enthusiasts. Elevate your lifestyle with the iPhone 16 Pro – innovation redefined.",
+    "price": 29,
+    "countInStock": 30,
+    "images": [
+      {
+        "url": "https://i.pinimg.com/236x/32/3b/fa/323bfa4d6519b377b29bcfb414fb44ab.jpg",
+        "color": "orange"
+      },
+      {
+        "url": "https://i.pinimg.com/474x/2a/b9/6f/2ab96f3bd10c2c0d5d4edaf6148380d4.jpg",
+        "color": "orange"
+      },
+      {
+        "url": "https://i.pinimg.com/736x/93/10/fb/9310fb24bc02f5285af319e6219215fa.jpg",
+        "color": "orange"
+      },
+      {
+        "url": "https://i.pinimg.com/474x/6b/d2/9a/6bd29a1f853d9edb9e659dff7b3df555.jpg",
+        "color": "orange"
+      },
+      {
+        "url": "https://i.pinimg.com/474x/72/9f/90/729f90af684351c4a6733c1ebfeaafac.jpg",
+        "color": "orange"
+      }
+    ],
+    "owner": "userId"
+  }
+]
