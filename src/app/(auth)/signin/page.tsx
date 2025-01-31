@@ -159,7 +159,7 @@ const LoginPage: React.FC = () => {
                   <div className="relative">
                     <Input
                       {...field}
-                      className="borderborder-black"
+                      className="border border-black"
                       type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       required
@@ -190,8 +190,8 @@ const LoginPage: React.FC = () => {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full border border-gray-400 bg-transparent  mt-6 py-6"
-          >
+            className="w-full border border-gray-400 bg-transparent  
+            mt-6 py-6" >
             {isLoading ? "Signing In..." : "Sign In"}
           </Button>
         </form>
