@@ -29,7 +29,7 @@ export async function POST(req:NextRequest) {
     }));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card", "amazon_pay", "paypal", "mobilepay"],
+      payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
       success_url: `${req.headers.get('origin')}/success`,

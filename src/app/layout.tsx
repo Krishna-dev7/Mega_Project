@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/customUi/headersUi/Header";
-import Footer from "@/components/customUi/layouts/Footer";
 import ThemeProvider from "@/components/customUi/providers/ThemeProvider";
 import RootProvider from "@/components/customUi/providers/RootProvider";
 import AccountProvider from "@/components/customUi/providers/AccountProvider";
@@ -56,9 +54,7 @@ export default async function RootLayout({
             <ThemeProvider attribute="class" defaultTheme="dark">
               <SubRootProvider>
                 <Toaster />
-                <Header />
                 {children}
-                <Footer />
               </SubRootProvider>
             </ThemeProvider>
           </RootProvider>

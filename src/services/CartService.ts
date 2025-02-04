@@ -79,7 +79,7 @@ class CartService {
         `${conf.url}/api/carts`,
         {cartId, quantity}
       )
-      console.log("CartService:UpdateCart0 " + res)
+      console.log("CartService:UpdateCart " + res)
       return res.data || false;
     } catch (err:any) {
       this.handleError(
