@@ -21,12 +21,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import SideBar from "@/components/admin/SideBar"
 
 export default function DashboardPage() {
   return (
     <div className="min-h-screen flex dark:bg-transparent">
       {/* Sidebar */}
-      
+      <SideBar />      
 
       {/* Main Content */}
       <div className="flex-1 min-h-screen">

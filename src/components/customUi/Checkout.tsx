@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppSelector } from "@/store/store";
-import CheckoutItem from "@/components/customUi/checkout/CheckoutItem";
+import CheckoutItem from "@/components/customUI/checkout/CheckoutItem";
 
 const Checkout:React.FC = () => {
 

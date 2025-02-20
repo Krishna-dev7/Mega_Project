@@ -57,7 +57,7 @@ const CartSheet:React.FC = () => {
     setTotalCost(totalCost)
   }, [setTotalCost, carts] )
 
-  return  <Sheet  >
+  return  <Sheet>
   <SheetTrigger>
     <ShoppingCart className="w-4 h-4 dark:text-black " />
     <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full 
@@ -99,21 +99,16 @@ const CartSheet:React.FC = () => {
       style={{
         scrollbarWidth: "none", // For Firefox
         msOverflowStyle: "none", // For IE and Edge
-      }}
-    >
-      <style jsx>{`
-        /* For Webkit Browsers (Chrome, Safari, etc.) */
-        div::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-      {/* {Array.from({ length: 10 }).map((_, index) => (
-        <CartItem key={index} />
-      ))} */}
-
-      { carts && carts.map((cart, idx) => (
-         <CartItem key={idx} cart={cart} />
-      )) }
+      }}>
+        <style jsx>{`
+          /* For Webkit Browsers (Chrome, Safari, etc.) */
+          div::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+        { carts && carts.map((cart, idx) => (
+          <CartItem key={idx} cart={cart} />
+        )) }
     </div>
 
     {/* Footer */}

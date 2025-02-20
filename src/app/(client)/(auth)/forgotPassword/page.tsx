@@ -15,7 +15,6 @@ import forgotSchema from "@/schemas/forgot.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { Toaster } from "@/components/ui/toaster";
 import { redirect } from "next/navigation";
 
 import {
@@ -48,8 +47,7 @@ const ForgotPasswordPage: React.FC = () => {
       newPassword: ""
     }
   });
-
-
+  
   const submitForm = async (
     data: z.infer<typeof forgotSchema>
   ) => {
@@ -66,7 +64,6 @@ const ForgotPasswordPage: React.FC = () => {
           description: res.data.message
             || "something went wrong on forgotpassword"
         })
-
         return;
       }
 

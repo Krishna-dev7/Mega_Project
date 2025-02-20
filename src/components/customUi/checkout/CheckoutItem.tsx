@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { cartType, delCart } from "@/store/cartSlice";
 import cartService from "@/services/CartService";
-import DataTable from "@/components/customUi/checkout/DataTable";
+import DataTable from "@/components/customUI/checkout/DataTable";
 
 type props = {
   product: cartType

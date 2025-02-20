@@ -11,7 +11,7 @@ import {
 import { User } from "lucide-react"
 import { useAppDispatch, 
   useAppSelector } from "@/store/store";
-import Profile from "@/components/customUi/headersUi/Profile";
+import Profile from "@/components/customUI/headersUi/Profile";
 
 const UserSheet:React.FC = () => {
 

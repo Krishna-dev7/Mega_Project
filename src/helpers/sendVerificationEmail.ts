@@ -40,15 +40,24 @@ import nodemailer from "nodemailer";
 
 // using nodemailer strategy
 
+// const transport = nodemailer.createTransport({
+// 	host: "google",
+// 	port: 2525,
+// 	secure: false,
+// 	auth: {
+// 		user: "1dacdabcb61b4b",
+// 		pass: "970db9c50d2333",
+// 	},
+// });
+
+
 const transport = nodemailer.createTransport({
-	host: "sandbox.smtp.mailtrap.io",
-	port: 2525,
-	secure: false,
-	auth: {
-		user: "1dacdabcb61b4b",
-		pass: "970db9c50d2333",
-	},
-});
+  service: 'gmail',
+  auth: {
+    user: 'suprabha205@gmail.com',
+    pass: 'prasadkrishna'
+  }
+})
 
 
 

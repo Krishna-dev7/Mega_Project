@@ -14,13 +14,13 @@ import { Session } from "next-auth";
 import { toast } from "@/hooks/use-toast";
 
 
-interface serviceResponse {
+interface ServiceResponse {
   success: boolean,
   data?: any,
   error?: string
 }
 
-export interface currentAccount {
+export interface CurrentAccount {
   account: (UserSchema | null),
   profile?: (ISeller | IUserProfile)
 }
@@ -28,7 +28,7 @@ export interface currentAccount {
 class AccountService {
   async createAccount(
     data: z.infer<typeof signupSchema>
-  ):Promise<serviceResponse> {
+  ):Promise<ServiceResponse> {
     try {
       const res = await axios.postForm<ApiResponse>(
         `${conf.url}/api/signup`,
@@ -45,7 +45,7 @@ class AccountService {
 
   async loginUser(
     data: z.infer<typeof loginSchema>
-  ):Promise<serviceResponse> {
+  ):Promise<ServiceResponse> {
     try {
       const res = await signIn('credentials', {
         redirect: false,
@@ -133,7 +133,7 @@ class AccountService {
     }
   }
 
-  async githubLogin():Promise<serviceResponse> {
+  async githubLogin():Promise<ServiceResponse> {
     try {
       const res = await signIn('github', {
         redirect: false,
@@ -157,7 +157,7 @@ class AccountService {
 
 
   async getCurrentAccount(session:Session)
-    :Promise<currentAccount> {
+    :Promise<CurrentAccount> {
       try {
         const userId = session.user._id;
         if(!userId) {
@@ -174,6 +174,33 @@ class AccountService {
         this.handleError({
           type: "GetCurrentAccount", err })
       }
+  }
+
+  async deleteAccount(userID:(string))
+    : Promise<boolean> {
+    try {
+      return (await axios.delete<ApiResponse>(
+        `${conf.url}/api/users?userID=${userID}`
+      )).data.success;
+
+    } catch (err:any) {
+      this.handleError({
+        type: "Delete Account", err })
+    }
+    
+  }
+
+  async streamUsers()
+    :Promise<{account: UserSchema, 
+      profile: (IUserProfile | ISeller)}> {
+    try {
+      return await axios
+        .get(`${conf.url}/api/users`)
+        
+    } catch (err:any) {
+      this.handleError({
+        type: 'StreamUser', err})
+    }
   }
 
   private handleError(

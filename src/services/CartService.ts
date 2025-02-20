@@ -60,10 +60,11 @@ class CartService {
     }
   }
 
-  async deleteCarts():Promise<boolean> {
+  async deleteCarts({ids}: {ids?: Array<string>})
+    :Promise<boolean> {
     try {
       const res = await axios.delete<ApiResponse>(
-        `${conf.url}/api/carts?action=removeAll` )
+        `${conf.url}/api/carts?action=removeAll&ids=${ids?.join(",")}`)
       return res.data.success
     } catch (err:any) {
       this.handleError(

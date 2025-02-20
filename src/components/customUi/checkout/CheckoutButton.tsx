@@ -3,15 +3,20 @@
 import conf from "@/helpers/conf";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const stripePromise: Promise<Stripe | null> 
   = loadStripe(conf.stripe_publishable_key);
 
 interface CheckoutButtonProps {
-  items: { name: string; price: number; quantity: number }[];
+  items: { 
+    name: string; 
+    price: number; 
+    quantity: number }[];
+  isDisabled: boolean;
 }
-
-export default function CheckoutButton({ items }: CheckoutButtonProps) {
+function CheckoutButton({ items, isDisabled }
+  : CheckoutButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
@@ -41,8 +46,16 @@ export default function CheckoutButton({ items }: CheckoutButtonProps) {
   };
 
   return (
-    <button onClick={handleClick} disabled={loading}>
-      {loading ? "Processing..." : "Checkout"}
-    </button>
+    <Button
+      onClick={handleClick} 
+      disabled={loading || isDisabled}>
+        {loading ? "Processing..." : "Checkout"}
+    </Button>
   );
 }
+
+
+
+export default CheckoutButton;
+
+// this is my comment and i hope you would definitely love it

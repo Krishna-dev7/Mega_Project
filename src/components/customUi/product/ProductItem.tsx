@@ -3,7 +3,7 @@ import { IProduct } from "@/models/product.models";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import conf from "@/helpers/conf";
-import BadgeComponent from "@/components/customUi/product/Badge";
+import BadgeComponent from "@/components/customUI/product/Badge";
 import { useAppDispatch } from "@/store/store";
 import { selectProduct } from "@/store/productSlice";
 

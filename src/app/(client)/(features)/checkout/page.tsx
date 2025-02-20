@@ -1,6 +1,6 @@
 "use client"
 
-import Checkout from "@/components/customUi/checkout/Checkout";
+import Checkout from "@/components/customUI/checkout/Checkout";
 
 const CheckoutPage:React.FC = () => {
 

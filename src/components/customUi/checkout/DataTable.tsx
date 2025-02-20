@@ -1,4 +1,5 @@
-import React, { useMemo, 
+"use client"
+import React, { useEffect, useMemo, 
   useState } from "react";
 import {
   ColumnDef,
@@ -15,6 +16,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -22,6 +24,10 @@ import {
 import { cartType} from "@/store/cartSlice";
 import { Button } from "@/components/ui/button";
 import CheckoutButton from "./CheckoutButton";
+import cartService from "@/services/CartService";
+import { toast } from "@/hooks/use-toast";
+import { useAppDispatch } from "@/store/store";
+import ConfirmDialog from "../reusable/AlertDialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +40,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>();
   const [total, setTotal] = useState(0);
+  const dispatch = useAppDispatch();
   const table = useReactTable({
     data,
     columns,
@@ -42,6 +49,12 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 3,
+        pageIndex: 0,
+      },
     },
   });
 
@@ -60,11 +73,13 @@ export function DataTable<TData, TValue>({
   }, [setTotal, data]);
 
   return (
-    <div className="w-[90%] max-w-4xl mx-auto sm:px-10 py-8">
-      <div className="rounded-lg shadow-sm">
+    <div className="w-[100%] flex flex-col text-xs 
+      sm:text-sm max-w-4xl mx-auto sm:px-10 py-8">
+      <div className="rounded-lg shadow-sm mb-5">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getRowCount() > 0 
+              && table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id} className="font-semibold">
@@ -80,7 +95,7 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
 
-          <TableBody >
+          <TableBody  >
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -101,87 +116,107 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-muted-foreground"
+                  className="h-24 text-sm text-center text-muted-foreground"
                 >
                   No items in cart
                 </TableCell>
               </TableRow>
             )}
-
           </TableBody>
-          <TableCaption className="pt-4 mb-5">Shopping Cart Summary</TableCaption>
+
+          {table.getRowCount() > 0 && <TableFooter 
+            className="w-full bg-transparent hover:bg-transparent">
+            <TableRow >
+              <TableCell 
+                colSpan={columns.length} 
+                className="text-sm px-2 py-3 ">
+                  <div className="flex justify-between items-center">
+                    Total <span>{Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'INR',
+                  }).format(total)}</span>
+                  </div>
+              </TableCell>
+            </TableRow>
+          </TableFooter>}
         </Table>
       </div>
 
-      {/* Price summary  */}
-      <div className="mt-6 rounded-lg border mb-3 p-4 shadow-sm">
-        <div className="flex justify-between mb-3 items-center">
-          <span className="text-sm font-normal">Order Total</span>
-          <span className="text-sm font-normal">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(total)}
-          </span>
-        </div>
+      {table.getRowCount() !== 0 && <div 
+        className="delete-section flex space-x-2 justify-end">
 
+        <ConfirmDialog
+          title="Warning 🤚"
+          description={`Are you sure you want 
+            to delete the selected items?`}
+          key={new Date().getMilliseconds()}
 
-        <div className="flex justify-between mb-3 items-center">
-          <span className="text-sm font-normal">Delivery charge</span>
-          <span className="text-sm font-normal">
-          {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(40)}
-          </span>
-        </div>
+          triggerDisabled={
+            table.getSelectedRowModel().rows.length == 0}
 
-        <div className="flex justify-between mb-3 items-center">
-          <span className="text-sm font-normal">Tax charge</span>
-          <span className="text-sm font-normal">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(Math.floor(total * 0.18))}
-          </span>
-        </div>
+          action={async () => {
+            if(table.getIsAllPageRowsSelected()) {
+              const res = await cartService.deleteCarts({});
+              // dispatch()
+              res && toast({
+                title: "cart cleared",
+                description: "cart cleared successfully",
+                variant: "default"
+              })
+            }
+            else 
+              await cartService.deleteCarts({
+                ids: table.getSelectedRowModel().rows.map((row) => 
+                  (row.original as cartType)?._id.toString())})
+          }}
+          >
+            <Button 
+              disabled={ !(table.getIsAllPageRowsSelected() 
+                || table.getIsSomePageRowsSelected()) } 
+              >
+              { table.getIsAllPageRowsSelected() 
+                  ? "Clear all" 
+                  : "remove" }
+            </Button>
+        </ConfirmDialog>
 
-
-        <div className="flex mt-4 justify-between mb-3 items-center">
-          <span className="text-sm font-normal">Discount</span>
-          <span className="text-sm font-normal">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(- total * 0.1 )}
-          </span>
-        </div>
-
-          <hr />
-        <div className="flex mt-4 justify-between mb-3 items-center">
-          <span className="text-sm font-normal">Total Cost</span>
-          <span className="text-sm font-normal">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format( total + 40 + Math.floor(total * 0.18) - total * 0.1 )}
-          </span>
-        </div>
-
-      </div>
-
-      {/* Button section  */}
-       <div className="w-full flex justify-end" >
-          {/* <Button className="bg-gray-300 right-0 place-self-end mt-5 text-black">
-            Confirm Order
-          </Button> */}
-          <CheckoutButton items={table.getRowModel().rows.map((row) => ({
+        <CheckoutButton 
+          isDisabled={table.getRowCount() === 0}
+          items={table.getRowModel().rows.map((row) => ({
             name: (row.original as cartType).product.slug,
             price: (row.original as cartType).product.price,
             quantity: (row.original as cartType).quantity,
           }))} />
-       </div>
+      </div> }
 
+
+      { table.getRowCount() > 3 && <div className="flex items-center 
+      justify-end mt-2 space-x-2 py-4">
+      <Button
+          variant="outline"
+          size="sm"
+          onClick={() =>{
+            table.previousPage()
+            table.initialState
+              .pagination.pageIndex--
+          }}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {"<-"}
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            table.nextPage();
+            table.initialState
+              .pagination.pageIndex++
+          }}
+          disabled={!table.getCanNextPage()}
+        >
+          {"->"}
+        </Button>
+      </div>}
     </div>
   );  
 }

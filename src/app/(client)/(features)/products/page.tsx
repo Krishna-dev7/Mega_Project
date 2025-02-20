@@ -23,7 +23,7 @@ import {
 import { Categories, IProduct } from "@/models/product.models";
 import axios from "axios";
 import conf from "@/helpers/conf";
-import ProductItem from "@/components/customUi/product/ProductItem";
+import ProductItem from "@/components/customUI/product/ProductItem";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/store/store";
