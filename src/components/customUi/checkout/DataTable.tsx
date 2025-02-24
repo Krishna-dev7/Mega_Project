@@ -125,7 +125,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
 
           {table.getRowCount() > 0 && <TableFooter 
-            className="w-full bg-transparent hover:bg-transparent">
+            className="w-full bg-transparent hover:bg-transparent
+              text-violet-400">
             <TableRow >
               <TableCell 
                 colSpan={columns.length} 
@@ -186,6 +187,7 @@ export function DataTable<TData, TValue>({
             name: (row.original as cartType).product.slug,
             price: (row.original as cartType).product.price,
             quantity: (row.original as cartType).quantity,
+            image: (row.original as cartType).product.images[0].url
           }))} />
       </div> }
 

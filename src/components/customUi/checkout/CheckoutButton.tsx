@@ -13,6 +13,7 @@ interface CheckoutButtonProps {
     name: string; 
     price: number; 
     quantity: number }[];
+    image?: string;
   isDisabled: boolean;
 }
 function CheckoutButton({ items, isDisabled }
@@ -47,6 +48,7 @@ function CheckoutButton({ items, isDisabled }
 
   return (
     <Button
+      className="bg-violet-200"
       onClick={handleClick} 
       disabled={loading || isDisabled}>
         {loading ? "Processing..." : "Checkout"}

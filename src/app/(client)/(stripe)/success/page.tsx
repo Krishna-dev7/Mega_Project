@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const SuccessPage: React.FC = () => {
@@ -8,6 +8,10 @@ const SuccessPage: React.FC = () => {
   const handleReturnHome = () => {
     router.push("/");
   };
+
+  useEffect(() => {
+
+  })
 
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">

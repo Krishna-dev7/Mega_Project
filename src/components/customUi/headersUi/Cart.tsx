@@ -4,7 +4,7 @@ import { Card,
   CardHeader, 
   CardTitle } from "@/components/ui/card";
 import DataTable from "../checkout/DataTable";
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import { 
   useAppSelector,
   useAppDispatch } from "@/store/store";
@@ -12,15 +12,31 @@ import { ColumnDef } from "@tanstack/react-table";
 import { cartType, 
   decQuantity,
   delCart, 
-  incQuantity } from "@/store/cartSlice";
+  incQuantity, 
+  setCarts} from "@/store/cartSlice";
 import { Checkbox } from "@/components/ui/checkbox";
 import cartService from "@/services/CartService";
+import { ShoppingCart } from "lucide-react";
 
 
 const Cart: React.FC = () => {
   const dispatch = useAppDispatch();
   const key = useId();
-  const carts = useAppSelector(store => store.cart.carts);
+  const carts 
+    = useAppSelector(store => store.cart.carts);
+
+
+  useEffect(() => {
+    cartService.listCarts()
+      .then(res => {
+        // console.log("carts: ⚡",res.data.data);
+        dispatch(setCarts(res.data.data))
+      })
+      .catch(err => {
+        console.log("carts fetch error: ",
+          err.message);
+      })
+  }, [dispatch])
 
   const incItem = async (cartId:string, 
     quantity:number) => {
@@ -65,7 +81,8 @@ const Cart: React.FC = () => {
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value) =>
+             table.toggleAllPageRowsSelected(!!value)}
           aria-label="Sellect all"
         />
       },
@@ -92,8 +109,8 @@ const Cart: React.FC = () => {
             <h3 className="text-sm font-normal text-pretty text-ellipsis">
               {row.original.product.slug}</h3>
             <p className="text-sm">
-              <span className="text-gray-400">qty: </span> 
-              {row.original.quantity}</p>
+              <span className="text-gray-400">size: </span> 
+              {row.original.productSize[0]}</p>
           </div>
         </div>
       }
@@ -109,7 +126,8 @@ const Cart: React.FC = () => {
           flex items-center rounded-md ">
             <button 
               onClick={() => row.original?._id   
-                && decItem(row.original._id.toString(), row.original.quantity-1)
+                && decItem(row.original._id.toString(), 
+                    row.original.quantity-1)
               }
               className="btn btn-sm bg-gray-dark border
              border-gray-600 px-2 rounded-sm btn-sm ">-</button>
@@ -119,7 +137,8 @@ const Cart: React.FC = () => {
 
             <button 
               onClick={() => row.original?._id 
-                && incItem(row.original._id.toString(), row.original.quantity+1) 
+                && incItem(row.original._id.toString(), 
+                    row.original.quantity+1) 
               }
               className="btn btn-sm border 
             border-gray-600 px-2 rounded-sm">+</button>
@@ -142,10 +161,15 @@ const Cart: React.FC = () => {
 
       <Card 
         className="streaming-cart-card sm:w-3xl my-32 text-sm md:w-3/4 
-        lg:w-2/3 xl:w-1/2 w-[100%] ">
+        lg:w-2/3 xl:w-1/2 w-[100%] text-violet-100">
         <CardHeader>
-          <CardTitle className="text-lg font-normal text-pretty">
-            Your Cart👋</CardTitle>
+          <CardTitle className="text-lg font-normal flex 
+            items-center text-pretty text-violet-300">
+              Your Cart 
+              <ShoppingCart 
+                className="inline ml-2 font-bold"
+                size={15}/> 
+          </CardTitle>
         </CardHeader>
 
         <CardContent >

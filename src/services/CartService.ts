@@ -1,9 +1,8 @@
 import conf from "@/helpers/conf";
-import Cart, { ICart, Size } from "@/models/cart.models";
+import { Size } from "@/models/cart.models";
 import ApiResponse from "@/types/ApiResponse";
 import axios from "axios";
 import { cartType } from "@/store/cartSlice";
-import { Types } from "mongoose";
 
 interface props {
   userId: string,

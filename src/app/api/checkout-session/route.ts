@@ -8,7 +8,8 @@ type itemsType = {
   items: { 
     name: string; 
     price: number; 
-    quantity: number 
+    quantity: number,
+    image: string
   }[] 
 } 
 
@@ -22,8 +23,9 @@ export async function POST(req:NextRequest) {
         currency: "inr",
         product_data: {
           name: item.name,
+          images: [item.image]
         },
-        unit_amount: item.price * 100, // price in cents
+        unit_amount: item.price * 100,
       },
       quantity: item.quantity,
     }));
@@ -32,6 +34,10 @@ export async function POST(req:NextRequest) {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
+      billing_address_collection: "required",
+      shipping_address_collection: {
+        allowed_countries: ["IN"]
+      },
       success_url: `${req.headers.get('origin')}/success`,
       cancel_url: `${req.headers.get('origin')}/cancel`,
     });
