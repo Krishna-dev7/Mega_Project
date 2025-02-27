@@ -108,30 +108,46 @@ function NewArrivals() {
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center mb-16">
           <h2 className=" text-4xl text-white">New Arrivals</h2>
-          <button className="flex items-center text-luxury-gold hover:text-white transition-colors group">
-            View Collection <ChevronRight size={20} className="ml-2 group-hover:translate-x-2 transition-transform" />
+          <button className="flex items-center text-luxury-gold 
+            hover:text-white transition-colors group">
+            View Collection <ChevronRight size={20} className="ml-2 
+            group-hover:translate-x-2 transition-transform" />
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div 
+          className="grid grid-cols-1 md:grid-cols-2
+           lg:grid-cols-4 gap-8">
           {products.map((product, index) => (
             <div key={index} className="group cursor-pointer">
               <div className="relative overflow-hidden">
                 <img 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-[400px] object-cover transform group-hover:scale-105 transition duration-700"
+                  className="w-full h-[400px] object-cover transform 
+                  group-hover:scale-105 transition duration-700"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <button className="w-full bg-luxury-gold text-black py-3 font-semibold tracking-wider hover:bg-white transition-colors">
+                <div 
+                  className="absolute inset-0 bg-black/40 
+                  opacity-0 group-hover:opacity-100 
+                  transition-opacity duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-6
+                     transform translate-y-full group-hover:translate-y-0 
+                     transition-transform duration-300">
+                    <button className="w-full bg-luxury-gold text-black 
+                      py-3 font-semibold tracking-wider hover:bg-white 
+                      transition-colors">
                       ADD TO CART
                     </button>
                   </div>
                 </div>
               </div>
               <div className="mt-4 text-center">
-                <h3 className="font-display text-white text-lg">{product.name}</h3>
-                <p className="text-luxury-gold mt-1">{product.price}</p>
+                <h3 className="font-display text-white text-lg">
+                  {product.name}
+                </h3>
+                <p className="text-luxury-gold mt-1">
+                  {product.price}
+                </p>
               </div>
             </div>
           ))}

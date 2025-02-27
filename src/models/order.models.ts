@@ -15,6 +15,7 @@ export enum OrderStatus {
 }
 
 interface IOrder extends Document {
+  _id: Types.ObjectId
   userId: Types.ObjectId,
   totalAmount: number,
   status: OrderStatus,

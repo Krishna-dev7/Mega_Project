@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
 interface ISeller extends Document  {
+	_id: Types.ObjectId
 	userId: Types.ObjectId;
 	accountNumber: string;
 	totalProducts: number;

@@ -76,7 +76,7 @@ export function DataTable<TData, TValue>({
     <div className="w-[100%] flex flex-col text-xs 
       sm:text-sm max-w-4xl mx-auto sm:px-10 py-8">
       <div className="rounded-lg shadow-sm mb-5">
-        <Table>
+        <Table suppressHydrationWarning>
           <TableHeader>
             {table.getRowCount() > 0 
               && table.getHeaderGroups().map((headerGroup) => (
@@ -167,18 +167,23 @@ export function DataTable<TData, TValue>({
             }
             else 
               await cartService.deleteCarts({
-                ids: table.getSelectedRowModel().rows.map((row) => 
-                  (row.original as cartType)?._id.toString())})
+                ids: table.getSelectedRowModel()
+                  .rows.map((row) => (row.original as cartType)
+                    ?._id.toString())
+                })
           }}
           >
-            <Button 
-              disabled={ !(table.getIsAllPageRowsSelected() 
-                || table.getIsSomePageRowsSelected()) } 
+            <span
+              className={`px-3 py-2 text-black rounded-md
+                 ${table.getSelectedRowModel()
+                    .rows.length <= 0 
+                      ? "bg-neutral-400"
+                      : "bg-violet-200"}`}
               >
               { table.getIsAllPageRowsSelected() 
                   ? "Clear all" 
                   : "remove" }
-            </Button>
+            </span>
         </ConfirmDialog>
 
         <CheckoutButton 

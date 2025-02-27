@@ -172,7 +172,11 @@ const ProductDetail: React.FC = () => {
                     <span className="uppercase mb-4 block" >
                       {product.slug}
                     </span>
-                      ${product?.price}
+                    {new Intl.NumberFormat('en-IN', {
+                      style: 'currency',
+                      currency: 'INR',
+                    }).format(product?.price)
+                      }
                   </h1>
                   <BadgeComponent
                     className="mb-10"

@@ -14,6 +14,7 @@ import { IProduct } from "./product.models";
   }
 
 interface ICart extends Document {
+  _id: Types.ObjectId
   userId: Types.ObjectId;
   product: Types.ObjectId | IProduct,
   quantity: number,
