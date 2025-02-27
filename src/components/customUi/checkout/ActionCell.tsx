@@ -2,7 +2,12 @@
 
 import { cartType, delCart } from "@/store/cartSlice";
 import { useAppDispatch } from "@/store/store";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -31,7 +36,8 @@ export const ActionCell:React.FC<props> = ({
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={async () => {
+          onClick={ 
+            async () => {
             const res = await cartService
               .deleteCart(product._id.toString());
             res && dispatch(delCart({ id: product._id }));

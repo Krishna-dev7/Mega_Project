@@ -15,7 +15,8 @@ type props = {
 
 const CartItem:React.FC<props> = ({cart}) => {
   const dispatch = useAppDispatch();
-  const incItem = async (cartId:string, quantity:number) => {
+  const incItem = async (cartId:string,
+     quantity:number) => {
     try {
       const res = await cartService.updateCart({
         cartId, quantity
@@ -28,7 +29,8 @@ const CartItem:React.FC<props> = ({cart}) => {
     }
   }
 
-  const decItem = async (cartId:string, quantity: number) => {
+  const decItem = async (cartId:string,
+     quantity: number) => {
     try {
       if(quantity <= 0) {
         const res = await cartService.deleteCart(cartId)
@@ -67,12 +69,14 @@ const CartItem:React.FC<props> = ({cart}) => {
         <span className="text-gray-400" > Qty: {cart?.quantity} </span>
       </div>
     </div>
-    <div className="sec3 flex-shrink-0 mx-auto sm:text-[1rem] text-sm 
-        text-pretty ">
+    <div 
+      className="sec3 flex-shrink-0 mx-auto sm:text-[1rem] text-sm 
+      text-pretty ">
       <p className="text-fuchsia-300 text-center " >
         ${cart?.product.price ? cart.product.price * cart.quantity : 0}
       </p>
-      <div className="text-gray-500 mt-1 mx-auto justify-center flex gap-1 items-center" >
+      <div className="text-gray-500 mt-1 mx-auto justify-between
+         flex gap-1 items-center bg-gray-700 py-2 px-3 rounded-lg " >
         <span > 
           <PlusCircleIcon className="hover:text-gray-300 hover:cursor-pointer" fontStyle={"light"} size={17} 
           onClick={ () => cart?._id 
@@ -86,7 +90,7 @@ const CartItem:React.FC<props> = ({cart}) => {
         <span>
           <MinusCircleIcon className="hover:text-gray-300 
             hover:cursor-pointer" fontStyle={"light"} size={17}
-          onClick={() => cart?._id 
+          onClick={() => cart?._id   
             && decItem(cart._id.toString(), cart.quantity-1)} /> 
         </span>
       </div>

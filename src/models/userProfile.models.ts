@@ -4,6 +4,7 @@ import mongoose, {
 	Document } from "mongoose";
 
 interface IUserProfile extends Document {
+	_id: Types.ObjectId
 	userId: Types.ObjectId;
 	address: string;
 	totalSpent: number;

@@ -4,6 +4,7 @@ import mongoose, {
   Document } from "mongoose";
 
 interface IProduct extends Document {
+  _id: Types.ObjectId
   brand: string;
   category: Categories,
   countInStock: number;

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import ThemeProvider from "@/components/customUi/providers/ThemeProvider";
-import RootProvider from "@/components/customUi/providers/RootProvider";
-import AccountProvider from "@/components/customUi/providers/AccountProvider";
+import ThemeProvider from "@/components/customUI/providers/ThemeProvider";
+import RootProvider from "@/components/customUI/providers/RootProvider";
+import AccountProvider from "@/components/customUI/providers/AccountProvider";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/api/(users)/auth/[...nextauth]/option"
-import SubRootProvider from "@/components/customUi/providers/SubRootProvider";
+import SubRootProvider from "@/components/customUI/providers/SubRootProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
@@ -47,7 +47,8 @@ export default async function RootLayout({
         [&::-webkit-scrollbar-thumb]:rounded-full
         dark:[&::-webkit-scrollbar-thumb]:bg-gray-500
         hover:[&::-webkit-scrollbar-thumb]:bg-gray-500
-        dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-500`}>
+        dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-500
+          transition-all duration-300 ease-in-out`}>
 
         <AccountProvider session={session}>
           <RootProvider>

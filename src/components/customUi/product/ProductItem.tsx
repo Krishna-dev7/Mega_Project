@@ -1,11 +1,12 @@
 import React from "react";
 import { IProduct } from "@/models/product.models";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import conf from "@/helpers/conf";
-import BadgeComponent from "@/components/customUi/product/Badge";
-import { useAppDispatch } from "@/store/store";
+import { useAppDispatch} from "@/store/store";
 import { selectProduct } from "@/store/productSlice";
+import cartService from "@/services/CartService";
+import { toast } from "@/hooks/use-toast";
+import { useSession } from "next-auth/react";
+import { setCart } from "@/store/cartSlice";
 
 type Props = {
   product: IProduct;
@@ -16,50 +17,84 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
   const router = useRouter();
   const placeholderImage = "https://via.placeholder.com/300x200";
   const dispatch = useAppDispatch();
+  const session = useSession()
+  const createCart = async (e:React.MouseEvent) => {
+    e.stopPropagation()
+    if (session && session.status == "unauthenticated") {
+      return toast({
+        title: "Unauthenticated 😔",
+        description: "Signin before adding Cart"
+      });
+    }
+  
+    if (session.data?.user._id && product?._id) {
+      const cart = await cartService.createCart({
+        userId: session.data?.user._id,
+        productId: product?._id.toString()
+      });
+
+      console.log("Cart 😄", cart);
+      if (cart) {
+        dispatch(setCart(cart));
+        toast({
+          title: "Cart 😄",
+          description: "Cart added successfully"
+        })
+      }
+    }
+  };
   
   return (
-    <Card
+    <div 
       onClick={() =>{
-        router.push(`${conf.url}/products/${product._id?.toString()}`)
+        router.push(`/products/${product._id?.toString()}`)
         dispatch(selectProduct(product._id))
       }}
-      className={`rounded-lg p-4 sm:p-2 bg-gray-800
-      hover:shadow-md overflow-hidden cursor-pointer shadow-sm 
-      ${className} sm:w-[12rem] sm:h-[18rem] md:w-[18rem] md:h-[24rem] 
-      lg:w-[20rem] lg:h-[30rem] w-full h-auto
-      dark:hover:border-slate-600`}
-    >
-      <CardHeader className="p-0 items-center">
-        <div className="relative w-full h-96 sm:h-72 md:h-96">
-          <img
-            src={product.images[0]?.url || placeholderImage}
-            alt={product.description || "Product Image"}
-            className="w-full h-full object-cover rounded-md object-center"
-          />
+      className="group cursor-pointer mb-7">
+      <div className="relative overflow-hidden">
+        <img
+          src={
+            product.images[0].url
+              || placeholderImage
+          }
+          alt={product.slug}
+          className="w-full h-[400px] object-cover transform 
+            group-hover:scale-105 transition duration-700"
+        />
+        <div
+          className="absolute inset-0 bg-black/40 
+            opacity-0 group-hover:opacity-100 
+            transition-opacity duration-300">
+          <div 
+            className="absolute bottom-0 left-0 right-0 p-6
+              transform translate-y-full group-hover:translate-y-0 
+              transition-transform duration-300">
+            <button 
+              onClick={createCart}
+              className="w-full bg-luxury-gold text-black 
+                py-3 font-semibold tracking-wider hover:bg-white 
+                transition-colors z-100">
+              ADD TO CART
+            </button>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent className="flex flex-row text-sm lg:py-2 mt-5 items-start justify-between py-2 p-4">
-       
-        <p className="text-lg flex  font-bold dark:text-gray-100">
-            ${product.price}
-            <span className="px-3">
-              <BadgeComponent category={product.category}>
-                {product.category}
-              </BadgeComponent>
-            </span>
-          </p>
-          <h2 className="dark:text-white text-ellipsis overflow-hidden  text-sm line-clamp-1 " >{product.slug}</h2>
-        {/* <div className="text-center">
-          <Link href={`${conf.url}/api/products/${product._id?.toString()}`} passHref>
-            <Button className="w-full text-sm md:py-3 border-none sm-py-1 lg:py-3 bg-yellow-500
-              text-black dark:text-gray-900 dark:bg-gradient-to-r dark:from-orange-400 dark:to-orange-600 hover:bg-yellow-500
-               transition-colors duration-300 ">
-              Buy Now
-            </Button>
-          </Link>
-        </div> */}
-      </CardContent>
-    </Card>
+      </div>
+      <div 
+        className="mt-4 text-center flex items-center
+          justify-center gap-5">
+        <h3 
+          className="font-display text-ellipsis 
+            line-clamp-1 text-white mt-1 text-sm">
+          {product.slug}
+        </h3>
+        <p className="text-sm mt-1">
+          {new Intl.NumberFormat('en-IN', {
+            currency: 'INR',
+            style: 'currency',
+          }).format(product.price)}
+        </p>
+      </div>
+    </div>
   );
 };
 

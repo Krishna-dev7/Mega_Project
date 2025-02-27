@@ -1,6 +1,7 @@
 import mongoose, { 
 	Document,
-	Schema } from "mongoose";
+	Schema, 
+	Types} from "mongoose";
 
 // interface to build perfect userSchema
 interface UserVerification {
@@ -17,6 +18,7 @@ export const enum enumProvider {
 }
 
 interface UserSchema extends Document, UserVerification {
+	_id: Types.ObjectId
 	username: string;
 	fullname: string;
 	email: string;

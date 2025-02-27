@@ -21,7 +21,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     setCarts: (state, action:PayloadAction<cartsType>) => { 
-      // console.log("carts received: 😄⚡", 
+      // console.log("carts received:", 
       //  action.payload)
        state.carts 
         = JSON.parse(JSON.stringify(action.payload));

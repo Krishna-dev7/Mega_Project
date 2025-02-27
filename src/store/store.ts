@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import themeReducer from "./themeSlice";
 import cartReducer from "./cartSlice";
 import authReducer from "./authSlice";
+import pageReducer from "./paginationSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     cart: cartReducer,
     product: productReducer,
     theme: themeReducer,
+    pageination: pageReducer
   }
 })
 

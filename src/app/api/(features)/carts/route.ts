@@ -92,6 +92,7 @@ export async function DELETE(req:NextRequest) {
 
     const {searchParams} = new URL(req.url);
     const id = searchParams.get('id');
+    const ids = searchParams.get('ids')?.split(",");
     const action = searchParams.get('action');
     if(!(id || action)) {
       return NextResponse.json({
@@ -101,6 +102,16 @@ export async function DELETE(req:NextRequest) {
     }
 
     if(action == "removeAll") {
+
+      if(ids?.length !== 0 
+          && !ids?.includes('undefined')) {
+        console.log("ids", ids);
+        await Cart.deleteMany({_id: {$in: ids}});
+        return NextResponse.json({
+          success: true,
+          message: "Carts deleted successfully"
+        }, {status: 200})
+      }
       await Cart.deleteMany({});
       return NextResponse.json({
         success: true,

@@ -40,15 +40,24 @@ import nodemailer from "nodemailer";
 
 // using nodemailer strategy
 
+// const transport = nodemailer.createTransport({
+// 	host: "google",
+// 	port: 2525,
+// 	secure: false,
+// 	auth: {
+// 		user: "1dacdabcb61b4b",
+// 		pass: "970db9c50d2333",
+// 	},
+// });
+
+
 const transport = nodemailer.createTransport({
-	host: "sandbox.smtp.mailtrap.io",
-	port: 2525,
-	secure: false,
-	auth: {
-		user: "1dacdabcb61b4b",
-		pass: "970db9c50d2333",
-	},
-});
+  service: 'gmail',
+  auth: {
+    user: 'onboarding.nova@gmail.com',
+    pass: 'ngegevhsxzbdwltx'
+  }
+})
 
 
 
@@ -68,6 +77,7 @@ const sendVerificationEmail = async (
       html: `<div style="font-family: Arial, sans-serif; background-color: #f9fafb; padding: 20px;">
            <div style="max-width: 400px; margin: auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
              <div style="padding: 20px; text-align: center; border-bottom: 1px solid #e5e7eb;">
+             <h1>Hey👋! ${username}</h1>
                <h2 style="font-size: 20px; font-weight: bold; color: #111827;">OTP Verification</h2>
                <p style="font-size: 14px; color: #6b7280; margin-top: 8px;">Use the code below to verify your email address</p>
              </div>

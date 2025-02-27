@@ -15,8 +15,7 @@ import forgotSchema from "@/schemas/forgot.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { Toaster } from "@/components/ui/toaster";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import {
   Card,
@@ -40,6 +39,7 @@ const ForgotPasswordPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof forgotSchema>>({
     resolver: zodResolver(forgotSchema),
@@ -48,34 +48,31 @@ const ForgotPasswordPage: React.FC = () => {
       newPassword: ""
     }
   });
-
-
+  
   const submitForm = async (
     data: z.infer<typeof forgotSchema>
   ) => {
     try {
       setIsLoading(true);
       // console.log(data);
-      const res 
-        = await accountService.forgotPassword(data);
+      const res = await accountService.forgotPassword(data);
 
-      if (!res.data.success) {
+      if (!res.success) {
         toast({
           title: "Error",
           variant: "destructive",
-          description: res.data.message
+          description: res.message
             || "something went wrong on forgotpassword"
         })
-
         return;
       }
 
       toast({
         title: "Success",
-        description: res.data.message
+        description: res.message
       })
 
-      redirect("/signin");
+      router.push("/signin");
     } catch (error: any) {
       console.log("Something went wrong in forgot password: ", error.messgae);
       toast({

@@ -1,26 +1,21 @@
 "use client"
-import FeatureCategory from '@/components/customUi/layouts/Features';
-import Hero from '@/components/customUi/layouts/Hero';
-import Moto from '@/components/customUi/Moto';
-import NewArrivals from '@/components/customUi/layouts/NewArrivals';
-import { useEffect } from 'react';
-import BenefitComponent from '@/components/customUi/layouts/WhyUs';
-import BrandComponent from '@/components/customUi/layouts/BrandCollaboration';
-import AboutUs from '@/components/customUi/layouts/AboutUs';
-
+import FeatureCategory 
+  from '@/components/customUI/layouts/Features';
+import HeroComponent from '@/components/customUI/layouts/Hero';
+import NewArrivals from '@/components/customUI/layouts/NewArrivals';
+import BenefitComponent from '@/components/customUI/layouts/WhyUs';
+import BrandComponent 
+  from '@/components/customUI/layouts/BrandCollaboration';
 
 export default function Home() {
 
   return (
     <div className=" scroll-smooth min-h-screen text-white">
-
-      {/* Featured Products Section */}
-      <Hero />
+      <HeroComponent />
       <FeatureCategory />
       <NewArrivals />
       <BenefitComponent />
       <BrandComponent />
-      {/* <AboutUs/> */}
     </div>
   );
 }

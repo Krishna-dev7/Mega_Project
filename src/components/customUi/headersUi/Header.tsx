@@ -1,13 +1,11 @@
 "use client"
 import React, {useState } from "react";
-import { Key, Search } from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import navItems from "@/helpers/navConfig";
 import UserSheet from "./UserSheet";
-import CartSheet from "./CartSheet";
 import { useAppSelector } from "@/store/store";
-// import { useAppSelector, useAppDispatch } from "@/store/store";
 
 const Header = () => {
 
@@ -15,11 +13,13 @@ const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(currentTab);
   const router = useRouter();
-
   const auth = useAppSelector(store => store.auth)
+  const carts 
+    = useAppSelector(store => store.cart.carts)
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center">
+    <div className="fixed top-0 left-0 right-0 z-50
+     flex flex-col items-center">
       {/* Announcement Bar */}
       {/* <div className="w-full bg-black text-white text-center py-1.5 text-xs font-light">
         Free Shipping on Orders Above ₹5000
@@ -30,10 +30,12 @@ const Header = () => {
           {/* Main Floating Navbar */}
           <div className="relative sm:top-1 lg:top-1">
             {/* Background Blur Effect */}
-            <div className="absolute inset-0 bg-white/20 backdrop-blur-lg rounded-full" />
+            <div className="absolute inset-0 bg-white/20 
+              backdrop-blur-lg rounded-full" />
 
             {/* Glass Morphism Effect */}
-            <nav className="relative flex items-center bg-white/50 shadow-lg rounded-full border border-white/20 p-2">
+            <nav className="relative flex items-center bg-white/50
+             shadow-lg rounded-full border border-white/20 p-2">
               {/* Logo */}
               <div className="px-6 text-lg font-semibold text-gray-900">
                 NOVA.
@@ -43,9 +45,9 @@ const Header = () => {
               <div className="hidden md:flex flex-1 justify-center">
                 <div className="bg-gray-100/70 rounded-full p-1">
                   {navItems.map((item, index) => {
-                    if(item.slug == "Login" && auth.authStatus) {
-                      return
-                    }
+                    if(item.slug == "Login" 
+                        && auth.authStatus) return;
+                        
                     return  <button
                     key={index}
                     onClick={() => {
@@ -66,8 +68,10 @@ const Header = () => {
               </div>
 
               {/* Right Icons */}
-              <div className="flex  items-center justify-end flex-1 sm:flex-grow-0 gap-4 px-6">
-                <button className="hidden md:flex text-gray-700 hover:text-gray-900 transition-colors">
+              <div className="flex items-center justify-end flex-1 
+                sm:flex-grow-0 gap-4 px-6">
+                <button className="hidden md:flex text-gray-700
+                 hover:text-gray-900 transition-colors">
                   <Search className="w-4 h-4" />
                 </button>
                 
@@ -75,8 +79,19 @@ const Header = () => {
                 <UserSheet />
                 
                 
-                <div className="relative flex items-center text-gray-700 hover:text-gray-900 transition-colors">
-                  {auth.authStatus && <CartSheet /> }
+                <div 
+                  onClick={() => router.push("/carts")}
+                  className="relative flex items-center text-gray-700 
+                    hover:text-gray-900 transition-colors cursor-pointer">
+                  {auth.authStatus 
+                    && <>
+                    <ShoppingCart className="w-4 h-4 dark:text-black " />
+                    <span className="absolute -top-1 -right-1 bg-black 
+                      text-white font-bold text-xs rounded-full w-3.5 h-3.5 flex 
+                      items-center justify-center">
+                        {carts.length}
+                    </span>
+                  </> }
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -86,13 +101,17 @@ const Header = () => {
                 >
                   <div className="space-y-1">
                     <span className={`block w-4 h-0.5 bg-current transition-all duration-300 ${
-                      isNavOpen ? 'rotate-45 translate-y-1.5' : ''
+                      isNavOpen 
+                        ? 'rotate-45 translate-y-1.5' 
+                        : ''
                     }`} />
                     <span className={`block w-4 h-0.5 bg-current transition-all duration-300 ${
                       isNavOpen ? 'opacity-0' : ''
                     }`} />
                     <span className={`block w-4 h-0.5 bg-current transition-all duration-300 ${
-                      isNavOpen ? '-rotate-45 -translate-y-1.5' : ''
+                      isNavOpen 
+                        ? '-rotate-45 -translate-y-1.5' 
+                        : ''
                     }`} />
                   </div>
                 </button>
@@ -101,19 +120,24 @@ const Header = () => {
           </div>
 
           {/* Mobile Navigation Menu */}
-          <div className={`md:hidden absolute top-full left-0 right-0 mt-2 overflow-hidden transition-all duration-300 ${
-            isNavOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
-          }`}>
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-lg borde border-white/20 p-4">
+          <div className={`md:hidden absolute top-full left-0 right-0 
+            mt-2 overflow-hidden transition-all duration-300 
+            ${ isNavOpen 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 -translate-y-4 pointer-events-none'
+            }`}>
+            <div className="bg-white/80 backdrop-blur-lg rounded-2xl 
+              shadow-lg borde border-white/20 p-4">
               <ul className="space-y-2">
                 {navItems.map((item, index) => {
-                  if(item.slug == "Login" && auth.authStatus) {
-                    return
-                  }
+                  if(item.slug == "Login" 
+                      && auth.authStatus) return;
+
                   return <li key={index}>
                   <Link 
                     href={item.href}
-                    className={`block py-2 px-4 text-sm rounded-lg transition-colors ${
+                    className={`block py-2 px-4 text-sm rounded-lg
+                      transition-colors ${
                       activeTab === item.slug 
                         ? 'bg-black text-white' 
                         : 'text-gray-600 hover:bg-gray-100'

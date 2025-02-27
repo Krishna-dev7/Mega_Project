@@ -4,13 +4,15 @@ import { useParams } from "next/navigation";
 import axios from "axios";
 import conf from "@/helpers/conf";
 import { IProduct } from "@/models/product.models";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import BadgeComponent from "@/components/customUi/product/Badge";
+import { ChevronLeft, 
+  ChevronRight, Star } from "lucide-react";
+import BadgeComponent from "@/components/customUI/product/Badge";
 import { UserSchema } from "@/models/user.models";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, 
+  AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import ShinyButton from "@/components/ui/shiny-button";
-import Review from "@/components/customUi/product/Review";
-import Description from "@/components/customUi/product/Description";
+import Review from "@/components/customUI/product/Review";
+import Description from "@/components/customUI/product/Description";
 import cartService from "@/services/CartService";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
@@ -69,7 +71,7 @@ const ProductDetail: React.FC = () => {
   const createCart = async () => {
     if (session && session.status == "unauthenticated") {
       return toast({
-        title: "Unauthenticated 😡",
+        title: "Unauthenticated 😔",
         description: "Signin before adding Cart"
       });
     }
@@ -92,23 +94,27 @@ const ProductDetail: React.FC = () => {
   };
 
   return (
-    product && <div className="min-h-screen dark:bg-[#121212] px-1 pt-24">
+    product && <div 
+      className="min-h-screen dark:bg-[#121212] px-1 pt-24">
       <div
-        
-        className="max-w-7xl sm:text-sm text-xs sm:border dark:border-gray-400 border-black rounded-lg shadow-md
-         mx-auto px-4 sm:px-6 lg:px-8">
+        className="max-w-7xl md:text-sm text-xs sm:border 
+        dark:border-gray-400 border-black rounded-lg shadow-md
+          mx-auto px-4 sm:px-6 lg:px-8">
 
 
-        <div className="  overflow-hidden">
-          <div className="flex flex-col lg:flex-row">
+        <div className="overflow-hidden">
+          <div className="flex flex-col sm:flex-row">
             {/* Image Section */}
-            <div className="lg:w-1/2 p-6 space-y-6">
+            <div className="md:w-1/2 sm:w-56 w-full mx-auto p-6 
+              space-y-6">
               {/* Main Image */}
-              <div className="relative aspect-square rounded-xl overflow-hidden ">
+              <div className="relative aspect-square rounded-xl 
+                overflow-hidden ">
                 <img
                   src={activeImage || product?.images[0]?.url}
                   alt={product?.description || "Product"}
-                  className="w-full h-full object-cover object-center transition-all duration-300"
+                  className="w-full h-full object-cover object-center
+                   transition-all duration-300"
                 />
               </div>
 
@@ -116,22 +122,25 @@ const ProductDetail: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => scroll('left')}
-                  className="absolute border border-black left-0 top-1/2 -translate-y-1/2
-                  rounded-full p-1 shadow-md hover:bg-white transition-colors z-10"
+                  className="absolute border border-black left-0 top-1/2 
+                  -translate-y-1/2 rounded-full p-1 shadow-md
+                 hover:bg-white transition-colors z-10"
                 >
                   <ChevronLeft className="w-5 h-5 text-gray-600" />
                 </button>
 
                 <div
                   id="image-scroll"
-                  className="flex gap-4 mx-2 my-2 py-4 overflow-hidden scroll-smooth px-8"
+                  className="flex gap-4 mx-2 my-2 py-4 
+                  overflow-hidden scroll-smooth px-8"
                 >
                   {product?.images.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setActiveImage(image.url)}
-                      className={`flex-shrink-0 sm:w-20 sm:h-20 w-14 h-14 rounded-lg
-                       overflow-hidden transition-all duration-200 ${activeImage === image.url
+                      className={`flex-shrink-0 sm:w-20 sm:h-20 w-14 
+                        h-14 rounded-lg overflow-hidden transition-all
+                         duration-200 ${activeImage === image.url
                           ? 'ring-2 ring-gray-300'
                           : ''
                         }`}
@@ -147,8 +156,9 @@ const ProductDetail: React.FC = () => {
 
                 <button
                   onClick={() => scroll('right')}
-                  className="absolute border border-black right-0 top-1/2 -translate-y-1/2
-                  rounded-full p-1 shadow-md hover:bg-white transition-colors z-10" >
+                  className="absolute border border-black right-0 top-1/2 
+                  -translate-y-1/2 rounded-full p-1 shadow-md
+                   hover:bg-white transition-colors z-10" >
                   <ChevronRight className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
@@ -159,8 +169,14 @@ const ProductDetail: React.FC = () => {
               <div className="space-y-6  sm:px-10 ">
                 <div className="space-y-2">
                   <h1 className="sm:text-2xl text-lg  mb-4" >
-                    <span className="uppercase mb-4 block" >{product.slug}</span>
-                    ${product?.price}
+                    <span className="uppercase mb-4 block" >
+                      {product.slug}
+                    </span>
+                    {new Intl.NumberFormat('en-IN', {
+                      style: 'currency',
+                      currency: 'INR',
+                    }).format(product?.price)
+                      }
                   </h1>
                   <BadgeComponent
                     className="mb-10"
@@ -179,7 +195,8 @@ const ProductDetail: React.FC = () => {
                       ))}
                     </p>
 
-                    <div className="profile flex border-l border-yellow-400 px-5 items-center gap-1" >
+                    <div className="profile flex border-l 
+                      border-yellow-400 px-5 items-center gap-1" >
                       <Avatar>
                         <AvatarImage
                           className="w-6 h-6 rounded-full"
@@ -200,13 +217,17 @@ const ProductDetail: React.FC = () => {
                         
                <div className="flex gap-3">
                 <ShinyButton >
-                  <span  className="text-[.6rem] text-yellow-400 ">Purchase</span>
+                  <span  className="text-[.6rem] text-yellow-400 ">
+                    Purchase
+                  </span>
                 </ShinyButton>
 
                   <ShinyButton
                     onClick={createCart}
                   className="bg-gray-300" >
-                  <span  className="text-[.6rem]  text-black">Add To Cart</span>
+                  <span  className="text-[.6rem] text-black">
+                    Add To Cart
+                  </span>
                 </ShinyButton>
                </div>
                 {/* <Button className="w-20 border-none px-12 py-5 bg-pink-400 hover:bg-pink-400 rounded-sm
@@ -222,24 +243,33 @@ const ProductDetail: React.FC = () => {
 
       {/* Product description and Review */}
      
-      <div className="btns text-black dark:text-white max-w-7xl rounded-md
-       flex gap-1 mx-auto mt-20  items-center w-full sm:justify-start justify-center text-sm ">
+      <div className="btns text-black dark:text-white max-w-7xl
+        rounded-md flex gap-1 mx-auto mt-20 items-center w-full
+        sm:justify-start justify-center text-sm ">
         <button
           onClick={() => setIsReviewOpen(true)}
-          className={`border border-black dark:border-gray-400 rounded-sm px-4 py-2
-            ${isReviewOpen ? "bg-violet-400 text-black" : ""}`}>
+          className={`border border-black dark:border-gray-400
+             rounded-sm px-4 py-2 ${
+              isReviewOpen 
+                ? "bg-violet-400 text-black" 
+                : ""}`}>
           Review
         </button>
         <button
          onClick={() => setIsReviewOpen(false)}
-         className={`border border-black dark:border-gray-400 rounded-sm px-4 py-2
-           ${!isReviewOpen ? "bg-violet-400 text-black" : ""}`}>
+         className={`border border-black dark:border-gray-400 
+          rounded-sm px-4 py-2 ${
+            !isReviewOpen 
+              ? "bg-violet-400 text-black" 
+              : ""}`}>
           Description
           </button>
       </div>
 
 
-      {isReviewOpen ? <Review product={product} /> : <Description product={product} />}
+      { isReviewOpen 
+          ? <Review product={product} /> 
+          : <Description product={product} />}
      
     </div>
   );

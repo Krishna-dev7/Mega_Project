@@ -50,6 +50,48 @@ async function handler(req:NextRequest) {
 }
 
 
+export async function DELETE(req:NextRequest) {
+  try {
+    const {searchParams} = new URL(req.url);
+    const userID = searchParams.get("userID");
+    if(!userID) {
+      return NextResponse.json({
+        success: false,
+        message: "Please send userID"
+      }, {status: 400 })
+    }
+
+    const deletedUser:(UserSchema | null) 
+      = await User.findByIdAndDelete(userID);
+
+    if(!deletedUser) {
+      return NextResponse.json({
+        success: false,
+        message: "User not found"
+      }, {status: 404})
+    } 
+
+    deletedUser.role == "seller"
+      ? await SellerProfile.findOneAndDelete({userId: userID})
+      : await UserProfile.findOneAndDelete({userId: userID})
+
+    return NextResponse.json({
+      success: true,
+      message: "user has been deleted",
+      data: deletedUser
+    }, {status: 200})
+
+  } catch (err:any) {
+    console.log("Users Route Delete error", err.message)
+    return NextResponse.json({
+      success: false,
+      message: err.message 
+        || "Something went wrong"
+    }, {status: 500});
+  }
+}
+
+
 export {
   handler as GET
 }

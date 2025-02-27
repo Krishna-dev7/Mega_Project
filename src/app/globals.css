@@ -170,3 +170,14 @@ body {
 .hero-gradient {
   background: linear-gradient(to right, #000 40%, transparent 100%);
 }
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

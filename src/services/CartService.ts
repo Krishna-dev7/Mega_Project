@@ -1,9 +1,8 @@
 import conf from "@/helpers/conf";
-import Cart, { ICart, Size } from "@/models/cart.models";
+import { Size } from "@/models/cart.models";
 import ApiResponse from "@/types/ApiResponse";
 import axios from "axios";
 import { cartType } from "@/store/cartSlice";
-import { Types } from "mongoose";
 
 interface props {
   userId: string,
@@ -60,10 +59,11 @@ class CartService {
     }
   }
 
-  async deleteCarts():Promise<boolean> {
+  async deleteCarts({ids}: {ids?: Array<string>})
+    :Promise<boolean> {
     try {
       const res = await axios.delete<ApiResponse>(
-        `${conf.url}/api/carts?action=removeAll` )
+        `${conf.url}/api/carts?action=removeAll&ids=${ids?.join(",")}`)
       return res.data.success
     } catch (err:any) {
       this.handleError(
