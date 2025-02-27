@@ -23,7 +23,7 @@ const adminNavItems = [
   },
   {
     slug: "Shop",
-    url: "/dashboard/shop",
+    url: "/dashboard/shop/products",
     icon: ShoppingCart,
   },
   {
