@@ -124,9 +124,14 @@ class AccountService {
     try {
 
       const url = `${conf.url}/api/forgotPassword`;
-      const res = await axios.postForm<ApiResponse>(
-        url, data )
-      return res.data;
+      const res = await axios.post<ApiResponse>(
+        url, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        } )
+        console.log(res.data)
+      return res.data || false;
     } catch (err:any) {
       this.handleError({
         type: 'forgotPassword', err})
