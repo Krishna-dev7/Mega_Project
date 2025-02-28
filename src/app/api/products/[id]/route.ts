@@ -15,7 +15,8 @@ type paramType = {
 }
 
 const handler 
-  = async function(req:NextRequest, {params}:any) : Promise<NextResponse> {
+  = async function(req:NextRequest, {params}:any) 
+    : Promise<NextResponse> {
     try {  
       // get only single product
 
