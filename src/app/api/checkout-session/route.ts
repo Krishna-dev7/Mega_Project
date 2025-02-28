@@ -34,7 +34,6 @@ export async function POST(req:NextRequest) {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
-      invoice_creation: true,
       billing_address_collection: "required",
       shipping_address_collection: {
         allowed_countries: ["IN"]
@@ -42,8 +41,6 @@ export async function POST(req:NextRequest) {
       success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.get('origin')}/cancel`,
     });
-
-    
 
     return NextResponse.json({
       id: session.id,

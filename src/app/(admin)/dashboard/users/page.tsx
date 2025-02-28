@@ -1,3 +1,4 @@
+'use client'
 import SideBar from "@/components/admin/SideBar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {

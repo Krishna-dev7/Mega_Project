@@ -25,10 +25,7 @@ import SideBar from "@/components/admin/SideBar"
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen flex dark:bg-transparent">
-      {/* Sidebar */}
-      <SideBar />      
-
+    <div className="min-h-screen flex dark:bg-transparent">  
       {/* Main Content */}
       <div className="flex-1 min-h-screen">
         {/* Header */}

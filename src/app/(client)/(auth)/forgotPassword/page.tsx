@@ -15,7 +15,7 @@ import forgotSchema from "@/schemas/forgot.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -25,12 +25,8 @@ import {
   CardTitle
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
-import axios from "axios";
-import ApiResponse from "@/types/ApiResponse";
-import conf from "@/helpers/conf";
 import accountService from "@/services/AccountService";
 import ShinyButton from "@/components/ui/shiny-button";
 
@@ -88,13 +84,15 @@ const ForgotPasswordPage: React.FC = () => {
 
 
   return <div
-    className="flex bg-neutral-100 w-screen items-center justify-center min-h-screen bg-background" >
+    className="flex bg-neutral-100 w-screen items-center
+     justify-center min-h-screen bg-background" >
 
     {/* Back Button */}
     <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
       <Link
         href="/"
-        className="flex items-center text-gray-700 hover:text-gray-900 font-medium transition duration-150 ease-in-out"
+        className="flex items-center text-gray-700 hover:text-gray-900 
+          font-medium transition duration-150 ease-in-out"
       >
         <ArrowLeft size={20} className="mr-2" />
         <span className="text-sm sm:text-base">Back</span>
@@ -102,9 +100,13 @@ const ForgotPasswordPage: React.FC = () => {
     </div>
 
 
-    <Card className="w-full border shadow-sm bg-neutral-100 text-gray-800 font-bold max-w-md">
+    <Card className="w-full border shadow-sm bg-neutral-100
+     text-gray-800 font-bold max-w-md">
       <CardHeader>
-        <CardTitle className="text-center text-2xl mb-3" >Forgot Password ⚡</CardTitle>
+        <CardTitle 
+          className="text-center text-2xl mb-3" >
+           Forgot Password ⚡
+        </CardTitle>
         <CardDescription
           className="text-sm text-center">
           Enter your email and new password to reset your password.
@@ -146,8 +148,11 @@ const ForgotPasswordPage: React.FC = () => {
 
                       <button
                         onClick={() => setShowPassword(prev => !prev)}
-                        className="absolute right-3 top-2.5 text-gray-700 hover:text-gray-900" >
-                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        className="absolute right-3 top-2.5 
+                          text-gray-700 hover:text-gray-900" >
+                        {showPassword 
+                          ? <EyeOff size={20} /> 
+                          : <Eye size={20} />}
                       </button>
                     </div>
                   </FormControl>
@@ -156,10 +161,12 @@ const ForgotPasswordPage: React.FC = () => {
               )}
             />
 
-            <ShinyButton type="submit" className=" bg-gray-900  text-white py-3" >
+            <ShinyButton 
+              type="submit" 
+              className=" bg-gray-900 text-white py-3" >
               <span className="text-sm capitalize">
                 {isLoading ? "Changing..." : "Change"}
-                </span>
+              </span>
             </ShinyButton>
           </form>
         </Form>
