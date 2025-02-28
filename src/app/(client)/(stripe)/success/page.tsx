@@ -30,7 +30,7 @@ export default function SuccessPage() {
   return (
     <div 
       className="min-h-screen w-full
-      bg-black z-0 flex items-center justify-center p-4">
+        z-0 flex items-center justify-center p-4">
       <Card className="max-w-md w-full bg-zinc-900
          relative z-10 border-zinc-800">
         <CardContent className="pt-6 text-center space-y-4">

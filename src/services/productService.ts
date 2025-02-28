@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import connectDB from '@/db/connect';
 
+
 function ApiResponse(status:any, data:any, message = '') {
     return { status, data, message };
 }
@@ -8,7 +9,7 @@ function ApiResponse(status:any, data:any, message = '') {
 class Product {
     async createProduct(productData:any) {
         try {
-            const db = await connectDB();
+            
             const result = await db.collection('products').insertOne(productData);
             const insertedProduct = { ...productData, _id: result.insertedId };
             return ApiResponse('success', insertedProduct);

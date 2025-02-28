@@ -29,7 +29,7 @@ const UserSheet:React.FC = () => {
       Your Detail
     </SheetHeader>
 
-      <Profile />
+      <Profile/>
 
     <SheetFooter className=" sm:text-smtext-pretty text-fuchsia-400" >
       <p className="mx-auto" >&copy;&nbsp;Built with love by Krishna & Suraj ❤️</p>
