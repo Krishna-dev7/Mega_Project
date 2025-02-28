@@ -2,7 +2,7 @@ import mongoose, {
   Schema, 
   Types,
   Document } from "mongoose";
-import { IProduct } from "./product.models";
+import Product, { IProduct } from "./product.models";
 
   export enum Size {
     XS = "Extra Small",
@@ -45,6 +45,7 @@ const cartSchema = new Schema<ICart>({
     default: 1
   }
 }, {timestamps: true});
+
 
 const Cart = mongoose.models?.Cart 
   || mongoose.model<ICart>("Cart", cartSchema);

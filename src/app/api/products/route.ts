@@ -4,6 +4,7 @@ import {
 } from "next/server";
 import connectDB from "@/db/connect";
 import Product, { IProduct } from "@/models/product.models";
+import Cart from "@/models/cart.models";
 
 connectDB();
 
@@ -94,6 +95,10 @@ export const DELETE = async (req: NextRequest)
 
         const product = await Product
           .findByIdAndDelete(productId)
+
+          await Cart.deleteMany({
+            product: {$in: productId}
+          })
 
         return NextResponse.json({
           success: true,

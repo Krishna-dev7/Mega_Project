@@ -1,7 +1,9 @@
 import mongoose, { 
   Schema, 
   Types,
-  Document } from "mongoose";
+  Document,
+ } from "mongoose";
+import Cart from "./cart.models";
 
 interface IProduct extends Document {
   _id: Types.ObjectId
