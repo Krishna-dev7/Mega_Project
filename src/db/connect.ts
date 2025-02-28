@@ -1,18 +1,16 @@
+import { MongoClient } from "mongodb";
 import conf from "@/helpers/conf";
-import mongoose, {connection} from "mongoose";
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(conf.mongodb!);
-        connection.on(
-            'success', () => 
-                console.log('Connected to MongoDB')
-        )
-    } catch (error:any) {
-        console.log(error.message);
+        const client = await MongoClient.connect(conf.mongodb!);
+        const db = client.db(); // Returns the Db object
+        console.log("Connected to MongoDB");
+        return db;
+    } catch (error: any) {
+        console.error("Connection failed:", error.message);
         process.exit(1);
     }
-}
-
+};
 
 export default connectDB;

@@ -16,5 +16,5 @@ interface IPayment extends Document {
     payment_date: Date
     confirmationDate: Date
     billingAddress: string
-    paymentDetails
+    paymentDetails:string
 }
