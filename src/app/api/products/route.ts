@@ -85,7 +85,7 @@ export const POST = async (req: NextRequest)
 
 
 export const DELETE = async (req: NextRequest)
-  : Promise<NextResponse> {
+  : Promise<NextResponse> => {
     try {
       const {searchParams} = new URL(req.url)
       const productId = searchParams.get('id')

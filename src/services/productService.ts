@@ -10,74 +10,33 @@ function getApiResponse(status: boolean, data: any, message = '')
 }
 
 class Product {
-	async createProduct(productData: produ) {
+	async createProduct() {}
+
+	async getProduct(productId: any) {}
+
+	async streamProducts(query = {}) {}
+
+	async updateProduct(productId: any, updateData: any) {}
+
+	async deleteProduct(productId: string)
+		: Promise<ApiResponse> {
 		try {
 			
-			
-		} catch (error: any) {
-			return ApiResponse('error', null, error.message);
+			const res = await axios.delete(
+				`${conf.url}/api/products?id=${productId}`
+			)
+
+			return res.data
+
+		} catch (err: any) {
+			this.handleError({
+				err, 
+				type: 'ProductService::deleteProduct' 
+			})
 		}
 	}
 
-	async getProduct(productId: any) {
-		try {
-			const db = await connectDB();
-			const product = await db.collection('products').findOne({ _id: new ObjectId(productId) });
-			return product ? ApiResponse('success', product) : ApiResponse('error', null, 'Product not found');
-		} catch (error: any) {
-			return ApiResponse('error', null, error.message);
-		}
-	}
-
-	async streamProducts(query = {}) {
-		try {
-			const db = await connectDB();
-			const products = await db.collection('products').find(query).toArray();
-			return ApiResponse('success', products);
-		} catch (error: any) {
-			return ApiResponse('error', null, error.message);
-		}
-	}
-
-	async updateProduct(productId: any, updateData: any) {
-		try {
-			const db = await connectDB();
-			const updatedProduct = await db.collection('products').findOneAndUpdate(
-				{ _id: new ObjectId(productId) },
-				{ $set: updateData },
-				{ returnDocument: 'after' }
-			);
-
-			if (!updatedProduct || !updatedProduct.value) {
-				return ApiResponse('error', null, 'Product not found');
-			}
-
-			return ApiResponse('success', updatedProduct.value);
-		} catch (error: any) {
-			return ApiResponse('error', null, error.message);
-		}
-	}
-
-	async deleteProduct(productId: any) {
-		try {
-			const db = await connectDB();
-			const result = await db.collection('products').deleteOne({ _id: new ObjectId(productId) });
-			return result.deletedCount > 0
-				? ApiResponse('success', { deletedCount: result.deletedCount })
-				: ApiResponse('error', null, 'Product not found');
-		} catch (error: any) {
-			return ApiResponse('error', null, error.message);
-		}
-	}
-
-	async deleteProducts() {
-		try {
-			const res = await axios.delete(`${conf.url}/api/products`)
-			return ApiResponse('success', { deletedCount: result.deletedCount });
-		} catch (error: any) {
-			return ApiResponse('error', null, error.message);
-		}
-	},
+	async deleteProducts() {}
 
 	private handleError(
     {type, err}
