@@ -5,7 +5,6 @@ import mongoose, {
 
 interface IProduct extends Document {
   _id: Types.ObjectId
-  brand: string;
   category: Categories,
   countInStock: number;
   description: string;
@@ -37,11 +36,7 @@ const productSchema = new Schema<IProduct>({
     type: String,
     required: true,
     trim: true,
-  }, 
-  brand: {
-    type: String,
-    trim: true,
-  }, 
+  },  
   category: {
     type: String,
     required: true,

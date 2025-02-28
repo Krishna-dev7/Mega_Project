@@ -7,6 +7,8 @@ const conf = {
     secret: process.env.NEXTAUTH_SECRET,
     stripe_secret_key: process.env.STRIPE_SECRET_KEY!,
     stripe_publishable_key: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+    senderEmail: process.env.SENDER_EMAIL!,
+    appPass: process.env.APP_PASS!
 }
 
 export default conf;
