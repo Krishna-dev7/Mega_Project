@@ -5,20 +5,6 @@ import mongoose, {
 } from "mongoose";
 
 interface IPayment extends Document {
-<<<<<<< HEAD
-    _id: Types.ObjectId
-    session_id: string
-    user_id: Types.ObjectId
-    transaction_id: string
-    amount: number
-    currency: string
-    payment_status: boolean
-    payment_date: Date
-    confirmationDate: Date
-    billingAddress: string
-    paymentDetails:string
-}
-=======
 	_id: Types.ObjectId;
 	userId: Types.ObjectId;
 	sessionId: string;
@@ -58,4 +44,3 @@ const Payment = mongoose.models.Payment
 	|| mongoose.model('Payment', paymentSchema);
 
 export default Payment;
->>>>>>> b92a30bd34f18a1bd452864d79c742e321aa900d

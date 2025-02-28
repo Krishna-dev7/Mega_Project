@@ -53,22 +53,9 @@ import {
 	SelectValue 
 } from "@/components/ui/select";
 import { useState } from "react";
+import productService from "@/services/productService";
+import { toast } from "@/hooks/use-toast";
 
-<<<<<<< HEAD
-
-
-export default function ProductsDataTable() {
-    const [sorting, setSorting]
-        = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters]
-        = React.useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility]
-        = React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection]
-        = React.useState({})
-    const [data, setData] = React.useState([])
-    const router = useRouter()
-=======
 // const data: Product[] = [
 //   {
 //     id: "PROD-1",
@@ -241,10 +228,9 @@ export default function ProductsDataTable() {
 		React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] 
 	= React.useState({});
->>>>>>> b92a30bd34f18a1bd452864d79c742e321aa900d
 
 	const [filterStatus, setFilterStatus] = useState('')
-	const [data, setData] = React.useState([]);
+	const [data, setData] = React.useState<IProduct[]>([]);
 	const [globalFilter, setGlobalFilter] = useState("")
 	const router = useRouter();
 
@@ -261,6 +247,24 @@ export default function ProductsDataTable() {
 			);
 	}, []);
 
+	const deleteProduct = async (row:any) => {
+		const res = await productService.
+			deleteProduct(row.original?._id.toString())
+		
+		if(res.success) {
+			toast({
+				title: 'info',
+				description: 'product deleted'
+			})
+		}
+
+		setData(prev => {
+			const newData = prev.filter((item) => 
+				item._id !== row.original?._id )
+			return [...newData]
+		})
+	}
+	
 	const columns: ColumnDef<IProduct>[] = [
 		{
 			header: "image",
@@ -404,7 +408,9 @@ export default function ProductsDataTable() {
 							<DropdownMenuItem>
 								Edit product
 							</DropdownMenuItem>
-							<DropdownMenuItem className="text-destructive">
+							<DropdownMenuItem 
+								onClick={() => deleteProduct(row)}
+								className="text-destructive">
 								Delete product
 							</DropdownMenuItem>
 						</DropdownMenuContent>
