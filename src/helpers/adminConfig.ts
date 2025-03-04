@@ -3,7 +3,7 @@ import {
   BarChart, 
   Users, 
   ShoppingCart, 
-  Settings } from "lucide-react";
+  Settings,DiamondPlus,Pencil } from "lucide-react";
 
 const adminNavItems = [
   {
@@ -23,9 +23,21 @@ const adminNavItems = [
   },
   {
     slug: "Shop",
+    subNameItems:[{
+      slug: "add",
+      url: "/dashboard/shop/products/add",
+      icon:DiamondPlus,
+    },
+    {
+      slug: "edit",
+      url: "/dashboard/shop/products/edit",
+      icon: Pencil,
+    }],
     url: "/dashboard/shop/products",
     icon: ShoppingCart,
   },
+  
+
   {
     slug: "Settings",
     url: "/dashboard/settings",

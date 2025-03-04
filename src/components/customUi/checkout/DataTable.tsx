@@ -58,19 +58,24 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  useMemo(() => {
+  const totalAmount = useMemo(() => {
     const amount = table
       .getRowModel()
       .rows.reduce(
         (sum, row) =>
           sum +
-          (row.original as cartType).product.price *
-            (row.original as cartType).quantity,
+          (row.original as cartType)?.product.price *
+            (row.original as cartType)?.quantity,
         0
       );
-    setTotal(amount);
+    return amount
 
-  }, [setTotal, data]);
+  }, [data]);
+
+
+  useEffect(() => {
+    setTotal(totalAmount)
+  }, [setTotal, totalAmount])
 
   return (
     <div className="w-[100%] flex flex-col text-xs 
