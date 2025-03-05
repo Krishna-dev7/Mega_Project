@@ -3,6 +3,8 @@ import {
   BarChart, 
   Users, 
   ShoppingCart, 
+  Edit,
+  PlusSquare,
   Settings } from "lucide-react";
 
 const adminNavItems = [
@@ -22,15 +24,28 @@ const adminNavItems = [
     icon: Users,
   },
   {
-    slug: "Shop",
-    url: "/dashboard/shop/products",
-    icon: ShoppingCart,
-  },
-  {
     slug: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
-  }
+  },
+  {
+    slug: "Shop",
+    url: "/dashboard/shop/products",
+    icon: ShoppingCart,
+    subNavItems: [
+      {
+        slug: 'Edit Product',
+        url: '/dashboard/shop/products/edit',
+        icon: Edit
+      },
+
+      {
+        slug: 'Add Product',
+        url: '/dashboard/shop/products/add',
+        icon: PlusSquare
+      }
+    ]
+  },
 ];
 
 export default adminNavItems;

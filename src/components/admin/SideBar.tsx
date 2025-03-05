@@ -3,7 +3,6 @@
 import { 
   Frame,
   LogOut,
-  Sidebar,
  } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/store";
@@ -16,6 +15,12 @@ import adminNavItems from "@/helpers/adminConfig";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Sidebar as SidebarIcon } from "lucide-react";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "../ui/dropdown-menu";
 
 const SideBar = () => {
 
@@ -33,7 +38,7 @@ const SideBar = () => {
   return <div 
     className={` ${toggleSidebar ? "w-64" : "w-16"} 
       min-h-screen border-r bg-background
-       space-y-6 flex flex-col relative`}>
+       space-y-6 flex flex-col relative`} >
       <div className={`flex items-center gap-2 
         font-semibold capitalize text-xl 
         ${toggleSidebar 
@@ -56,6 +61,45 @@ const SideBar = () => {
 
       <nav className="space-y-2">
         { adminNavItems.map( (item, index) => {
+
+          if (item.slug == "Shop") {
+						return (
+							<DropdownMenu >
+								<DropdownMenuTrigger 
+                  className="w-full"
+                  suppressHydrationWarning>
+									<Button
+										key={index}
+										onClick={() => router.push(item.url)}
+										variant={
+											currentURI == item.url
+												? "default"
+												: "ghost"
+										}
+										className={`w-full gap-2
+                     ${
+                        toggleSidebar
+                          ? "justify-start"
+                          : "justify-center"
+                      } `}>
+                      {<item.icon />}
+										{toggleSidebar && item.slug}
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent
+                  className="w-inherit">
+									{item.subNavItems?.map((subItem) => (
+										<DropdownMenuItem
+                      className="w-full cursor-pointer"
+                      >
+											{subItem.slug}
+										</DropdownMenuItem>
+									))}
+								</DropdownMenuContent>
+							</DropdownMenu>
+						);
+					}
+
           return <Button 
             key={index}
             onClick={() => router.push(item.url)}

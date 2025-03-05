@@ -131,7 +131,23 @@ const Header = () => {
               <ul className="space-y-2">
                 {navItems.map((item, index) => {
                   if(item.slug == "Login" 
-                      && auth.authStatus) return;
+                      && auth.authStatus) return <li key={index}>
+                      <Link 
+                        href={item.href}
+                        className={`block py-2 px-4 text-sm rounded-lg
+                          transition-colors ${
+                          activeTab === item.slug 
+                            ? 'bg-black text-white' 
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                        onClick={() => {
+                          setActiveTab(item.slug);
+                          setIsNavOpen(false);
+                        }}
+                      >
+                        {"Logout"}
+                      </Link>
+                    </li>;
 
                   return <li key={index}>
                   <Link 

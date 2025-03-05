@@ -45,12 +45,12 @@ import conf from "@/helpers/conf";
 import { setProducts } from "@/store/productSlice";
 import SideBar from "@/components/admin/SideBar";
 import { useRouter } from "next/navigation";
-import { 
-	Select, 
-	SelectContent, 
-	SelectItem, 
-	SelectTrigger, 
-	SelectValue 
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
 import productService from "@/services/productService";
@@ -63,11 +63,12 @@ export default function ProductsDataTable() {
 		React.useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] =
 		React.useState<VisibilityState>({});
-	const [rowSelection, setRowSelection] 
-	= React.useState({});
+	const [rowSelection, setRowSelection] = React.useState(
+		{},
+	);
 
 	const [data, setData] = React.useState<IProduct[]>([]);
-	const [globalFilter, setGlobalFilter] = useState("")
+	const [globalFilter, setGlobalFilter] = useState("");
 	const router = useRouter();
 
 	React.useEffect(() => {
@@ -83,24 +84,26 @@ export default function ProductsDataTable() {
 			);
 	}, []);
 
-	const deleteProduct = async (row:any) => {
-		const res = await productService.
-			deleteProduct(row.original?._id.toString())
-		
-		if(res.success) {
+	const deleteProduct = async (row: any) => {
+		const res = await productService.deleteProduct(
+			row.original?._id.toString(),
+		);
+
+		if (res.success) {
 			toast({
-				title: 'info',
-				description: 'product deleted'
-			})
+				title: "info",
+				description: "product deleted",
+			});
 		}
 
-		setData(prev => {
-			const newData = prev.filter((item) => 
-				item._id !== row.original?._id )
-			return [...newData]
-		})
-	}
-	
+		setData((prev) => {
+			const newData = prev.filter(
+				(item) => item._id !== row.original?._id,
+			);
+			return [...newData];
+		});
+	};
+
 	const columns: ColumnDef<IProduct>[] = [
 		{
 			header: "image",
@@ -177,14 +180,17 @@ export default function ProductsDataTable() {
 			header: "Status",
 			enableColumnFilter: true,
 			filterFn: (row, id, value) => {
-				if(value === 'all') return true
-				const stockValue = row.getValue('countInStock') as number
-				const status = stockValue >= 20
-					? 'In Stock' 
-					: stockValue < 20 && stockValue > 0
-						? 'Low Stock'
-						: 'Out of Stock'
-				return value.includes(status)
+				if (value === "all") return true;
+				const stockValue = row.getValue(
+					"countInStock",
+				) as number;
+				const status =
+					stockValue >= 20
+						? "In Stock"
+						: stockValue < 20 && stockValue > 0
+							? "Low Stock"
+							: "Out of Stock";
+				return value.includes(status);
 			},
 			cell: ({ row }) => {
 				const stock: number = row.getValue("countInStock");
@@ -244,7 +250,7 @@ export default function ProductsDataTable() {
 							<DropdownMenuItem>
 								Edit product
 							</DropdownMenuItem>
-							<DropdownMenuItem 
+							<DropdownMenuItem
 								onClick={() => deleteProduct(row)}
 								className="text-destructive">
 								Delete product
@@ -268,24 +274,24 @@ export default function ProductsDataTable() {
 		onColumnVisibilityChange: setColumnVisibility,
 		onRowSelectionChange: setRowSelection,
 		state: {
-			sorting, 
+			sorting,
 			columnFilters,
 			columnVisibility,
 			rowSelection,
-			globalFilter
+			globalFilter,
 		},
 	});
 
 	return (
-		<Card className="border-none shadow-sm">
+		<Card className="border-none box-border shadow-sm overflow-hidden">
 			<div className="w-full mx-5">
 				<div className="flex items-center py-4 px-4">
 					<Input
 						placeholder="filter product, category, stock and price"
 						value={globalFilter}
 						onChange={(event) => {
-							setGlobalFilter(event.target.value)
-							table.setGlobalFilter(event.target.value)
+							setGlobalFilter(event.target.value);
+							table.setGlobalFilter(event.target.value);
 						}}
 						className="max-w-sm"
 					/>
@@ -321,13 +327,12 @@ export default function ProductsDataTable() {
 					<Select
 						onValueChange={(value) => {
 							table
-								.getColumn('Status')
-								?.setFilterValue(value)
-							
+								.getColumn("Status")
+								?.setFilterValue(value);
+
 							console.log(
-								table.getColumn('Status')
-									?.getFilterValue()
-							)
+								table.getColumn("Status")?.getFilterValue(),
+							);
 						}}>
 						<SelectTrigger
 							className="w-fit mx-1"
@@ -335,13 +340,20 @@ export default function ProductsDataTable() {
 							<SelectValue placeholder="stock statuses" />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="all" >All statuses</SelectItem>
-							<SelectItem value="In Stock">In Stock</SelectItem>
-							<SelectItem value="Out of Stock">Out of Stock</SelectItem>
-							<SelectItem value="Low Stock">Low Stock</SelectItem>
+							<SelectItem value="all">
+								All statuses
+							</SelectItem>
+							<SelectItem value="In Stock">
+								In Stock
+							</SelectItem>
+							<SelectItem value="Out of Stock">
+								Out of Stock
+							</SelectItem>
+							<SelectItem value="Low Stock">
+								Low Stock
+							</SelectItem>
 						</SelectContent>
 					</Select>
-					
 				</div>
 				<div className="rounded-md border">
 					<Table>
