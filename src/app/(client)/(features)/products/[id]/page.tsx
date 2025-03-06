@@ -6,13 +6,13 @@ import conf from "@/helpers/conf";
 import { IProduct } from "@/models/product.models";
 import { ChevronLeft, 
   ChevronRight, Star } from "lucide-react";
-import BadgeComponent from "@/components/customUI/product/Badge";
+import BadgeComponent from "@/components/customUi/product/Badge"; 
 import { UserSchema } from "@/models/user.models";
 import { Avatar, 
   AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import ShinyButton from "@/components/ui/shiny-button";
-import Review from "@/components/customUI/product/Review";
-import Description from "@/components/customUI/product/Description";
+import Review from "@/components/customUi/product/Review";
+import Description from "@/components/customUi/product/Description";
 import cartService from "@/services/CartService";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
@@ -71,7 +71,7 @@ const ProductDetail: React.FC = () => {
   const createCart = async () => {
     if (session && session.status == "unauthenticated") {
       return toast({
-        title: "Unauthenticated 😔",
+        title: "Unauthenticated",
         description: "Signin before adding Cart"
       });
     }
@@ -86,7 +86,7 @@ const ProductDetail: React.FC = () => {
       if (cart) {
         dispatch(setCart(cart));
         toast({
-          title: "Cart 😄",
+          title: "Cart",
           description: "Cart added successfully"
         })
       }

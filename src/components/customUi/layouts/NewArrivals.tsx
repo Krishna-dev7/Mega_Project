@@ -83,23 +83,23 @@ function NewArrivals() {
   const products = [
     {
       name: 'The Classic Tote',
-      price: '$1,299',
-      image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80'
+      price: '1,299',
+      image: 'https://i.pinimg.com/736x/b8/b3/da/b8b3da9efd6d527553dd75386cd7f0e1.jpg'
     },
     {
       name: 'Signature Timepiece',
-      price: '$2,499',
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80'
+      price: '2,499',
+      image: 'https://w7.pngwing.com/pngs/9/1001/png-transparent-black-dress-shirt-t-shirt-dress-shirt-clothing-black-dress-shirt-tshirt-black-formal-wear-thumbnail.png'
     },
     {
       name: 'Heritage Boots',
-      price: '$899',
-      image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&q=80'
+      price: '899',
+      image: 'https://i.pinimg.com/736x/8c/51/5f/8c515f272bd77704e6238cde35c0d153.jpg'
     },
     {
       name: 'Aviator Collection',
-      price: '$459',
-      image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&q=80'
+      price: '459',
+      image: 'https://i.pinimg.com/736x/1d/07/1b/1d071b3af8d7f05d83919855b36dddeb.jpg'
     },
   ];
 

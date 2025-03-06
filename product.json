@@ -1,30 +1,140 @@
 [
   {
-    "slug": "product-1",
+    "slug": "shirt-1",
     "brand": "Brand A",
-    "category": "electronics",
-    "description": "High-quality electronic device with advanced features.",
+    "category": "shirts",
+    "description": "XS (150-160 cm) – This shirt is designed for a snug fit, offering comfort and a sleek look. Perfect for layering or casual wear.",
     "price": 199,
     "countInStock": 12,
     "images": [
       {
-        "url": "https://i.pinimg.com/736x/43/c7/f3/43c7f3cb445d9c78757960094b72e01b.jpg",
-        "color": "black"
+        "url": "https://w7.pngwing.com/pngs/695/311/png-transparent-t-shirt-hoodie-polo-shirt-tshirt-tshirt-active-shirt-jersey-thumbnail.png",
+        "color": "red"
       }
     ],
     "owner": "userId"
   },
   {
-    "slug": "product-2",
+    "slug": "shirt-2",
     "brand": "Brand B",
-    "category": "footwear",
-    "description": "Stylish and durable footwear for daily use.",
+    "category": "shirts",
+    "description": "S (160-170 cm) – A well-fitted shirt for a lean build, made with soft fabric for all-day comfort. Ideal for both formal and casual occasions.",
     "price": 89,
     "countInStock": 20,
     "images": [
       {
-        "url": "https://i.pinimg.com/736x/d2/62/42/d26242a6b554b9a90d747228c2fc6af8.jpg",
-        "color": "white"
+        "url": "https://w1.pngwing.com/pngs/710/1003/png-transparent-boy-tshirt-clothing-child-printed-tshirt-teespring-sleeve-top-thumbnail.png",
+        "color": "sky"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "shirt-3",
+    "brand": "Brand C",
+    "category": "shirts",
+    "description": "M (170-175 cm) – A stylish and comfortable shirt offering a perfect balance between a relaxed and tailored fit. Great for daily wear or work.",
+    "price": 129,
+    "countInStock": 15,
+    "images": [
+      {
+        "url": "https://w7.pngwing.com/pngs/965/181/png-transparent-t-shirt-navy-blue-polo-shirt-sweater-tshirt-tshirt-blue-angle-thumbnail.png",
+        "color": "blue"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "shirt-4",
+    "brand": "Brand D",
+    "category": "shirts",
+    "description": "L (175-180 cm) - A premium quality shirt with a modern design, crafted for a sleek look while ensuring breathability and ease of movement.",
+    "price": 99,
+    "countInStock": 22,
+    "images": [
+      {
+        "url": "https://w7.pngwing.com/pngs/46/713/png-transparent-blouse-dress-shirt-pink-m-dress-shirt-pink-m-coral-blouse-thumbnail.png",
+        "color": "pink"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "shirt-5",
+    "brand": "Brand E",
+    "category": "shirts",
+    "description": "XL (180-185 cm) – This classic shirt ensures a comfortable yet stylish fit, suitable for both business and casual occasions with premium fabric.",
+    "price": 149,
+    "countInStock": 7,
+    "images": [
+      {
+        "url": "https://w7.pngwing.com/pngs/781/973/png-transparent-t-shirt-hoodie-gildan-activewear-clothing-maroon-tshirt-angle-active-shirt-thumbnail.png",
+        "color": "brown"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "shirt-6",
+    "brand": "Brand F",
+    "category": "shirts",
+    "description": "XXL (185-190 cm) – A relaxed-fit shirt that maintains elegance and comfort, making it perfect for formal settings or casual outings.",
+    "price": 179,
+    "countInStock": 10,
+    "images": [
+      {
+        "url": "https://w7.pngwing.com/pngs/776/775/png-transparent-gray-left-chest-pocket-dress-shirt-dress-shirt-clothing-dress-shirt-fashion-formal-wear-sleeve-thumbnail.png",
+        "color": "gray"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "shirt-7",
+    "brand": "Brand G",
+    "category": "shirts",
+    "description": "XXXL (190-195 cm) – Designed for those who prefer a loose yet sophisticated fit, this shirt offers durability, softness, and a sharp appearance.",
+    "price": 189,
+    "countInStock": 8,
+    "images": [
+      {
+        "url": "https://w7.pngwing.com/pngs/888/635/png-transparent-t-shirt-polo-shirt-sleeve-collar-polo-shirt-tshirt-orange-active-shirt-thumbnail.png",
+        "color": "orange"
+      },
+      {
+        "url": "https://w7.pngwing.com/pngs/716/576/png-transparent-blue-polo-shirt-t-shirt-polo-shirt-sleeve-clothing-blue-dress-shirt-tshirt-blue-white-thumbnail.png",
+        "color": "blue"
+      },
+      {
+        "url": "https://w7.pngwing.com/pngs/449/84/png-transparent-t-shirt-gildan-activewear-sleeve-neckline-orange-t-shirt-tshirt-angle-orange-thumbnail.png",
+        "color": "orange"
+      },
+      {
+        "url": "https://w7.pngwing.com/pngs/596/672/png-transparent-t-shirt-gildan-activewear-clothing-crew-neck-t-shirt-tshirt-active-shirt-top-thumbnail.png",
+        "color": "green"
+      },
+      {
+        "url": "https://w7.pngwing.com/pngs/282/1024/png-transparent-t-shirt-organic-cotton-red-clothing-tshirt-tshirt-angle-white-thumbnail.png",
+        "color": "red"
+      },
+      {
+        "url": "https://w7.pngwing.com/pngs/1007/999/png-transparent-printed-t-shirt-polo-shirt-blue-t-shirt-tshirt-blue-fashion-thumbnail.png",
+        "color": "blue"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "shirt-8",
+    "brand": "Brand H",
+    "category": "shirts",
+    "description": "XXXL (195-200 cm) – A loose-fit shirt designed for ultimate comfort and elegance, made with high-quality breathable fabric.",
+    "price": 199,
+    "countInStock": 10,
+    "images": [
+      {
+        "url": "https://w7.pngwing.com/pngs/9/1001/png-transparent-black-dress-shirt-t-shirt-dress-shirt-clothing-black-dress-shirt-tshirt-black-formal-wear-thumbnail.png",
+        "color": "black"
       }
     ],
     "owner": "userId"
@@ -191,6 +301,51 @@
       {
         "url": "https://i.pinimg.com/474x/72/9f/90/729f90af684351c4a6733c1ebfeaafac.jpg",
         "color": "orange"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-13",
+    "brand": "Brand A",
+    "category": "t-shirts",
+    "description": "Casual cotton t-shirt for everyday wear.",
+    "price": 25,
+    "countInStock": 30,
+    "images": [
+      {
+        "url": "https://p.kindpng.com/picc/s/329-3291787_mens-light-pink-t-shirt-hd-png-download.png",
+        "color": "white"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-14",
+    "brand": "Brand B",
+    "category": "t-shirts",
+    "description": "Stylish and warm jacket for winter.",
+    "price": 80,
+    "countInStock": 15,
+    "images": [
+      {
+        "url": "https://p.kindpng.com/picc/s/159-1590082_wolves-howling-moon-over-print-bomber-jacket-tag.png",
+        "color": "black"
+      }
+    ],
+    "owner": "userId"
+  },
+  {
+    "slug": "product-15",
+    "brand": "Brand C",
+    "category": "t-shirts",
+    "description": "Classic blue denim jeans for all occasions.",
+    "price": 50,
+    "countInStock": 25,
+    "images": [
+      {
+        "url": "https://p.kindpng.com/picc/s/122-1224746_funny-mr-men-t-shirts-hd-png-download.png",
+        "color": "blue"
       }
     ],
     "owner": "userId"

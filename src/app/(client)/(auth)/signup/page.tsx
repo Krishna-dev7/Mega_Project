@@ -88,7 +88,7 @@ function Register() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5EFFF] flex flex-col">
+    <main className="min-h-screen bg-[#F5EFFF] flex flex-col ">
       {/* Header spacer - prevents content from being hidden under fixed headers */}
       <div className="h-[var(--navbar-height,0px)]" />
       
