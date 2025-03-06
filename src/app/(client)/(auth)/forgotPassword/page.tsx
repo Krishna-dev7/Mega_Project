@@ -70,7 +70,7 @@ const ForgotPasswordPage: React.FC = () => {
 
       router.push("/signin");
     } catch (error: any) {
-      console.log("Something went wrong in forgot password: ", error.messgae);
+      console.log("Something went wrong in forgot password: ", error.message);
       toast({
         title: "Error",
         description: error.message
