@@ -1,20 +1,23 @@
-import { currentAccount } from "@/services/AccountService";
+// import { currentAccount } from "@/services/AccountService";
+import { IProfile } from "@/models/profile.models";
+import { UserSchema } from "@/models/user.models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 
 type initialType = {
   email: string,
   username: string,
   authStatus: boolean,
-  data: currentAccount 
+  data: ( IProfile & {
+    owner: UserSchema
+  }) | null
 }
 
 const initialState:initialType = {
   email: "",
   username: "",
   authStatus: false,
-  data: {
-    account: null
-  }
+  data: null
 }
 
 
@@ -34,9 +37,7 @@ const authSlice = createSlice({
       state.authStatus = false,
       state.username = "",
       state.email = ""
-      state.data = {
-        account: null
-      }
+      state.data = null
     }, 
   }
 })

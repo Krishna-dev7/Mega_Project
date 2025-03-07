@@ -4,8 +4,7 @@ import {
 } from "next/server";
 import connectDB from "@/db/connect";
 import User, { UserSchema } from "@/models/user.models";
-import UserProfile from "@/models/userProfile.models";
-import SellerProfile from "@/models/sellerProfile.models";
+import Profile from "@/models/profile.models";
 connectDB();
 
 async function handler(req:NextRequest) {
@@ -13,6 +12,20 @@ async function handler(req:NextRequest) {
     const param = new URL(req.url);
     const { searchParams } = param;
     const id = searchParams.get('id');
+    const action = searchParams.get('action');
+
+    if(action === "streamUsers") {
+      const users = await Profile
+        .find()
+        .populate('owner');
+
+      return NextResponse.json({
+        success: true,
+        data: users,
+        message: "users found"
+      })
+    }
+
 
     if(!id) {
       return NextResponse.json({
@@ -31,8 +44,7 @@ async function handler(req:NextRequest) {
 
     const profile 
       = account.role == "user"
-        ? await UserProfile.findOne({userId: account._id})
-        : await SellerProfile.findOne({userId: account._id})
+        && await Profile.findOne({userId: account._id})
 
     return NextResponse.json({
       success: true,
@@ -71,9 +83,9 @@ export async function DELETE(req:NextRequest) {
       }, {status: 404})
     } 
 
-    deletedUser.role == "seller"
-      ? await SellerProfile.findOneAndDelete({userId: userID})
-      : await UserProfile.findOneAndDelete({userId: userID})
+    // delete profile
+    await Profile
+      .findOneAndDelete({userId: userID})
 
     return NextResponse.json({
       success: true,

@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { UserSchema } from "@/models/user.models";
-import { IUserProfile } from "@/models/userProfile.models";
 import { ColumnDef } from "@tanstack/react-table";
 import { 
   DropdownMenu,
@@ -32,11 +31,13 @@ import {
   AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import accountService from "@/services/AccountService";
 import { toast } from "@/hooks/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import DataTable from "@/components/customUI/checkout/DataTable";
+import { IProfile } from "@/models/profile.models";
+import Loading from "@/components/customUI/Loading";
 
-type users = {
-  account: UserSchema,
-  profile: IUserProfile
+type users = IProfile & {
+  owner: UserSchema
 }
 
 export const columns: ColumnDef<users>[] = [
@@ -125,9 +126,9 @@ export const columns: ColumnDef<users>[] = [
                   <AlertDialogCancel>cancel</AlertDialogCancel>
                   <AlertDialogAction 
                     onClick={ async () => {
-                      if (row.original.account._id ) {
+                      if (row.original._id ) {
                         const result = await accountService.deleteAccount(
-                          row.original.account._id.toString());
+                          row.original._id.toString());
 
                         result 
                           ? toast({
@@ -148,7 +149,7 @@ export const columns: ColumnDef<users>[] = [
             <DropdownMenuItem
               onClick={() => navigator
                 .clipboard
-                .writeText(row.original.account._id?.toString() ?? '')}
+                .writeText(row.original._id?.toString() ?? '')}
               >copy ID
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -160,24 +161,45 @@ export const columns: ColumnDef<users>[] = [
 
 const ManageUser = () => {
 
-  // useEffect(() => {
-  //   const users = 
-  // }, [])
+  const [data, setData] = useState<(IProfile & {
+    owner: UserSchema
+  })[] | null>(null);
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const result = await 
+          accountService.streamUsers()
+  
+        result.success 
+          && setData(result.data)   
+
+        console.log(result)
+      }
+
+      fetchData()
+    } catch (err:any) {
+      toast({
+        title: "error",
+        description: err.message
+      })
+    }
+  }, [setData] )
+
+  if(!(data && data.length)) 
+    return <div 
+      className="loader flex 
+      justify-center items-center min-h-screen">
+        <Loading />
+    </div> 
 
   return <div 
-    className="user-dashboard flex">
-      <div className="sidebar">
-        <SideBar />
-      </div>
-
+    className="user-dashboard mx-20 w-full flex">
       <div 
-        className="user-panel w-full min-h-screen
-      bg-blue-400">
-          
+        className="user-panel w-full min-h-screen">
+         {data.map( user => <div>{user.owner.username}</div>)}
       </div>
   </div>
 }
-
-
 
 export default ManageUser;

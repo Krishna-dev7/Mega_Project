@@ -6,7 +6,7 @@ import {
  } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/store";
-import { CurrentAccount } from "@/services/AccountService";
+import { usersType } from "@/services/AccountService";
 import { Avatar } from "../ui/avatar";
 import { 
   AvatarFallback, 
@@ -24,7 +24,7 @@ import {
 
 const SideBar = () => {
 
-  const user:CurrentAccount 
+  const user:(usersType | null)
     = useAppSelector( 
         store => store.auth.data)
   
@@ -47,7 +47,7 @@ const SideBar = () => {
         }`}>
 
         <Avatar>
-          <AvatarImage src={user.account?.avatar} />
+          <AvatarImage src={user?.avatar} />
           <AvatarFallback className="flex items-center">
             <Frame size={20} />
           </AvatarFallback>
@@ -56,7 +56,7 @@ const SideBar = () => {
         <span
           className={`${!toggleSidebar && 'hidden'}`}
         >{toggleSidebar 
-          && user.account?.username}</span>
+          && user?.owner?.username}</span>
       </div>
 
       <nav className="space-y-2">
@@ -64,7 +64,7 @@ const SideBar = () => {
 
           if (item.slug == "Shop") {
 						return (
-							<DropdownMenu >
+							<DropdownMenu key={index}>
 								<DropdownMenuTrigger 
                   className="w-full"
                   suppressHydrationWarning>

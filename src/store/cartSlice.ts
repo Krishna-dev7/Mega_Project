@@ -68,6 +68,15 @@ const cartSlice = createSlice({
             cart => cart._id != action.payload.id)
     },
 
+    delCarts: (
+      state, 
+      action:PayloadAction<{ids: string[]}>
+    ) => {
+      state.carts = state.carts.filter(
+        cart => !action.payload.ids.includes(cart._id)
+      );
+    },
+
     decQuantity: (
       state, 
       action:PayloadAction<{id: string}>
@@ -95,6 +104,7 @@ export const {
   delCart,
   decQuantity,
   incQuantity,
-  clearCarts
+  clearCarts,
+  delCarts
  } = cartSlice.actions
 export default cartSlice.reducer;

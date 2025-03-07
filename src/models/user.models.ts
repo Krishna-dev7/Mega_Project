@@ -23,9 +23,7 @@ interface UserSchema extends Document, UserVerification {
 	fullname: string;
 	email: string;
 	password: string;
-	avatar: string;
-	phoneNumber: string;
-	role: "user" | "seller";
+	role: "user" | "admin";
 	provider: enumProvider;
 }
 
@@ -47,8 +45,6 @@ const userSchema = new Schema<UserSchema>({
 			unique: true,
 		},
 		password: String,
-		avatar: String,
-		phoneNumber: String,
 		role: String,
 		verifyCode: String,
 		isVerified: {

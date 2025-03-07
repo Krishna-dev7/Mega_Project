@@ -5,7 +5,7 @@ import type { UserSchema } from "@/models/user.models";
 import bcrypt from "bcryptjs";
 import sendVerificationEmail from "@/helpers/sendVerificationEmail";
 import { enumProvider } from "@/models/user.models";
-import SellerProfile, { ISeller } from "@/models/sellerProfile.models";
+import SellerProfile, { ISeller } from "@/models/profile.models";
 import UserProfile from "@/models/userProfile.models";
 
 await connectDB();
