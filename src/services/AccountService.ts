@@ -8,7 +8,6 @@ import { signIn, signOut } from "next-auth/react";
 import otpFormSchema from "@/schemas/otp.schema";
 import forgotSchema from "@/schemas/forgot.schema";
 import { UserSchema } from "@/models/user.models";
-import { IProfile } from "@/models/profile.models";
 import { Session } from "next-auth";
 import { toast } from "@/hooks/use-toast";
 
@@ -18,15 +17,6 @@ interface ServiceResponse {
   data?: any,
   error?: string
 }
-
-// export interface CurrentAccount {
-//   account: (UserSchema | null),
-//   profile?: IProfile
-// }
-
-export type usersType = IProfile & {
-    owner: UserSchema
-  }
 
 class AccountService {
   async createAccount(
@@ -206,6 +196,39 @@ class AccountService {
     } catch (err:any) {
       this.handleError({
         type: 'StreamUser', err})
+    }
+  }
+
+  async deleteUsers({ids}:{ids?: Array<string>})
+    :Promise<ServiceResponse> {
+      try {
+        let result = null;
+
+        if(ids) {
+          result = await axios.delete(
+            `${conf.url}/api/users?ids=${ids.join(",")}`
+          )
+        } else {
+          result = await axios  
+          .delete(`${conf.url}/api/users?action=removeAll`)
+        }
+        
+        return result.data;
+      } catch (err:any) {
+        this.handleError({
+          type: 'StreamUser', err})
+      }
+    }
+
+  async removeUserFromAllDevice():Promise<ServiceResponse> {
+    try {
+      const result = await axios.get(
+        `${conf.url}/api/users?action=removeUserFromAllDevice`
+      )
+      return result.data;
+    } catch (err:any) {
+      this.handleError({
+        type: 'RemoveUserFromAllDevice', err})
     }
   }
 

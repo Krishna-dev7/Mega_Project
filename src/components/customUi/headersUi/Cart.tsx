@@ -173,9 +173,10 @@ const Cart: React.FC = () => {
         </CardHeader>
 
         <CardContent >
-          <DataTable 
+          <DataTable<cartType, any> 
             key={key}
             columns={columns}
+            message="Your cart is empty"
             data={carts} 
           />
         </CardContent>

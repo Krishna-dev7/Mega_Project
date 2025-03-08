@@ -1,205 +1,233 @@
-'use client'
-import SideBar from "@/components/admin/SideBar";
-import { Checkbox } from "@/components/ui/checkbox";
+"use client";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 import { UserSchema } from "@/models/user.models";
-import { ColumnDef } from "@tanstack/react-table";
-import { 
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuItem
-} from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
-import { 
-  AlertDialog, 
-  AlertDialogAction, 
-  AlertDialogCancel, 
-  AlertDialogContent, 
-  AlertDialogDescription, 
-  AlertDialogTitle, 
-  AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import accountService from "@/services/AccountService";
-import { toast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
-import DataTable from "@/components/customUI/checkout/DataTable";
-import { IProfile } from "@/models/profile.models";
+import {
+	flexRender,
+	InitialTableState,
+} from "@tanstack/react-table";
+
 import Loading from "@/components/customUI/Loading";
-
-type users = IProfile & {
-  owner: UserSchema
-}
-
-export const columns: ColumnDef<users>[] = [
-  {
-    id: "select",
-    accessorKey: "account._id",
-    header: ({table}) => {
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-         (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => 
-          table.toggleAllPageRowsSelected(!!value)}
-
-        aria-label="Select all"
-      />
-    },
-    cell:({row}) => {
-      <Checkbox 
-        checked={row.getIsSelected()}
-        onCheckedChange={ (value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    }
-  },
-  {
-    id: "Name",
-    accessorKey: "account.username",
-    header: "Name",
-    cell: ({row}) => {
-      return <p className="username capitalize">
-          {row.getValue('account.username')}
-      </p>
-    }
-  },
-  {
-    id: "Status",
-    accessorKey: "account.isVerified",
-    header: "Status",
-    cell: ({row}) => {
-      return <div>
-        { row.getValue("account.isVerified")
-          ? "Verified"
-          : "Not verified" }
-      </div>
-    }
-  },
-  {
-    id: "Email",
-    header: "Email",
-    accessorKey: "account.email",
-    cell:({row}) => {
-      return <div className="email text-ellipsis">
-        {row.getValue("account.email")}
-      </div>
-    }
-  },
-  { 
-    id: "Actions",
-    header: "Actions",
-    cell: ({row}) => {
-      return <div className="actions">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <MoreHorizontal />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>
-              Actions
-            </DropdownMenuLabel>
-            <DropdownMenuItem>
-              <AlertDialog>
-                <AlertDialogTrigger>delete</AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogTitle 
-                    className="text-orange-400">
-                      warning
-                  </AlertDialogTitle>
-
-                  <AlertDialogDescription>
-                    This action cannot be undone. 
-                    This will permanently delete your account 
-                    and remove your data from our servers.
-                  </AlertDialogDescription>
-                  <AlertDialogCancel>cancel</AlertDialogCancel>
-                  <AlertDialogAction 
-                    onClick={ async () => {
-                      if (row.original._id ) {
-                        const result = await accountService.deleteAccount(
-                          row.original._id.toString());
-
-                        result 
-                          ? toast({
-                            variant: "default",
-                            description: "account deleted"
-                          })
-
-                          : toast({
-                            variant: "destructive",
-                            description: "failed to delete account"
-                          })
-                      }   
-                    }} />
-                    Delete
-                </AlertDialogContent>
-              </AlertDialog>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => navigator
-                .clipboard
-                .writeText(row.original._id?.toString() ?? '')}
-              >copy ID
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    }
-  }
-]
+import ConfirmDialog from "@/components/customUI/reusable/AlertDialog";
+import { Button } from "@/components/ui/button";
+import useTable from "@/hooks/use-table";
+import { toast } from "@/hooks/use-toast";
+import accountService from "@/services/AccountService";
+import { useEffect, useState } from "react";
+import columns from "./columns";
 
 const ManageUser = () => {
+	const initialState: InitialTableState = {
+		pagination: {
+			pageIndex: 0,
+			pageSize: 8,
+		},
+	};
+	const [data, setData] = useState<UserSchema[]>([]);
+	const table = useTable<UserSchema>(
+		data,
+		initialState,
+		columns,
+	);
 
-  const [data, setData] = useState<(IProfile & {
-    owner: UserSchema
-  })[] | null>(null);
+	useEffect(() => {
+		try {
+			const fetchData = async () => {
+				const result = await accountService.streamUsers();
 
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const result = await 
-          accountService.streamUsers()
-  
-        result.success 
-          && setData(result.data)   
+				result.success && setData(result.data);
 
-        console.log(result)
-      }
+				console.log(result);
+			};
 
-      fetchData()
-    } catch (err:any) {
-      toast({
-        title: "error",
-        description: err.message
-      })
-    }
-  }, [setData] )
+			fetchData();
+		} catch (err: any) {
+			toast({
+				title: "error",
+				description: err.message,
+			});
+		}
+	}, [setData]);
 
-  if(!(data && data.length)) 
-    return <div 
-      className="loader flex 
-      justify-center items-center min-h-screen">
-        <Loading />
-    </div> 
+	// loader 🔥
+	if (!(data))
+		return (
+			<div
+				className="loader flex 
+        justify-center items-center min-h-screen">
+				<Loading />
+			</div>
+		);
 
-  return <div 
-    className="user-dashboard mx-20 w-full flex">
-      <div 
-        className="user-panel w-full min-h-screen">
-         {data.map( user => <div>{user.owner.username}</div>)}
-      </div>
-  </div>
-}
+	return (
+		<div
+			className="user-dashboard mx-auto w-full min-h-screen
+			xl:justify-center xl:items-center flex">
+			<div
+				className="user-panel flex flex-col w-full mt-5 
+        h-fit bg-black xl:w-[70%] justify-start 
+				items-center py-10 gap-10 px-3 rounded-lg shadow-lg">
+				<Table
+					className="text-xs sm:px-10 sm:text-sm text-pretty 
+            font-normal rounded-lg shadow-lg bg-black text-gray-100">
+					<TableHeader>
+						{!!data.length 
+							&& table.getHeaderGroups().map((headerGroup) => (
+								<TableRow key={headerGroup.id}>
+									{headerGroup.headers.map((header) => (
+										<TableHead key={header.id}>
+											{header.isPlaceholder
+												? null
+												: flexRender(
+														header.column.columnDef.header,
+														header.getContext(),
+													)}
+										</TableHead>
+									))}
+								</TableRow>
+						))}
+					</TableHeader>
+
+					<TableBody>
+						{table.getRowModel().rows?.length ? (
+							table.getRowModel().rows.map((row) => (
+								<TableRow
+									key={row.id}
+									data-state={
+										row.getIsSelected() && "selected"
+									}>
+									{row.getVisibleCells().map((cell) => (
+										<TableCell key={cell.id}>
+											{flexRender(
+												cell.column.columnDef.cell,
+												cell.getContext(),
+											)}
+										</TableCell>
+									))}
+								</TableRow>
+							))
+						) : (
+							<TableRow>
+								<TableCell
+									colSpan={columns.length}
+									className="h-24 text-center">
+									No results.
+								</TableCell>
+							</TableRow>
+						)}
+					</TableBody>
+				</Table>
+
+				{table.getRowCount() > 7 && (
+					<div
+						className="flex items-center 
+            justify-end mt-2 space-x-2 py-4">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => {
+								table.previousPage();
+								table.initialState.pagination.pageIndex--;
+							}}
+							disabled={!table.getCanPreviousPage()}>
+							{"<-"}
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => {
+								table.nextPage();
+								table.initialState.pagination.pageIndex++;
+							}}
+							disabled={!table.getCanNextPage()}>
+							{"->"}
+						</Button>
+					</div>
+				)}
+
+				{table.getRowCount() !== 0 && (
+					<div className="delete-section flex w-full space-x-2 justify-end">
+						<ConfirmDialog
+							title="Warning 🤚"
+							description={`Are you sure you want 
+							to delete the selected users?`}
+							key={new Date().getMilliseconds()}
+							triggerDisabled={
+								table.getSelectedRowModel().rows.length == 0
+							}
+							action={async () => {
+								try {
+									if (table.getIsAllPageRowsSelected()) {
+										const res =
+											await accountService.deleteUsers({});
+										setData([]);
+										res.success &&
+											toast({
+												title: "Success",
+												description:
+													"All users deleted successfully",
+												variant: "default",
+											});
+									} else {
+										await accountService.deleteUsers({
+											ids: table
+												.getSelectedRowModel()
+												.rows.map((row) =>
+													row.original._id.toString(),
+												),
+										});
+
+										setData((prev) =>
+											prev.filter(
+												(user) =>
+													!table
+														.getSelectedRowModel()
+														.rows.map((row) =>
+															row.original._id.toString())
+														.includes(user._id.toString()),
+											),
+										);
+									}
+
+									toast({
+										title: "Success",
+										description:
+											table.getIsAllPageRowsSelected()
+												? "All users deleted successfully"
+												: "Selected users deleted successfully",
+										variant: "default",
+									})
+								} catch (err: any) {
+									toast({
+										title: "error",
+										description: err.message,
+									});
+								}
+							}}>
+							<span
+								className={`px-3 py-2 text-black rounded-md
+									${
+										table.getSelectedRowModel().rows
+											.length <= 0
+											? "bg-neutral-400"
+											: "bg-violet-200"
+									}`}>
+								{table.getIsAllPageRowsSelected()
+									? "Clear all"
+									: "remove"}
+							</span>
+						</ConfirmDialog>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+};
 
 export default ManageUser;

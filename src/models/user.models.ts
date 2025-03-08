@@ -1,10 +1,25 @@
-import mongoose, { 
+import mongoose, {
 	Document,
-	Schema, 
-	Types} from "mongoose";
+	Schema,
+	Types,
+} from "mongoose";
 
-// interface to build perfect userSchema
-interface UserVerification {
+export const enum enumProvider {
+	CREDENTIALS = "credentials",
+	GITHUB = "github",
+}
+
+interface UserSchema extends Document {
+	_id: Types.ObjectId;
+	username: string;
+	fullname: string;
+	email: string;
+	password: string;
+	role: "user" | "admin";
+	provider: enumProvider;
+	avatar: string;
+	address: string;
+	phoneNumber: string;
 	verifyCode: string;
 	isVerified: boolean;
 	verifyCodeExpiry: Date;
@@ -12,22 +27,8 @@ interface UserVerification {
 	forgotPasswordTokenExpiry: Date;
 }
 
-export const enum enumProvider {
-	CREDENTIALS = "credentials",
-	GITHUB = "github",
-}
-
-interface UserSchema extends Document, UserVerification {
-	_id: Types.ObjectId
-	username: string;
-	fullname: string;
-	email: string;
-	password: string;
-	role: "user" | "admin";
-	provider: enumProvider;
-}
-
-const userSchema = new Schema<UserSchema>({
+const userSchema = new Schema<UserSchema>(
+	{
 		username: {
 			type: String,
 			required: true,
@@ -46,6 +47,13 @@ const userSchema = new Schema<UserSchema>({
 		},
 		password: String,
 		role: String,
+		avatar: String,
+		address: String,
+		phoneNumber: {
+			type: String,
+			min: [10, "must be 10 character long"],
+			max: [10, "must be 10 character long"],
+		},
 		verifyCode: String,
 		isVerified: {
 			type: Boolean,
@@ -59,17 +67,18 @@ const userSchema = new Schema<UserSchema>({
 			type: String,
 			enum: ["credentials", "github"],
 		},
-	},{ timestamps: true },
+	},
+	{ timestamps: true },
 );
-
 
 userSchema.index({
 	email: 1,
-	username: 1
-})
+	username: 1,
+});
 
-const User = mongoose.models.User
-	 || mongoose.model<UserSchema>("User", userSchema);
+const User =
+	mongoose.models.User ||
+	mongoose.model<UserSchema>("User", userSchema);
 
 export default User;
-export type { UserSchema, UserVerification };
+export type { UserSchema };

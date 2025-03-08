@@ -5,6 +5,7 @@ export { default } from "next-auth/middleware";
 
 export async function middleware(req: NextRequest) {
 	const token = await getToken({ req });
+	console.log('token', token);
 	const url = req.nextUrl;
 	const isAuthUrl =
 		url.pathname.startsWith("/signin") ||

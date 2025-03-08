@@ -4,7 +4,6 @@ import {
 } from "next/server";
 import connectDB from "@/db/connect";
 import User, { UserSchema } from "@/models/user.models";
-import Profile from "@/models/profile.models";
 connectDB();
 
 async function handler(req:NextRequest) {
@@ -15,9 +14,7 @@ async function handler(req:NextRequest) {
     const action = searchParams.get('action');
 
     if(action === "streamUsers") {
-      const users = await Profile
-        .find()
-        .populate('owner');
+      const users = await User.find()
 
       return NextResponse.json({
         success: true,
@@ -26,6 +23,13 @@ async function handler(req:NextRequest) {
       })
     }
 
+    if(action === "removeUserFromAllDevice") {
+      await User.updateMany({}, { $unset: { deviceToken: "" } });
+      return NextResponse.json({
+        success: true,
+        message: "user removed from all device"
+      }, {status: 200})
+    }
 
     if(!id) {
       return NextResponse.json({
@@ -34,21 +38,17 @@ async function handler(req:NextRequest) {
       }, {status: 400})
     }
 
-    const account:(UserSchema | null) = await User.findById(id);
-    if(!account) {
+    const userInfo = await User.findById(id);
+    if(!userInfo) {
       return NextResponse.json({
         success: false,
         message: "No such user found"
       }, {status: 401});
     }
 
-    const profile 
-      = account.role == "user"
-        && await Profile.findOne({userId: account._id})
-
     return NextResponse.json({
       success: true,
-      data: {account, profile},
+      data: userInfo,
       message: "user found"
     }, {status: 200});
 
@@ -66,6 +66,29 @@ export async function DELETE(req:NextRequest) {
   try {
     const {searchParams} = new URL(req.url);
     const userID = searchParams.get("userID");
+    const action = searchParams.get('action')
+    const ids = searchParams.get('ids')?.split(",");
+
+    // delete all users
+    if(action === 'removeAll') {
+      await User.deleteMany({});
+      return NextResponse.json({
+        success: true,
+        message: "All users have been deleted",
+      }, {status: 200})
+    }
+
+    // delete multiple users
+    if(ids?.length) {
+      await User.deleteMany({_id: {$in: ids}})
+      return NextResponse.json({
+        success: true,
+        message: "users have been deleted",
+        data: ids
+      }, {status: 200})
+    }
+
+    // delete single user
     if(!userID) {
       return NextResponse.json({
         success: false,
@@ -83,10 +106,6 @@ export async function DELETE(req:NextRequest) {
       }, {status: 404})
     } 
 
-    // delete profile
-    await Profile
-      .findOneAndDelete({userId: userID})
-
     return NextResponse.json({
       success: true,
       message: "user has been deleted",
@@ -94,7 +113,8 @@ export async function DELETE(req:NextRequest) {
     }, {status: 200})
 
   } catch (err:any) {
-    console.log("Users Route Delete error", err.message)
+    console.log("Users Route Delete error",
+      err.message)
     return NextResponse.json({
       success: false,
       message: err.message 

@@ -5,5 +5,5 @@
   "trailingComma": "all",
   "printWidth": 60,
   "arrowParens": "always",
-  "singleAttributePerLine": true        
+  "singleAttributePerLine": true      
 }
