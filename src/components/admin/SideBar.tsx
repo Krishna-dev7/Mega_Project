@@ -6,7 +6,6 @@ import {
  } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/store/store";
-import { usersType } from "@/services/AccountService";
 import { Avatar } from "../ui/avatar";
 import { 
   AvatarFallback, 
@@ -21,10 +20,11 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "../ui/dropdown-menu";
+import { UserSchema } from "@/models/user.models";
 
 const SideBar = () => {
 
-  const user:(usersType | null)
+  const user:(UserSchema | null)
     = useAppSelector( 
         store => store.auth.data)
   
@@ -56,7 +56,7 @@ const SideBar = () => {
         <span
           className={`${!toggleSidebar && 'hidden'}`}
         >{toggleSidebar 
-          && user?.owner?.username}</span>
+          && user?.username}</span>
       </div>
 
       <nav className="space-y-2">
@@ -67,6 +67,7 @@ const SideBar = () => {
 							<DropdownMenu key={index}>
 								<DropdownMenuTrigger 
                   className="w-full"
+                  asChild
                   suppressHydrationWarning>
 									<Button
 										key={index}

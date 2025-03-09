@@ -1,49 +1,46 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
 import {
 	ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	useReactTable,
 	SortingState,
+	useReactTable,
 } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import {
 	Table,
 	TableBody,
-	TableCaption,
 	TableCell,
 	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { toast } from "@/hooks/use-toast";
+import cartService from "@/services/CartService";
 import {
 	cartType,
 	clearCarts,
-	delCart,
 	delCarts,
-	setCarts,
 } from "@/store/cartSlice";
-import { Button } from "@/components/ui/button";
-import CheckoutButton from "./CheckoutButton";
-import cartService from "@/services/CartService";
-import { toast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import ConfirmDialog from "../reusable/AlertDialog";
+import CheckoutButton from "./CheckoutButton";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
-	message: string
+	message: string;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
-	message
+	message,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>();
 	const [total, setTotal] = useState(0);
@@ -87,7 +84,7 @@ export function DataTable<TData, TValue>({
 			className="w-[100%] flex flex-col text-xs 
       sm:text-sm max-w-4xl mx-auto sm:px-10 py-8">
 			<div className="rounded-lg shadow-sm mb-5">
-				<Table  suppressHydrationWarning>
+				<Table suppressHydrationWarning>
 					<TableHeader>
 						{table.getRowCount() > 0 &&
 							table.getHeaderGroups().map((headerGroup) => (
@@ -198,13 +195,17 @@ export function DataTable<TData, TValue>({
 										),
 								});
 
-								dispatch(delCarts({
-									ids: table
-										.getSelectedRowModel()
-										.rows.map(row => (row.original as cartType)._id)
-								}))
+								dispatch(
+									delCarts({
+										ids: table
+											.getSelectedRowModel()
+											.rows.map(
+												(row) =>
+													(row.original as cartType)._id,
+											),
+									}),
+								);
 							}
-								
 						}}>
 						<span
 							className={`px-3 py-2 text-black rounded-md

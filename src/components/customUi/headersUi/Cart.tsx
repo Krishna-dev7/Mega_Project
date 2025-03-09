@@ -1,22 +1,38 @@
 "use client"
-import { Card, 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
   CardContent,
-  CardHeader, 
-  CardTitle } from "@/components/ui/card";
-import DataTable from "../checkout/DataTable";
-import { useEffect, useId } from "react";
-import { 
-  useAppSelector,
-  useAppDispatch } from "@/store/store";
-import { ColumnDef } from "@tanstack/react-table";
-import { cartType, 
-  decQuantity,
-  delCart, 
-  incQuantity, 
-  setCarts} from "@/store/cartSlice";
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader
+} from "@/components/ui/dialog";
 import cartService from "@/services/CartService";
+import {
+  cartType,
+  decQuantity,
+  delCart,
+  incQuantity,
+  setCarts
+} from "@/store/cartSlice";
+import {
+  useAppDispatch,
+  useAppSelector
+} from "@/store/store";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { ColumnDef } from "@tanstack/react-table";
 import { ShoppingCart } from "lucide-react";
+import { useEffect, useId, useState } from "react";
+import DataTable from "../checkout/DataTable";
+import Loading from "../Loading";
 
 
 const Cart: React.FC = () => {
@@ -24,7 +40,8 @@ const Cart: React.FC = () => {
   const key = useId();
   const carts 
     = useAppSelector(store => store.cart.carts);
-
+  const [trigger, setTrigger] = useState(false)
+  const [cartId, setCartId] = useState("");
 
   useEffect(() => {
     cartService.listCarts()
@@ -53,12 +70,14 @@ const Cart: React.FC = () => {
   }
 
 
-  const decItem = async (cartId:string, 
-    quantity: number) => {
+  const decItem = async (
+    cartId: string, 
+    quantity: number
+  ) => {
     try {
       if(quantity <= 0) {
-        const res = await cartService.deleteCart(cartId)
-        res && dispatch(delCart({id:cartId}))
+        setTrigger(true)
+        setCartId(cartId)
         return;
       }
       const result = await cartService.updateCart({
@@ -125,9 +144,11 @@ const Cart: React.FC = () => {
           className=" py-1 w-full
           flex items-center rounded-md ">
             <button 
-              onClick={() => row.original?._id   
+              onClick={() => {
+                row.original?._id   
                 && decItem(row.original._id.toString(), 
                     row.original.quantity-1)
+              }
               }
               className="btn btn-sm bg-gray-dark border
              border-gray-600 px-2 rounded-sm btn-sm ">-</button>
@@ -151,9 +172,7 @@ const Cart: React.FC = () => {
 
   return !carts ? <div className="loading w-full 
     min-h-screen flex bg-[#121212] items-center">
-      <img 
-        className="w-20 h-20 mx-auto"
-        src="https://i.pinimg.com/originals/27/f7/f5/27f7f575bd5a02e3a1558deb59538a4c.gif" alt="loader" />
+      <Loading />
     </div> 
     : <div 
     className="cart-page min-h-screen w-full h-fit flex
@@ -163,7 +182,7 @@ const Cart: React.FC = () => {
         className="streaming-cart-card sm:w-3xl my-32 text-sm md:w-3/4 
         lg:w-2/3 xl:w-1/2 w-[100%] text-violet-100">
         <CardHeader>
-          <CardTitle className="text-lg font-normal flex 
+          <CardTitle className="text-sm font-semibold flex 
             items-center text-pretty text-violet-300">
               Your Cart 
               <ShoppingCart 
@@ -179,6 +198,38 @@ const Cart: React.FC = () => {
             message="Your cart is empty"
             data={carts} 
           />
+
+          <Dialog 
+            open={trigger} 
+            onOpenChange={setTrigger}>
+            <DialogContent>
+              <DialogHeader>  
+                <DialogTitle 
+                  className="text-orange-500 text-sm">
+                  Are you sure?
+                </DialogTitle>
+                <DialogDescription>
+                  This action cannot be undone. 
+                  This will permanently delete your cart.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter >
+                <Button
+                  size={"sm"}
+                  className="text-sm text-pretty text-violet-900"
+                  onClick={async() => {
+                    const res = await cartService
+                      .deleteCart(cartId)
+
+                    res && dispatch(delCart({id:cartId}))
+                    setCartId('')
+                    setTrigger(false)
+                  }}>
+                  Sure 
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </Card>
 

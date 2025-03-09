@@ -14,13 +14,14 @@ import { toast } from "@/hooks/use-toast";
 
 interface ServiceResponse {
   success: boolean,
+  message?: string,
   data?: any,
   error?: string
 }
 
 class AccountService {
   async createAccount(
-    data: z.infer<typeof signupSchema>
+    data: z.infer<typeof signupSchema>,
   ):Promise<ServiceResponse> {
     try {
       const res = await axios.postForm<ApiResponse>(
@@ -28,8 +29,7 @@ class AccountService {
         data
       )
 
-      return { success: res.data.success, 
-        data: res.data.data }
+      return res.data;
     } catch (err:any) {
       this.handleError({
         type: 'createAccount', err})
@@ -219,18 +219,6 @@ class AccountService {
           type: 'StreamUser', err})
       }
     }
-
-  async removeUserFromAllDevice():Promise<ServiceResponse> {
-    try {
-      const result = await axios.get(
-        `${conf.url}/api/users?action=removeUserFromAllDevice`
-      )
-      return result.data;
-    } catch (err:any) {
-      this.handleError({
-        type: 'RemoveUserFromAllDevice', err})
-    }
-  }
 
   private handleError(
     {type, err}

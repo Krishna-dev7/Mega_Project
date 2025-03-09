@@ -21,6 +21,21 @@ import { toast } from "@/hooks/use-toast";
 import accountService from "@/services/AccountService";
 import { useEffect, useState } from "react";
 import columns from "./columns";
+import { Input } from "@/components/ui/input";
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const ManageUser = () => {
 	const initialState: InitialTableState = {
@@ -56,7 +71,7 @@ const ManageUser = () => {
 	}, [setData]);
 
 	// loader 🔥
-	if (!(data))
+	if (!data)
 		return (
 			<div
 				className="loader flex 
@@ -73,12 +88,79 @@ const ManageUser = () => {
 				className="user-panel flex flex-col w-full mt-5 
         h-fit bg-black xl:w-[70%] justify-start 
 				items-center py-10 gap-10 px-3 rounded-lg shadow-lg">
+				<div className="filter-bar flex gap-1 items-center w-full">
+					{/* search bar */}
+					<Input
+						type="text"
+						className="border-neutral-500 border-2 w-full"
+						placeholder="Search by name, role or email"
+						value={table.getState().globalFilter ?? ""}
+						onChange={(e) =>
+							table.setGlobalFilter(e.target.value)
+						}
+					/>
+
+					{/* Columns */}
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button
+								size={"sm"}
+								className="mx-2 text-xs font-semibold">
+								Columns
+								<ChevronDown />
+							</Button>
+						</DropdownMenuTrigger>
+
+						<DropdownMenuContent>
+							{table.getAllColumns().map((column) => (
+								<DropdownMenuCheckboxItem
+									key={column.id}
+									className="capitalize"
+									checked={column.getIsVisible()}
+									onCheckedChange={() =>
+										column.toggleVisibility()
+									}>
+									{column.id}
+								</DropdownMenuCheckboxItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
+
+					{/* status filter */}
+					<Select
+						value={
+							(table	
+								.getColumn('Status')
+								?.getFilterValue() as string) || ''
+						}
+						onValueChange={(value) => {
+							table	
+								.getColumn('Status')
+								?.setFilterValue(value)
+						}}>
+						<SelectTrigger
+							className="bg-violet-50 text-xs w-fit 
+							font-semibold text-black ">
+							<SelectValue placeholder="Status" />
+						</SelectTrigger>
+
+						<SelectContent>
+							<SelectItem value="all">All</SelectItem>
+							<SelectItem value="verified">
+								verified
+							</SelectItem>
+							<SelectItem value="not verified">
+								not verified
+							</SelectItem>
+						</SelectContent>
+					</Select>
+				</div>
 				<Table
 					className="text-xs sm:px-10 sm:text-sm text-pretty 
             font-normal rounded-lg shadow-lg bg-black text-gray-100">
 					<TableHeader>
-						{!!data.length 
-							&& table.getHeaderGroups().map((headerGroup) => (
+						{!!data.length &&
+							table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>
 									{headerGroup.headers.map((header) => (
 										<TableHead key={header.id}>
@@ -91,7 +173,7 @@ const ManageUser = () => {
 										</TableHead>
 									))}
 								</TableRow>
-						))}
+							))}
 					</TableHeader>
 
 					<TableBody>
@@ -189,7 +271,8 @@ const ManageUser = () => {
 													!table
 														.getSelectedRowModel()
 														.rows.map((row) =>
-															row.original._id.toString())
+															row.original._id.toString(),
+														)
 														.includes(user._id.toString()),
 											),
 										);
@@ -202,7 +285,7 @@ const ManageUser = () => {
 												? "All users deleted successfully"
 												: "Selected users deleted successfully",
 										variant: "default",
-									})
+									});
 								} catch (err: any) {
 									toast({
 										title: "error",

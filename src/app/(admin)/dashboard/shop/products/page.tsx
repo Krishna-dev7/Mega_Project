@@ -76,7 +76,7 @@ export default function ProductsDataTable() {
 			.get(`${conf.url}/api/products`)
 			.then((res) => {
 				setData(res.data?.data);
-				setProducts([...res.data.data]);
+				// setProducts([...res.data.data]);
 				dispatch(dispatchProducts(res.data.data));
 			})
 			.catch((err) =>

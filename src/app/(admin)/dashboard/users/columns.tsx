@@ -125,7 +125,7 @@ const columns: ColumnDef<UserSchema>[] = [
 			return (
 				<div>
 					<span
-						className={` text-sm ${
+						className={` text-sm lowercase ${
 							row.getValue("Status")
 								? "text-green-400 "
 								: "text-red-300 "
@@ -137,6 +137,18 @@ const columns: ColumnDef<UserSchema>[] = [
 				</div>
 			);
 		},
+		enableColumnFilter: true,
+		filterFn: (row, columnId, filterValue) => {
+			if(filterValue === "all") return true
+
+			const value = row.getValue(columnId)
+				? "verified"
+				: "not verified"
+
+			return value.includes(filterValue)
+		}
+			
+			
 	},
 	{
 		id: "Email",
