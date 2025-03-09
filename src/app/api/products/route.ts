@@ -1,61 +1,42 @@
-import { 
-  NextResponse, 
-  NextRequest 
-} from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import connectDB from "@/db/connect";
 import Product, { IProduct } from "@/models/product.models";
 import Cart from "@/models/cart.models";
 
 connectDB();
 
-const handler 
-  = async function() : Promise<NextResponse> {
-    try {  
-      // get all products then send it to the product page
-      const products:Array<IProduct> 
-        = await Product.find();
 
-      return NextResponse.json({
-        success: true,
-        message: "Your products",
-        data: products
-      }, {status: 200});
-
-    } catch (error:any) {
-      console.log("error in products route: ", error.message);
-      return NextResponse.json({
-        success: false,
-        message: error.message
-          || "Something went wrong in products route"
-      }, {status: 500});
-
-    }
-}
-
-export const POST = async (req: NextRequest)
-  : Promise<NextResponse> => {
+const handler = async function (): Promise<NextResponse> {
   try {
-    
-    const body:IProduct = await req.json();
+    const products: Array<IProduct> = await Product.find();
+    return NextResponse.json({
+      success: true,
+      message: "Your products",
+      data: products,
+    }, { status: 200 });
 
-    const {
-      slug,
-      price,
-      countInStock,
-      images,
-      description,
-      category,
-      owner,
-      discount
-    } = body;
+  } catch (error: any) {
+    console.log("Error in products route: ", error.message);
+    return NextResponse.json({
+      success: false,
+      message: error.message || "Something went wrong in products route",
+    }, { status: 500 });
+  }
+};
 
-    if(!body) {
+const POST = async (req: NextRequest): Promise<NextResponse> => {
+  try {
+    const body: IProduct = await req.json();
+
+    const { slug, price, countInStock, images, description, category, owner, discount } = body;
+
+    if (!body) {
       return NextResponse.json({
         success: false,
-        message: "didn't received body or data"
-      }, {status: 400})
+        message: "Didn't receive body or data"
+      }, { status: 400 });
     }
-    
+
     const product = await Product.create({
       slug,
       price,
@@ -65,65 +46,105 @@ export const POST = async (req: NextRequest)
       owner,
       countInStock,
       discount: discount || 0
-    })
+    });
 
     return NextResponse.json({
       success: true,
-      message: "product created successfully",
+      message: "Product created successfully",
       data: product
-    }, {status: 200});
+    }, { status: 201 });
 
+  } catch (err: any) {
+    console.log("Error in products route: ", err.message);
+    return NextResponse.json({
+      success: false,
+      message: err.message || "Something went wrong in products route"
+    }, { status: 500 });
+  }
+};
 
-  } catch (err:any) {
-    console.log("error in products route: ", err.message);
+const PUT = async (req: NextRequest): Promise<NextResponse> => {
+  try {
+    const { searchParams } = new URL(req.url);
+    const productId = searchParams.get("id");
+
+    if (!productId) {
       return NextResponse.json({
         success: false,
-        message: err.message
-          || "Something went wrong in products route"
-      }, {status: 500});
+        message: "Product ID is required"
+      }, { status: 400 });
+    }
+
+    const body = await req.json();
+    const updatedProduct = await Product.findByIdAndUpdate(productId, body, { new: true });
+
+    if (!updatedProduct) {
+      return NextResponse.json({
+        success: false,
+        message: "Product not found"
+      }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Product updated successfully",
+      data: updatedProduct
+    }, { status: 200 });
+
+  } catch (err: any) {
+    console.log("Error in updating product: ", err.message);
+    return NextResponse.json({
+      success: false,
+      message: err.message || "Something went wrong while updating the product"
+    }, { status: 500 });
   }
-}
+};
 
 
-export const DELETE = async (req: NextRequest)
-  : Promise<NextResponse> => {
-    try {
-      const {searchParams} = new URL(req.url)
-      const productId = searchParams.get('id')
+const DELETE = async (req: NextRequest): Promise<NextResponse> => {
+  try {
+    const { searchParams } = new URL(req.url);
+    const productId = searchParams.get("id");
 
-      if(productId) {
+    if (productId) {
+      const product = await Product.findByIdAndDelete(productId);
 
-        const product = await Product
-          .findByIdAndDelete(productId)
-
-          await Cart.deleteMany({
-            product: {$in: productId}
-          })
-
+      if (!product) {
         return NextResponse.json({
-          success: true,
-          message: 'product deleted'
-        }, {status: 200})
+          success: false,
+          message: "Product not found"
+        }, { status: 404 });
       }
 
-      const products = await Product.deleteMany({})
+      await Cart.deleteMany({ product: { $in: productId } });
 
       return NextResponse.json({
         success: true,
-        message: 'all products deleted',
-        data: products
-      }, {status: 200})
-
-    } catch (err:any) {
-      console.log("error in products route: ", err.message);
-      return NextResponse.json({
-        success: false,
-        message: err.message
-          || "Something went wrong in products route"
-      }, {status: 500});
+        message: "Product deleted successfully"
+      }, { status: 200 });
     }
-}
 
-export {
-  handler as GET
-}
+    const products = await Product.deleteMany({});
+
+    return NextResponse.json({
+      success: true,
+      message: "All products deleted",
+      data: products
+    }, { status: 200 });
+
+  } catch (err: any) {
+    console.log("Error in deleting product: ", err.message);
+    return NextResponse.json({
+      success: false,
+      message: err.message || "Something went wrong in products route"
+    }, { status: 500 });
+  }
+};
+
+
+export { handler as GET,
+  POST as POST,
+  PUT as PUT,
+  DELETE as DELETE,
+
+ };

@@ -12,7 +12,7 @@ const store = configureStore({
     cart: cartReducer,
     product: productReducer,
     theme: themeReducer,
-    pageination: pageReducer
+    pagination: pageReducer
   }
 })
 
