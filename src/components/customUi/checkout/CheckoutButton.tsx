@@ -4,6 +4,8 @@ import conf from "@/helpers/conf";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import paymentService from "@/services/PaymentService";
+import { useAppSelector } from "@/store/store";
 
 const stripePromise: Promise<Stripe | null> 
   = loadStripe(conf.stripe_publishable_key);
@@ -20,6 +22,8 @@ function CheckoutButton({ items, isDisabled }
   : CheckoutButtonProps) {
   const [loading, setLoading] = useState(false);
 
+  const userId = useAppSelector(store => store.auth.data?._id)
+
   const handleClick = async () => {
     setLoading(true);
     const stripe = await stripePromise;
@@ -35,8 +39,10 @@ function CheckoutButton({ items, isDisabled }
     const { id } = await res.json();
 
     if (stripe) {
+      
       const { error } = await stripe
         .redirectToCheckout({ sessionId: id });
+      
       if (error) {
         console.error("Stripe checkout error:", 
           error.message);

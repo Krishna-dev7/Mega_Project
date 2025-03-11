@@ -13,19 +13,44 @@ import {
 import { useRef, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
+import paymentService from "@/services/PaymentService"
+import { useSearchParams } from "next/navigation"
+import { useAppSelector } from "@/store/store"
 
 export default function SuccessPage() {
   const confettiRef = useRef<ConfettiRef>(null);
   const router = useRouter()
+
+  const userId = useAppSelector(store => store.auth.data?._id)
   
   // Function to trigger confetti
   const triggerConfetti = () => {
     confettiRef.current?.fire({});
   };
-
+  
+  const params = useSearchParams();
   useEffect(() => {
+		const fetch = async () => {
+      let session_id =  params.get('session_id')
+		if ( session_id && userId) {
+			await paymentService.createPayment(
+				session_id,
+				userId.toString(),
+			);
 
-  }, [])
+      return 
+		}
+
+    console.log(`didn't recieve any params 
+      ${params} and userId ${userId}`);
+
+      console.log(params);
+      
+    }
+
+    fetch();
+    
+	}, [params, userId]);
   
   return (
     <div 

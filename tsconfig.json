@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/db/seeder.ts", "src/components/customUI/checkout/CheckoutForm.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/db/seeder.ts", "src/components/customUI/checkout/CheckoutForm.tsx", "src/services/StorageService.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,22 +1,81 @@
-import { ObjectId } from 'mongodb';
-import connectDB from '@/db/connect';
+import conf from '@/helpers/conf';
+import productSchema from '@/schemas/product.schema';
 import ApiResponse from '@/types/ApiResponse';
 import axios from 'axios';
-import conf from '@/helpers/conf';
-
-function getApiResponse(status: boolean, data: any, message = '')
-	: ApiResponse {
-	return { success: status, data, message };
-}
+import { z } from 'zod';
 
 class Product {
-	async createProduct() {}
+	async createProduct(
+		data: z.infer<typeof productSchema>
+	): Promise<ApiResponse> {
+		try {
+			
+			const res = await axios.post(
+				`${conf.url}/api/products`,
+				data
+			)
 
-	async getProduct(productId: any) {}
+			return res.data;
+		} catch (err:any) {
+			this.handleError({
+				err,
+				type: 'ProductService::createProduct'
+			})
+		}
+	}
 
-	async streamProducts(query = {}) {}
+	async getProduct(productId: any)
+		: Promise<ApiResponse> {
+			try {
 
-	async updateProduct(productId: any, updateData: any) {}
+				const res = await axios.get(
+					`${conf.url}/api/products/${productId}`
+				)
+
+				return res.data;
+
+			} catch (err:any) {
+				this.handleError({
+					err,
+					type: 'ProductService::getProduct'
+				})
+			}
+		}
+
+	async streamProducts()
+		: Promise<ApiResponse> {
+			try {
+				const res = await axios.get(
+					`${conf.url}/api/products`
+				)
+
+				return res.data;
+			} catch (err:any) {
+				this.handleError({
+					err,
+					type: 'ProductService::streamProducts'
+				})
+			}
+		}
+
+	async updateProduct(
+		productId: any, 
+		updateData: any)
+		: Promise<ApiResponse> {
+			try {
+				const res = await axios.put(
+					`${conf.url}/api/products/${productId}`,
+					updateData
+				)
+
+				return res.data;
+			} catch (err:any) {
+				this.handleError({
+					err,
+					type: 'ProductService::updateProduct'
+				})
+			}
+	}
 
 	async deleteProduct(productId: string)
 		: Promise<ApiResponse> {

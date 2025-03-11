@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import {
+	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormMessage,
-  Form
+	FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import conf from "@/helpers/conf";
@@ -15,8 +15,7 @@ import { toast } from "@/hooks/use-toast";
 import signupSchema from "@/schemas/signup.schem";
 import accountService from "@/services/AccountService";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft, ChevronLeftSquare, Eye, EyeOff } from "lucide-react";
-import Image from "next/image";
+import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
