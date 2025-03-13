@@ -10,7 +10,6 @@ import {
 	FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import conf from "@/helpers/conf";
 import { toast } from "@/hooks/use-toast";
 import signupSchema from "@/schemas/signup.schem";
 import accountService from "@/services/AccountService";
@@ -45,12 +44,17 @@ const AdminSignup: React.FC = () => {
 			const res = await accountService
         .createAccount(data);
 
+			console.log(' I am called');
+			
+
 			res.success &&
 				toast({
 					title: "Success",
 					description: res.message 
             || "Login successfully",
 				});
+
+			router.push("/verify")
 
 			setLoading(false);
 		} catch (err: any) {
@@ -84,35 +88,56 @@ const AdminSignup: React.FC = () => {
 
 			<div
 				className="w-full max-w-md border border-gray-400 p-8
-				 lg:shadow-md  mx-auto rounded-lg">
+				 lg:shadow-md mx-auto rounded-lg">
 				<h2
 					className="text-2xl font-semibold text-center
           text-gray-800 mb-6">
-					Welcome Back 👋
+					Welcome Admin  👋
 				</h2>
 
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(submitForm)}>
 
 						{/* username */}
-
 						<FormField 
 							name="username"
 							render={({field}) => (
-								<FormItem>
+								<FormItem className="mt-3">
 									<FormLabel>Username</FormLabel>
-									<Input />
+									<FormControl>
+										<Input 
+											placeholder="Nicky"
+											{...field}
+											/>
+									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 							/>
 
+						{/* fullname */}
+						<FormField 
+							name="fullname"
+							render={({field}) => {								
+								return <FormItem className="mt-3">
+									<FormLabel>FullName</FormLabel>
+									<FormControl>
+										<Input 
+											type="text"
+											placeholder="John Doe"
+											{...field}
+											/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							}}
+						/>
 
 						{/* email  */}
 						<FormField
 							name="email"
 							render={({ field }) => (
-								<FormItem className="mb-3">
+								<FormItem className="mt-3">
 									<FormLabel>Email</FormLabel>
 									<FormControl>
 										<Input
@@ -130,7 +155,7 @@ const AdminSignup: React.FC = () => {
 						<FormField
 							name="password"
 							render={({ field }) => (
-                <FormItem>
+                <FormItem className="mt-3">
 									<FormLabel>Password</FormLabel>
 									<FormControl>
 										<div className="relative">
@@ -148,12 +173,11 @@ const AdminSignup: React.FC = () => {
 												onClick={() =>
 													setShowPassword(!showPassword)
 												}
-												className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700">
-												{showPassword ? (
-													<EyeOff size={20} />
-												) : (
-													<Eye size={20} />
-												)}
+												className="absolute right-3 top-2.5 text-gray-500 
+												hover:text-gray-700">
+													{showPassword 
+														?	(<EyeOff size={20} />) 
+														: (<Eye size={20} />)}
 											</button>
 										</div>
 									</FormControl>
@@ -165,11 +189,11 @@ const AdminSignup: React.FC = () => {
 
 
 						{/* Forgot Password */}
-						<div className="text-right mt-2">
+						{/* <div className="text-right mt-3">
 							<Link href={`${conf.url}/forgotPassword`}>
 								Forgot your password ?
 							</Link>
-						</div>
+						</div> */}
 
 						{/* Submit Button */}
 						<Button
@@ -177,35 +201,21 @@ const AdminSignup: React.FC = () => {
 							disabled={loading}
 							className="w-full border border-gray-400 
               bg-black text-white hover:bg-black mt-6 py-6">
-							{loading ? "Signing In..." : "Sign In"}
+							{loading ? "Signing up..." : "Create Account"}
 						</Button>
 					</form>
 				</Form>
 
-				{/* GitHub Sign In */}
-				{/* <div className="mt-6 text-center">
-					<p className="text-sm text-gray-600 mb-2">
-						Or sign in with:
-					</p>
-					<Button
-						onClick={(e) => githubSigin(e)}
-						disabled={isLoading}
-						variant="secondary"
-						className="w-full py-6 flex items-center justify-center gap-2">
-						<Github size={20} />
-						GitHub
-					</Button>
-				</div> */}
-
 				{/* Create Account */}
 				<div className="mt-6 text-center border-t border-gray-200 pt-4">
 					<p className="text-sm text-gray-600">
-						New customer?
+						Old customer?
 					</p>
 					<Link
-						href={`/signup`}
-						className="text-sm text-pretty flex items-center justify-center py-5 font-semibold text-gray-800 hover:underline">
-						Create your Account
+						href={`/admin-signin`}
+						className="text-sm text-pretty flex items-center justify-center
+						 py-5 font-semibold text-gray-800 hover:underline">
+						Login here
 					</Link>
 				</div>
 			</div>

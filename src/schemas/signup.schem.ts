@@ -18,14 +18,14 @@ const signupSchema = z.object({
 	fullname: z
 		.string()
 		.regex(
-			/^[a-zA-z\s]{4,12}$/,
+			/^[a-zA-z\s]{4,20}$/,
 			"fullname can contain only letters",
 		),
 	email: z.string().email(),
 	role: z
 		.string()
 		.regex(
-			/(user)|(seller)/,
+			/(user)|(admin)/,
 			"only user or seller is allowed",
 		),
 	password: z

@@ -29,6 +29,7 @@ interface IPayment extends Document {
 	invoice_url: string
 	paymentIntentId: string
 	email: string
+	payment_intent_status: string
 }
 
 const paymentSchema = new Schema<IPayment>({
@@ -65,6 +66,7 @@ const paymentSchema = new Schema<IPayment>({
 	phone_number: String,
 	invoiceId: String,
 	paymentIntentId: String,
+	payment_intent_status: String,
 	email: String
 },{ timestamps: true });
 

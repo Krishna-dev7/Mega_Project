@@ -36,6 +36,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import TableComponent from "@/components/customUI/Table";
 
 const ManageUser = () => {
 	const initialState: InitialTableState = {
@@ -83,10 +84,10 @@ const ManageUser = () => {
 	return (
 		<div
 			className="user-dashboard mx-auto w-full min-h-screen
-			xl:justify-center xl:items-center flex">
+			xl:justify-start xl:items-start flex">
 			<div
 				className="user-panel flex flex-col w-full mt-5 
-        h-fit bg-black xl:w-[70%] justify-start 
+        h-fit bg-black xl:w-[100%] sm:mx-5 justify-start 
 				items-center py-10 gap-10 px-3 rounded-lg shadow-lg">
 				<div className="filter-bar flex gap-1 items-center w-full">
 					{/* search bar */}
@@ -155,7 +156,7 @@ const ManageUser = () => {
 						</SelectContent>
 					</Select>
 				</div>
-				<Table
+				{/* <Table
 					className="text-xs sm:px-10 sm:text-sm text-pretty 
             font-normal rounded-lg shadow-lg bg-black text-gray-100">
 					<TableHeader>
@@ -204,8 +205,11 @@ const ManageUser = () => {
 							</TableRow>
 						)}
 					</TableBody>
-				</Table>
-
+				</Table> */}
+				<TableComponent 
+					table={table}
+					columns={columns}
+				/>
 				{table.getRowCount() > 7 && (
 					<div
 						className="flex items-center 

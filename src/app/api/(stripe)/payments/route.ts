@@ -1,7 +1,6 @@
 import connectDB from "@/db/connect";
 import conf from "@/helpers/conf";
 import Payment, { IPayment } from "@/models/payment.models";
-import { getSession } from "next-auth/react";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -15,7 +14,7 @@ export async function GET(req: NextRequest) {
 
 		return NextResponse.json(
 			{
-				success: false,
+				success: true,
 				message: "retrieved payments",
 				data: payments,
 			},{ status: 200 },
@@ -68,13 +67,19 @@ const POST = async (req: NextRequest) => {
 			);
 		}
 
+		let paymentIntent;
+		if(data.payment_intent) {
+			paymentIntent = await stripe.paymentIntents
+				.retrieve(data.payment_intent.toString())
+
+		}
+
 		const address = data
       .collected_information
       ?.shipping_details
       ?.address;
 
 		console.log('invoice: ', invoice);
-		
 
 		const payment: IPayment = await Payment.create({
 			userId,
@@ -86,7 +91,8 @@ const POST = async (req: NextRequest) => {
 			amount_subtotal: data.amount_subtotal,
 			currency: data.currency,
 			payment_status: data.payment_status,
-			payment_date: data.created,
+			payment_intent_status: paymentIntent?.status,
+			payment_date: data.created * 1000,
 			shipping_details: {
 				city: address?.city,
 				country: address?.country,
@@ -120,7 +126,44 @@ const POST = async (req: NextRequest) => {
 	}
 };
 
+async function DELETE(req: NextRequest) {
+	try {
+
+		const {searchParams} = new URL(req.url)
+
+		const paymentId = searchParams.get('paymentId')
+
+		if(!paymentId) {
+			return NextResponse.json(
+				{
+					success: false,
+					message:"missing required params",
+				},{ status: 500 },
+			);
+		}
+
+		const deleted = await Payment
+			.findByIdAndDelete(paymentId	)
+
+		return NextResponse.json({
+			success: true,
+			message: 'deleted payment',
+			data: deleted
+		}, {status: 200})
+		
+	} catch (err:any) {
+		return NextResponse.json(
+			{
+				success: false,
+				message:
+					err.message ||
+					"someting went wrong in payment route",
+			},{ status: 500 },
+		);
+	}
+}
+
 
 export {
-  POST
-}
+	DELETE, POST
+};

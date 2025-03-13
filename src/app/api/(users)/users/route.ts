@@ -22,15 +22,7 @@ async function handler(req:NextRequest) {
         message: "users found"
       })
     }
-
-    if(action === "removeUserFromAllDevice") {
-      await User.updateMany({}, { $unset: { deviceToken: "" } });
-      return NextResponse.json({
-        success: true,
-        message: "user removed from all device"
-      }, {status: 200})
-    }
-
+    
     if(!id) {
       return NextResponse.json({
         success: true,

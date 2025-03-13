@@ -135,7 +135,7 @@ export async function DELETE(req:NextRequest) {
   }
 }
 
-export async function PUT(req:NextRequest) {
+export async function PATCH(req:NextRequest) {
   try {
     
     const body = await req.json();

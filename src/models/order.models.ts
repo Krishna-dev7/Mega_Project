@@ -5,13 +5,15 @@ import mongoose, {
   Types,
 } from "mongoose";
 import Product from "./product.models";
+import { Size } from "./cart.models";
 
 export enum OrderStatus {
   PENDING = "pending",
   SHIPPED = "shipped",
   CONFIRMED = "confirmed",
   DELIVERED = "delivered",
-  CANCELLED = "cancelled"
+  CANCELLED = "cancelled",
+  RETURNED = "returned"
 }
 
 interface IOrder extends Document {
@@ -19,9 +21,12 @@ interface IOrder extends Document {
   userId: Types.ObjectId,
   totalAmount: number,
   status: OrderStatus,
+  paymentId: Types.ObjectId,
   products: [{
     productId: Types.ObjectId,
-    quantity: number
+    quantity: number,
+    size: Size,
+    prize: number
   }]
 }
 
@@ -54,7 +59,12 @@ const orderSchema = new Schema<IOrder>({
       required: true,
       min: 1,
       default: 1
-    }
+    },
+    size: {
+      type: String,
+      enum: Object.values(Size)
+    },
+    price: Number
   }]
 }, {timestamps: true});
 
@@ -86,7 +96,7 @@ const handleProductStock = async function(this: IOrder,
 
 orderSchema.pre("save", handleProductStock); 
 
-const Order = mongoose.models.Order
+const Order = mongoose.models?.Order
   || mongoose.model("Order", orderSchema);
 
 

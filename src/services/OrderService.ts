@@ -9,7 +9,7 @@ class OrderService {
 
   async createOrder(data: IOrder) {
     try {
-      const order = await axios.postForm<ApiResponse>(
+      const order = await axios.post<ApiResponse>(
         this.url, data)     
       return order || false;
     } catch (err:any) {
@@ -21,7 +21,7 @@ class OrderService {
 
   async updateOrder(data:any){
     try {
-      const patch = await axios.post<ApiResponse>(
+      const patch = await axios.patch<ApiResponse>(
         this.url, data)
 
       return patch || false;
@@ -33,7 +33,34 @@ class OrderService {
   }
   async queryStatus(){}
   async cancelOrder(){}
-  async streamOrders(){}
+
+  async deleteOrder(orderId:string)
+  : Promise<ApiResponse>{
+
+    const res = await axios.delete(
+      `${conf.url}/api/orders?id=${orderId}`
+    )
+
+    return res.data;
+  }
+  
+  async streamOrders()
+  : Promise<ApiResponse> {
+    try {
+
+      const orders = await axios.get<ApiResponse>(
+        `${this.url}/api/orders?action=streamUsers`
+      )
+
+      return orders.data;
+      
+    } catch (err:any) {
+      this.handleError({
+        type: 'StreamOrders',
+        err
+      })
+    }
+  }
 
   private handleError(
     {type, err}

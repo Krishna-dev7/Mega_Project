@@ -83,8 +83,8 @@ export default function SuccessPage() {
 
           <div className="transaction-id border py-4 
             rounded-md flex justify-between px-3 
-            border-gray-500 text-start">
-            12345
+            border-gray-500 text-start text-ellipsis line-clamp-1">
+            {params.get('session_id')}
             <span>
               <CopyIcon
                 className="cursor-pointer text-violet-400"

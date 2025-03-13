@@ -75,7 +75,7 @@ class CartService {
     : {cartId: string, quantity: number}
   ): Promise<ApiResponse | false>{
     try {
-      const res = await axios.put(
+      const res = await axios.patch(
         `${conf.url}/api/carts`,
         {cartId, quantity}
       )

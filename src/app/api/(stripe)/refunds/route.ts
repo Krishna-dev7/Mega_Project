@@ -30,7 +30,7 @@ async function GET(req: NextRequest) {
     result = await stripe.refunds.list()
     }
 
-    if(action == "getRefund" && refundId) {
+    if(refundId) {
       result = await stripe
         .refunds.retrieve(refundId)
     }
@@ -54,9 +54,9 @@ async function GET(req: NextRequest) {
 
 async function POST(req: NextRequest) {
   try {
-    const {refundId} = await req.json();
+    const {paymentIntentId} = await req.json();
 
-    if(!refundId) {
+    if(!paymentIntentId) {
       return NextResponse.json({
         success: false,
         message: "missing required params"
@@ -64,7 +64,7 @@ async function POST(req: NextRequest) {
     }
     
     const result = await stripe.refunds.create({
-      payment_intent: refundId
+      payment_intent: paymentIntentId
     })
 
     return NextResponse.json({

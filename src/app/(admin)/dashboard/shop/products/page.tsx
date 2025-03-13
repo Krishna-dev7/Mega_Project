@@ -1,50 +1,29 @@
 "use client";
-import * as React from "react";
 import {
-	type ColumnDef,
 	type ColumnFiltersState,
 	type SortingState,
 	type VisibilityState,
-	flexRender,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	useReactTable,
+	useReactTable
 } from "@tanstack/react-table";
 import {
-	ArrowUpDown,
-	ChevronDown,
-	MoreHorizontal,
+	ChevronDown
 } from "lucide-react";
+import * as React from "react";
 
+import TableComponent from "@/components/customUI/Table";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
+	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { IProduct } from "@/models/product.models";
-import axios from "axios";
-import conf from "@/helpers/conf";
-import { setProducts } from "@/store/productSlice";
-import SideBar from "@/components/admin/SideBar";
-import { useRouter } from "next/navigation";
 import {
 	Select,
 	SelectContent,
@@ -52,9 +31,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import conf from "@/helpers/conf";
+import axios from "axios";
 import { useState } from "react";
-import productService from "@/services/productService";
-import { toast } from "@/hooks/use-toast";
+import { IProduct } from "@/models/product.models";
+import getColumns from "./columns";
+import Loading from "@/components/customUI/Loading";
 
 export default function ProductsDataTable() {
 	const [sorting, setSorting] =
@@ -67,11 +49,12 @@ export default function ProductsDataTable() {
 		{},
 	);
 
-	const [data, setData] = React.useState<IProduct[]>([]);
 	const [globalFilter, setGlobalFilter] = useState("");
-	const router = useRouter();
+	const [data, setData] = React.useState<IProduct[]>([]);
+	const [loading, setLoading] = useState(false)
 
 	React.useEffect(() => {
+		setLoading(true)
 		axios
 			.get(`${conf.url}/api/products`)
 			.then((res) => {
@@ -81,186 +64,13 @@ export default function ProductsDataTable() {
 			})
 			.catch((err) =>
 				console.log("product fetch error: ", err.message),
-			);
+			)
+			.finally(() => setLoading(false));
 	}, []);
 
-	const deleteProduct = async (row: any) => {
-		const res = await productService.deleteProduct(
-			row.original?._id.toString(),
-		);
 
-		if (res.success) {
-			toast({
-				title: "info",
-				description: "product deleted",
-			});
-		}
+	const columns = getColumns(setData);
 
-		setData((prev) => {
-			const newData = prev.filter(
-				(item) => item._id !== row.original?._id,
-			);
-			return [...newData];
-		});
-	};
-
-	const columns: ColumnDef<IProduct>[] = [
-		{
-			header: "image",
-			cell: ({ row }) => (
-				<div
-					className="image w-12 h-12  object-cover
-						object-center aspect-square">
-					<img
-						className="w-full h-full rounded-lg"
-						src={row.original.images[0].url}
-					/>
-				</div>
-			),
-		},
-		{
-			accessorKey: "slug",
-			header: ({ column }) => {
-				return (
-					<Button
-						variant="ghost"
-						onClick={() =>
-							column.toggleSorting(
-								column.getIsSorted() === "asc",
-							)
-						}>
-						Product
-						<ArrowUpDown className="ml-2 h-4 w-4" />
-					</Button>
-				);
-			},
-			cell: ({ row }) => (
-				<div className="font-medium">
-					{row.getValue("slug")}
-				</div>
-			),
-		},
-		{
-			accessorKey: "category",
-			header: "Category",
-			cell: ({ row }) => (
-				<div>{row.getValue("category")}</div>
-			),
-		},
-		{
-			accessorKey: "price",
-			header: () => <div className="text-right">Price</div>,
-			cell: ({ row }) => {
-				const price = Number.parseFloat(
-					row.getValue("price"),
-				);
-				const formatted = new Intl.NumberFormat("en-IN", {
-					style: "currency",
-					currency: "INR",
-				}).format(price);
-				return (
-					<div className="text-right font-medium">
-						{formatted}
-					</div>
-				);
-			},
-		},
-		{
-			accessorKey: "countInStock",
-			header: () => <div className="text-right">Stock</div>,
-			cell: ({ row }) => {
-				return (
-					<div className="text-right">
-						{row.getValue("countInStock")}
-					</div>
-				);
-			},
-		},
-		{
-			header: "Status",
-			enableColumnFilter: true,
-			filterFn: (row, id, value) => {
-				if (value === "all") return true;
-				const stockValue = row.getValue(
-					"countInStock",
-				) as number;
-				const status =
-					stockValue >= 20
-						? "In Stock"
-						: stockValue < 20 && stockValue > 0
-							? "Low Stock"
-							: "Out of Stock";
-				return value.includes(status);
-			},
-			cell: ({ row }) => {
-				const stock: number = row.getValue("countInStock");
-				return (
-					<Badge
-						variant={
-							stock >= 20
-								? "default"
-								: stock < 20
-									? "outline"
-									: "destructive"
-						}>
-						{stock >= 20
-							? "In Stock"
-							: stock < 20 && stock > 0
-								? "Low Stock"
-								: "Out of Stock"}
-					</Badge>
-				);
-			},
-		},
-		{
-			id: "actions",
-			enableHiding: false,
-			cell: ({ row }) => {
-				const product = row.original;
-
-				return (
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button
-								variant="ghost"
-								className="h-8 w-8 p-0">
-								<span className="sr-only">Open menu</span>
-								<MoreHorizontal className="h-4 w-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuItem
-								onClick={() =>
-									navigator.clipboard.writeText(
-										product._id.toString(),
-									)
-								}>
-								Copy product ID
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem
-								onClick={() =>
-									router.push(
-										`/products/${row.original._id.toString()}`,
-									)
-								}>
-								View details
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								Edit product
-							</DropdownMenuItem>
-							<DropdownMenuItem
-								onClick={() => deleteProduct(row)}
-								className="text-destructive">
-								Delete product
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				);
-			},
-		},
-	];
 
 	const table = useReactTable({
 		data,
@@ -282,9 +92,16 @@ export default function ProductsDataTable() {
 		},
 	});
 
+	if(!data.length || loading) {
+		return <div className="loader w-full min-h-screen 
+			flex justify-center items-center">
+			<Loading />
+		</div>
+	}
+
 	return (
 		<Card className="border-none box-border shadow-sm overflow-hidden">
-			<div className="w-full mx-5">
+			<div className="w-full mt-5 mx-5">
 				<div className="flex items-center py-4 px-4">
 					<Input
 						placeholder="filter product, category, stock and price"
@@ -356,7 +173,7 @@ export default function ProductsDataTable() {
 					</Select>
 				</div>
 				<div className="rounded-md border">
-					<Table>
+					{/* <Table>
 						<TableHeader>
 							{table
 								.getHeaderGroups()
@@ -406,7 +223,12 @@ export default function ProductsDataTable() {
 								</TableRow>
 							)}
 						</TableBody>
-					</Table>
+					</Table> */}
+
+					<TableComponent 
+						table={table}
+						columns={columns}
+					/>
 				</div>
 				<div className="flex items-center justify-end space-x-2 p-4">
 					<div className="flex-1 text-sm text-muted-foreground">

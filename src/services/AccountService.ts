@@ -24,7 +24,7 @@ class AccountService {
     data: z.infer<typeof signupSchema>,
   ):Promise<ServiceResponse> {
     try {
-      const res = await axios.postForm<ApiResponse>(
+      const res = await axios.post<ApiResponse>(
         `${conf.url}/api/signup`,
         data
       )
@@ -219,6 +219,15 @@ class AccountService {
           type: 'StreamUser', err})
       }
     }
+
+
+  async getUser(userId:string)
+    : Promise<ApiResponse> {
+    const res = await axios.get(
+      `${conf.url}/api/users?id=${userId}`
+    )
+    return res.data;
+  }
 
   private handleError(
     {type, err}

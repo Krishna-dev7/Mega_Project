@@ -15,7 +15,8 @@ interface UserSchema extends Document {
 	fullname: string;
 	email: string;
 	password: string;
-	role: "user" | "admin";
+	dob: Date,
+	role: "user" | "admin" | "superAdmin";
 	provider: enumProvider;
 	avatar: string;
 	address: string;
@@ -49,6 +50,7 @@ const userSchema = new Schema<UserSchema>(
 		role: String,
 		avatar: String,
 		address: String,
+		dob: Date,
 		phoneNumber: {
 			type: String,
 			min: [10, "must be 10 character long"],

@@ -6,8 +6,10 @@ import NewArrivals from '@/components/customUI/layouts/NewArrivals';
 import BenefitComponent from '@/components/customUI/layouts/WhyUs';
 import BrandComponent 
   from '@/components/customUI/layouts/BrandCollaboration';
+import { Suspense } from 'react';
+import Loading from '@/components/customUI/Loading';
 
-export default function Home() {
+function Home() {
 
   return (
     <div className=" scroll-smooth min-h-screen text-white">
@@ -19,3 +21,16 @@ export default function Home() {
     </div>
   );
 }
+
+const HomeWrapper:React.FC = () => (
+  <Suspense 
+    fallback={<div 
+      className='w-full min-h-screen flex justify-center 
+      items-center'>
+        <Loading />
+      </div>}>
+    <Home />
+  </Suspense>
+)
+
+export default HomeWrapper

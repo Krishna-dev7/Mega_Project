@@ -1,40 +1,39 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
-import React, {Suspense, useState} from "react"
 import {
   Form,
-  FormField,
-  FormLabel,
   FormControl,
-  FormMessage,
+  FormDescription,
+  FormField,
   FormItem,
-  FormDescription
+  FormLabel,
+  FormMessage
 } from "@/components/ui/form";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useState } from "react";
 
-import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import otpFormSchema from "@/schemas/otp.schema";
-import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot
 } from "@/components/ui/input-otp";
-import ApiResponse from "@/types/ApiResponse";
-import { Button } from "@/components/ui/button";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle } from "@/components/ui/card";
-import conf from "@/helpers/conf";
 import ShinyButton from "@/components/ui/shiny-button";
+import conf from "@/helpers/conf";
+import ApiResponse from "@/types/ApiResponse";
 
 const VerifyPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -61,7 +60,9 @@ const VerifyPage: React.FC = () => {
 
 
   // Function to handle form submission
-  const submitOtp = async (data: z.infer<typeof otpFormSchema>) => {
+  const submitOtp = async (
+    data: z.infer<typeof otpFormSchema>
+  ) => {
     try {
       setIsSubmitting(true);
       const newData = {
@@ -73,18 +74,21 @@ const VerifyPage: React.FC = () => {
 
       toast({
         title: "OTP Verified",
-        description: res.data?.message || "OTP verified successfully",
+        description: res.data?.message 
+          || "OTP verified successfully",
       });
 
       router.push(`/`);
 
     } catch (error:any) {
-      console.error("Error during OTP verification", error.message);
+      console.error("Error during OTP verification",
+         error.message);
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Verification Failed", 
         variant: "destructive",
-        description: axiosError.response?.data.message || error.message
+        description: axiosError.response?.data.message 
+          || error.message
       });
 
       setIsSubmitting(false);
@@ -111,7 +115,8 @@ const VerifyPage: React.FC = () => {
       toast({
         title: "Error",
         variant: "destructive",
-        description: res.data.message || "Failed to send OTP"
+        description: res.data.message 
+          || "Failed to send OTP"
       })
 
     } catch (error:any) {
@@ -122,7 +127,8 @@ const VerifyPage: React.FC = () => {
       toast({
         title: "Error",
         variant: "destructive",
-        description: axiosError?.response?.data.message || "resendOTP error"
+        description: axiosError?.response?.data.message 
+          || "resendOTP error"
       })
     } finally {
       setIsResending(false);
@@ -132,10 +138,12 @@ const VerifyPage: React.FC = () => {
   return (
     <div className="flex bg-neutral-100 w-screen items-center 
     justify-center min-h-screen bg-background">
-      <Card className="w-full border border-gray-500 shadow-sm bg-neutral-100
-       text-dark font-bold max-w-md">
+      <Card className="w-full border border-gray-500 
+        shadow-sm bg-neutral-100 text-dark font-bold max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-gray-700">Verify Your Account</CardTitle>
+          <CardTitle className="text-2xl text-gray-700">
+            Verify Your Account
+          </CardTitle>
           <CardDescription className="text-sm text-gray-700">
             Enter the 4-digit code sent to your email
           </CardDescription>
@@ -151,12 +159,15 @@ const VerifyPage: React.FC = () => {
                 name="otp"
                 render={({ field }) => (
                   <FormItem className="text-center">
-                    <FormLabel className="sr-only">One-Time Password</FormLabel>
+                    <FormLabel className="sr-only">
+                      One-Time Password
+                    </FormLabel>
                     <FormControl>
                       <InputOTP
                         maxLength={4}
                         {...field}
-                        className="mx-auto text-gray-800 justify-center flex"
+                        className="mx-auto text-gray-800 
+                          justify-center flex"
                       >
                         <InputOTPGroup className="justify-center text-gray-800">
                           <InputOTPSlot className="border-black" index={0} />
@@ -166,29 +177,38 @@ const VerifyPage: React.FC = () => {
                         </InputOTPGroup>
                       </InputOTP>
                     </FormControl>
-                    <FormDescription className="text-center text-sm text-dark mt-2">
+                    <FormDescription className="text-center text-sm
+                       text-dark mt-2">
                       Please enter the one-time password sent to your email.
                     </FormDescription>
-                    <FormMessage className="text-center text-lg font-mono text-red-600 font-dark" />
+                    <FormMessage className="text-center text-lg font-mono
+                     text-red-600 font-dark" />
                   </FormItem>
                 )}
               />
 
               <ShinyButton
                 type="submit"
-                className={`bg-black py-3 ${!isSubmitting && "text-gray-700"} `} 
+                className={`bg-black py-3 ${!isSubmitting 
+                  && "text-gray-700"} `} 
                 disabled={isSubmitting}
               >
-                <span className={`text-gray-200 ${isSubmitting && "text-gray-400"} `} >
-                  {isSubmitting ? "Verifying..." : "Submit"}
-                  </span>
+                <span className={`text-gray-200 ${isSubmitting 
+                  && "text-gray-400"} `} >
+                  {isSubmitting 
+                    ? "Verifying..." 
+                    : "Submit"}
+                </span>
               </ShinyButton>
 
               <button
                 onClick={resendOTP}
                 type="button"
-                className="bg-transparent text-black ml-6 text-sm border-black border px-3 py-2 rounded-md" >
-                {isResending ? "sending...." : "resend"}
+                className="bg-transparent text-black ml-6 text-sm 
+                border-black border px-3 py-2 rounded-md" >
+                {isResending 
+                  ? "sending...." 
+                  : "resend"}
               </button>
             </form>
           </Form>
@@ -198,8 +218,9 @@ const VerifyPage: React.FC = () => {
   );
 }
 
-const VerifyPageWrapper:React.FC = () => (<Suspense fallback={<div>Loading....</div>}  >
-  <VerifyPage />
-</Suspense>);
+const VerifyPageWrapper:React.FC = () => 
+  (<Suspense fallback={<div>Loading....</div>}  >
+    <VerifyPage />
+  </Suspense>);
 
 export default VerifyPageWrapper;
