@@ -20,8 +20,6 @@ interface IProduct extends Document {
 
 export enum Categories {
   BAGS = "bags",
-  DRINKWARE = "drinkware",
-  ELECTRONICS = "electronics",
   FOOTWEAR = "footwear",
   HEADWEAR = "headwear",
   HOODIES = "hoodies",

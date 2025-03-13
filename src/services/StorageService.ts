@@ -41,7 +41,7 @@ class StorageProvider {
 		}
 
 	}
-	async imagePreview(
+	async getImagePreview(
 		type: 'avatar' | 'product',
 		fileId: string
 	): Promise<URL> {
@@ -58,7 +58,25 @@ class StorageProvider {
 		}
 	}
 
-	async retrieveImage() {}
+	async retrieveImage(
+		type: bucketType,
+		fileId: string
+	): Promise<Models.File> {
+		try {
+			const bucketId = this.getBucketId(type)
+			let res;
+			return res = await this.storage.getFile(
+				bucketId,
+				fileId
+			)
+
+		} catch (err:any) {
+			this.handleError({
+				type: 'Retrieve Image',
+				err
+			})
+		}
+	}
 
 	// updating images
 	async changeImage(

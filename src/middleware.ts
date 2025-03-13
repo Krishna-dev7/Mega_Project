@@ -1,5 +1,5 @@
-import { NextResponse, NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 // import { withAuth } from "next-auth/middleware";
 export { default } from "next-auth/middleware";
 
@@ -16,16 +16,25 @@ export async function middleware(req: NextRequest) {
 	console.log(url);
 
 	const isProtectedUrl =
-		url.pathname.startsWith("/admin") ||
 		url.pathname.startsWith("/orders") ||
 		url.pathname.startsWith("/carts") ||
 		url.pathname.startsWith("/profile");
+
+	const isDashboardUrl = url.pathname.startsWith("/dashboard");
+
+	if (isDashboardUrl) {
+		if (token?.role === "superAdmin" || token?.role === "admin") {
+			return NextResponse.next();
+		} else {
+			return NextResponse.redirect(new URL("/signin", req.url));
+		}
+	}
 
 	if (token && isAuthUrl) {
 		return NextResponse.redirect(new URL("/", req.url));
 	}
 
-	if (!token && isProtectedUrl) {
+	if (!token?.username && isProtectedUrl) {
 		return NextResponse.redirect(new URL("/signin", req.url));
 	}
 
@@ -38,7 +47,7 @@ export const config = {
 		"/signup",
 		"/verify",
 		"/forgot-password",
-		"/admin",
+		"/dashboard",
 		"/carts",
 		"/orders",
 	],

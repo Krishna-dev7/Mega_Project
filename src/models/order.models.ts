@@ -6,6 +6,7 @@ import mongoose, {
 } from "mongoose";
 import Product from "./product.models";
 import { Size } from "./cart.models";
+import ShippingAddress from "@/components/customUI/checkout/ShippingAddress";
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -22,6 +23,17 @@ interface IOrder extends Document {
   totalAmount: number,
   status: OrderStatus,
   paymentId: Types.ObjectId,
+	shipping_details: {
+		city: string,
+		country: string,
+		line1: string
+		line2: string
+		postal_code: string
+		state: string
+		name: string
+		tracking_number?: string
+		shipping_cost: number
+	},
   products: [{
     productId: Types.ObjectId,
     quantity: number,
@@ -66,7 +78,18 @@ const orderSchema = new Schema<IOrder>({
       enum: Object.values(Size)
     },
     price: Number,
-    estimatedDate: Date
+    estimatedDate: Date,
+    Shipping_detail: {
+      city: String,
+      country: String,
+      line1: String,
+      line2: String,
+      postal_code: String,
+      state: String,
+      name: String,
+      tracking_number: String,
+      shipping_cost: Number,
+    }
   }]
 }, {timestamps: true});
 

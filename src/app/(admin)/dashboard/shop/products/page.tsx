@@ -1,13 +1,9 @@
 "use client";
 import {
 	type ColumnFiltersState,
+	InitialTableState,
 	type SortingState,
 	type VisibilityState,
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	useReactTable
 } from "@tanstack/react-table";
 import {
 	ChevronDown
@@ -37,17 +33,10 @@ import { useState } from "react";
 import { IProduct } from "@/models/product.models";
 import getColumns from "./columns";
 import Loading from "@/components/customUI/Loading";
+import useTable from "@/hooks/use-table";
+import { useRouter } from "next/navigation";
 
 export default function ProductsDataTable() {
-	const [sorting, setSorting] =
-		React.useState<SortingState>([]);
-	const [columnFilters, setColumnFilters] =
-		React.useState<ColumnFiltersState>([]);
-	const [columnVisibility, setColumnVisibility] =
-		React.useState<VisibilityState>({});
-	const [rowSelection, setRowSelection] = React.useState(
-		{},
-	);
 
 	const [globalFilter, setGlobalFilter] = useState("");
 	const [data, setData] = React.useState<IProduct[]>([]);
@@ -70,27 +59,20 @@ export default function ProductsDataTable() {
 
 
 	const columns = getColumns(setData);
+	const router = useRouter()
+	const initialState:InitialTableState = {
+		pagination: {
+			pageIndex: 0,
+			pageSize: 8
+		}
+	}
 
 
-	const table = useReactTable({
+	const table = useTable(
 		data,
+		initialState,
 		columns,
-		onSortingChange: setSorting,
-		onColumnFiltersChange: setColumnFilters,
-		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
-		onColumnVisibilityChange: setColumnVisibility,
-		onRowSelectionChange: setRowSelection,
-		state: {
-			sorting,
-			columnFilters,
-			columnVisibility,
-			rowSelection,
-			globalFilter,
-		},
-	});
+	)
 
 	if(!data.length || loading) {
 		return <div className="loader w-full min-h-screen 
@@ -115,7 +97,7 @@ export default function ProductsDataTable() {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
-								variant="outline"
+								variant="default"
 								className="ml-auto">
 								Columns{" "}
 								<ChevronDown className="ml-2 h-4 w-4" />
@@ -152,7 +134,7 @@ export default function ProductsDataTable() {
 							);
 						}}>
 						<SelectTrigger
-							className="w-fit mx-1"
+							className="w-fit text-black bg-white mx-1"
 							suppressHydrationWarning>
 							<SelectValue placeholder="stock statuses" />
 						</SelectTrigger>
@@ -171,6 +153,16 @@ export default function ProductsDataTable() {
 							</SelectItem>
 						</SelectContent>
 					</Select>
+
+					<Button
+						onClick={() => router.push('/dashboard/shop/products/add')}
+						variant={"default"}
+						className="mr-4 text-lg border-neutral-600 font-bold"
+						size={"icon"}
+						>
+						+
+					</Button>
+
 				</div>
 				<div className="rounded-md border">
 					{/* <Table>
@@ -230,7 +222,7 @@ export default function ProductsDataTable() {
 						columns={columns}
 					/>
 				</div>
-				<div className="flex items-center justify-end space-x-2 p-4">
+				{/* <div className="flex items-center justify-end space-x-2 p-4">
 					<div className="flex-1 text-sm text-muted-foreground">
 						{
 							table.getFilteredSelectedRowModel().rows
@@ -255,7 +247,7 @@ export default function ProductsDataTable() {
 							{"->"}
 						</Button>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</Card>
 	);

@@ -25,7 +25,7 @@ const signupSchema = z.object({
 	role: z
 		.string()
 		.regex(
-			/(user)|(admin)/,
+			/(user)|(admin)|(superAdmin)/,
 			"only user or seller is allowed",
 		),
 	password: z

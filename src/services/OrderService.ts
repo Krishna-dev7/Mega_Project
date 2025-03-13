@@ -49,7 +49,7 @@ class OrderService {
     try {
 
       const orders = await axios.get<ApiResponse>(
-        `${this.url}/api/orders?action=streamUsers`
+        `${this.url}?action=streamOrders`
       )
 
       return orders.data;

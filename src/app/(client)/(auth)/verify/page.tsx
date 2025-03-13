@@ -34,6 +34,7 @@ import {
 import ShinyButton from "@/components/ui/shiny-button";
 import conf from "@/helpers/conf";
 import ApiResponse from "@/types/ApiResponse";
+import accountService from "@/services/AccountService";
 
 const VerifyPage: React.FC = () => {
   const searchParams = useSearchParams();

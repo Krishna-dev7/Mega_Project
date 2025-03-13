@@ -14,11 +14,6 @@ const adminNavItems = [
     icon: Home,
   },
   {
-    slug: "Analytics",
-    url: "/dashboard/analytics",
-    icon: BarChart,
-  },
-  {
     slug: "Settings",
     url: "/dashboard/settings",
     icon: Settings,

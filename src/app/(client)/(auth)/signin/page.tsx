@@ -43,12 +43,6 @@ const LoginPage: React.FC = () => {
 			setIsLoading(true);
 			const res = await accountService.loginUser(data);
 
-			/*  await signIn('credentials', {
-        redirect: false,
-        email: data.email,
-        password: data.password
-      }) */
-
 			if (res?.error) {
 				toast({
 					title: "Error",
@@ -63,8 +57,21 @@ const LoginPage: React.FC = () => {
 				description: res?.success && "login successfully",
 			});
 
+			const user = await accountService.queryUser({
+				email: data.email
+			})
+
+			if (
+				user.data?.role == "admin" ||
+				user.data?.role == "superAdmin"
+			) {
+				router.push("/dashboard");
+				return;
+			}
+				
 			router.push(`/`);
 			return;
+			
 		} catch (error: any) {
 			console.log("signin form error: ", error.message);
 			toast({
@@ -121,11 +128,11 @@ const LoginPage: React.FC = () => {
 
 	return (
 		<div
-			className=" bg-[#F5EFFF] sm:text-sm  text-pretty flex flex-col 
+			className=" bg-[#F5EFFF] sm:text-sm text-pretty flex flex-col 
     text-black items-center justify-center h-screen py-4 px-2">
 			<div
 				className=" w-full max-w-md border border-gray-400 
-    p-8 lg:shadow-md rounded-lg">
+				p-8 lg:shadow-md rounded-lg">
 				<h2 className="text-2xl  font-semibold text-center text-gray-800 mb-6">
 					Welcome Back 👋
 				</h2>
@@ -172,7 +179,8 @@ const LoginPage: React.FC = () => {
 												onClick={() =>
 													setShowPassword(!showPassword)
 												}
-												className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700">
+												className="absolute right-3 top-2.5 text-gray-500
+												 hover:text-gray-700">
 												{showPassword ? (
 													<EyeOff size={20} />
 												) : (
@@ -225,7 +233,8 @@ const LoginPage: React.FC = () => {
 					</p>
 					<Link
 						href={`/signup`}
-						className="text-sm text-pretty flex items-center justify-center py-5 font-semibold text-gray-800 hover:underline">
+						className="text-sm text-pretty flex items-center justify-center
+						 py-5 font-semibold text-gray-800 hover:underline">
 						Create your Account
 					</Link>
 				</div>

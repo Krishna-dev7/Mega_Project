@@ -24,9 +24,12 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import getColumns from "./columns";
 import Loading from "@/components/customUI/Loading";
+import { UserSchema } from "@/models/user.models";
 
 const OrderPage: React.FC = () => {
-	const [data, setData] = useState<IOrder[]>([]);
+	const [data, setData] = useState<(IOrder & {
+    userId: UserSchema
+  })[]>([]);
   const [loading, setLoading] = useState(false)
 	const columns = getColumns();
 

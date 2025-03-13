@@ -6,7 +6,6 @@ import {
 
 const handler = async (req:NextRequest) => {
   try {
-
     const {searchParams} = new URL(req.url)
     const orderId = searchParams.get('orderId')
     const action = searchParams.get('action')
@@ -25,22 +24,14 @@ const handler = async (req:NextRequest) => {
 					path: "userId",
 					model: "User",
 				},
-				{
-					path: "productId",
-					model: "Product ",
-				},
 			]);
 		}
 
 		if (orderId) {
 			result = await Order.findById(orderId).populate([
 				{
-					path: "userId",
+					path: "owner",
 					model: "User",
-				},
-				{
-					path: "productId",
-					model: "Product ",
 				},
 			]);
 		}
@@ -53,11 +44,11 @@ const handler = async (req:NextRequest) => {
     }, {status: 200})
 
   } catch (error:any) {
-    console.log("Something went wrong on Cart route",
+    console.log("Something went wrong on Order route",
        error.message)
     return NextResponse.json({
       success: false,
-      message:  error.message || "someting went wrong"
+      message:  error.message || "someting went wrong order route"
     }, {status: 500});
   }
 }
@@ -108,5 +99,6 @@ async function POST(req:NextRequest) {
 
 
 export {
-  handler as GET
+  handler as GET,
+  POST
 }

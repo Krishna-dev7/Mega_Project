@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Select,
@@ -26,9 +26,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/store/store";
 import { setProducts as dispatchProducts } from "@/store/productSlice";
+import Loading from "@/components/customUI/Loading";
 
 const ProductPage = () => {
 	// const [isSearchOpen, setIsSearchOpen] = useState(false);
+	const [loading, setLoading] = useState(false)
 	const [priceRange, setPriceRange] = useState([0, 5000]);
 	const [sortBy, setSortBy] = useState("newest");
 	const [filteredProducts, setFilteredProducts] = useState<
@@ -44,6 +46,9 @@ const ProductPage = () => {
 	const dispatch = useAppDispatch();
 
 	useMemo(() => {
+
+		setLoading(true)
+		
 		axios
 			.get(`${conf.url}/api/products`)
 			.then((res) => {
@@ -53,10 +58,12 @@ const ProductPage = () => {
 			})
 			.catch((err) =>
 				console.log("product fetch error: ", err.message),
-			);
+			)
+			.finally(() => setLoading(false));
 	}, []);
 
 	useEffect(() => {
+		setLoading(true)
 		setFilteredProducts(() => {
 			let filtered = [...products];
 			if (selectedCategories.length > 0) {
@@ -76,6 +83,8 @@ const ProductPage = () => {
 			}
 			return filtered;
 		});
+
+		setLoading(false)
 	}, [selectedCategories, priceRange, sortBy, products]);
 
 	const HorizontalFilters = () => (
@@ -204,25 +213,44 @@ const ProductPage = () => {
 		</div>
 	);
 
+
+
+	// loader
+
+	if (loading) {
+			return <div className="loader w-full min-h-screen flex
+			justify-center items-center">
+				<Loading />
+			</div>
+	}
+
+
 	return (
 		<main className="min-h-screen  dark:bg-[#121212]">
 			<div className="container mx-auto px-4 py-6 ">
 				<HorizontalFilters />
 
 				<div className="mt-6 scroll-smooth">
-					<div
-						className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
-              place-content-center gap-6">
-						{filteredProducts.map((product) => (
-							<ProductItem
-								key={product._id?.toString()}
-								product={product}
-								className="h-full bg-transparent text-black hover:border-black
-                 dark:bg-transparent backdrop-blur-xl border-transparent
-               dark:hover:border-orange-500/40 transition-colors"
-							/>
-						))}
-					</div>
+					<Suspense fallback={
+							<div className="loader w-full min-h-screen flex
+							justify-center items-center">
+								<Loading />
+							</div>
+						}>
+						<div
+							className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
+								place-content-center gap-6">
+							{filteredProducts.map((product) => (
+								<ProductItem
+									key={product._id?.toString()}
+									product={product}
+									className="h-full bg-transparent text-black hover:border-black
+									dark:bg-transparent backdrop-blur-xl border-transparent
+								dark:hover:border-orange-500/40 transition-colors"
+								/>
+							))}
+						</div>
+					</Suspense>
 				</div>
 			</div>
 		</main>

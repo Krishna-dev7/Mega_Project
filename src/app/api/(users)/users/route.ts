@@ -116,6 +116,42 @@ export async function DELETE(req:NextRequest) {
 }
 
 
+async function POST(req:NextRequest) {
+  try {
+
+    const body = await req.json()
+    const {searchParams} = new URL(req.url);
+    const action = searchParams.get('action')
+    const {query} = body
+
+    if(action == 'queryUser') {
+      const res:(UserSchema | null) = await User.findOne(query)
+
+      return NextResponse.json({
+        success: true,
+        message: 'user found',
+        data: res
+      }, {status: 200})
+    }
+
+    return NextResponse.json({
+      success: false,
+      message: 'required params are missing'
+    }, {status: 400})
+
+  } catch (err:any) {
+    console.log("Users Route FilterQuery error",
+      err.message)
+    return NextResponse.json({
+      success: false,
+      message: err.message 
+        || "Something went wrong"
+    }, {status: 500});
+  }
+}
+
+
 export {
-  handler as GET
+  handler as GET,
+  POST
 }

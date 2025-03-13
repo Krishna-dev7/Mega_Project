@@ -15,6 +15,7 @@ const productSchema = z.object({
 		.max(50, "stock cannot be more than 50"),
 	category: z.string(),
 	description: z.string(),
+	owner: z.string()
 });
 
 

@@ -10,6 +10,7 @@ import forgotSchema from "@/schemas/forgot.schema";
 import { UserSchema } from "@/models/user.models";
 import { Session } from "next-auth";
 import { toast } from "@/hooks/use-toast";
+import mongoose from "mongoose";
 
 
 interface ServiceResponse {
@@ -219,6 +220,20 @@ class AccountService {
           type: 'StreamUser', err})
       }
     }
+
+  async updateUser() {}
+  async queryUser(
+    query:mongoose.RootFilterQuery<UserSchema>
+  ): Promise<ApiResponse> {
+    
+    const res = await axios.post(
+      `${conf.url}/api/users?action=queryUser`,
+      query
+    )
+
+    return res.data;
+
+  }
 
 
   async getUser(userId:string)

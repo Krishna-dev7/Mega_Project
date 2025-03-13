@@ -45,15 +45,15 @@ const SideBar = () => {
 						? "justify-start"
 						: "justify-center mx-auto"
 				}`}>
-				<Avatar>
+				<Avatar className="flex justify-center">
 					<AvatarImage src={user?.avatar} />
 					<AvatarFallback className="flex items-center">
-						<Frame size={20} />
+						<Frame size={14} />
 					</AvatarFallback>
 				</Avatar>
 
 				<span
-					className={`${!toggleSidebar && "hidden"} duration-1000`}>
+					className={`${!toggleSidebar && "hidden"} duration-500`}>
 					{toggleSidebar && user?.username}
 				</span>
 			</div>
@@ -67,7 +67,7 @@ const SideBar = () => {
 							variant={
 								currentURI == item.url ? "default" : "ghost"
 							}
-							className={`w-full gap-2 duration-500
+							className={`w-full flex duration-500
               ${
 								toggleSidebar
 									? "justify-start"
@@ -75,11 +75,11 @@ const SideBar = () => {
 							} `}>
 							{<item.icon />}
 							<span
-								className={`opacity-0 transition-opacity duration-500 
+								className={`opacity-0 transition-opacity duration-300
                   ease-in-out delay-100 
                   ${
                     toggleSidebar 
-                      ? "opacity-100 delay-0 duration-500"
+                      ? "opacity-100 indent-2 delay-0 duration-300"
                       : ""
                   }`}>
 								{toggleSidebar && item.slug}
@@ -111,11 +111,11 @@ const SideBar = () => {
 			</div>
 
 			<div
-				className={`toggle-icon absolute bottom-10 flex gap-5 
-          text-sm items-center w-full cursor-pointer 
+				className={`toggle-icon absolute bottom-10 flex 
+          text-sm items-center w-full cursor-pointer ease-in-out
           ${
 						toggleSidebar
-							? "justify-start left-3"
+							? "justify-start left-3 delay-75 "
 							: "justify-center w-full mx-auto"
 					}`}>
 				<SidebarIcon
@@ -124,7 +124,7 @@ const SideBar = () => {
 				/>
 				<span className={`${!toggleSidebar ?
            "opacity-0 transition-opacity duration-300"
-          : "opacity-100 transition-opacity delay-75 duration-300"}`}>
+          : "opacity-100 transition-opacity delay-75 indent-5 duration-300"}`}>
 					{toggleSidebar && "Toggle sidebar"}
 				</span>
 			</div>

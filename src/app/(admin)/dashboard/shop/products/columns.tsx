@@ -184,7 +184,10 @@ const getColumns = (
                   }>
                   View details
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router
+                      .push(`products/edit?productId=${row.original._id}`)}
+                  >
                   Edit product
                 </DropdownMenuItem>
                 <DropdownMenuItem

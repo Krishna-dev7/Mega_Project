@@ -6,7 +6,7 @@ declare module "next-auth" {
         _id?: string;
         username: string;
         email: string;
-        role: ("user" | "seller");
+        role: ("user" | "admin" | "superAdmin");
         phoneNumber: string;
     }
 
@@ -20,7 +20,7 @@ declare module "next-auth/jwt" {
         _id?: string;
         username: string;
         email: string;
-        role: ("user" | "seller");
+        role: ("user" | "admin" | "superAdmin");
         phoneNumber: string;
     }
 }

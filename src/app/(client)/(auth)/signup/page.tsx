@@ -12,7 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import conf from "@/helpers/conf";
 import { useToast } from "@/hooks/use-toast";
+import loginSchema from "@/schemas/login.schema";
 import signupSchema from "@/schemas/signup.schem";
+import accountService from "@/services/AccountService";
 import ApiResponse from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
@@ -68,6 +70,23 @@ function Register() {
 				description:
 					"Your account has been created successfully.",
 			});
+
+			const newData:z.infer<typeof loginSchema> = {
+					email: data.email,
+					password: data.password,
+				}
+
+			const loginRes = await accountService
+				.loginUser(newData);
+
+			if (loginRes?.error) {
+				toast({
+					title: "Error",
+					variant: "destructive",
+					description: loginRes.error,
+				});
+				return;
+			}
 
 			router.push(
 				`/verify?email=${encodeURIComponent(data.email)}`,
