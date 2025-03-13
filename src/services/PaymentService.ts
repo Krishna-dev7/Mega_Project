@@ -3,6 +3,19 @@ import axios from "axios";
 import ApiResponse from "@/types/ApiResponse";
 import { getSession } from "next-auth/react";
 import { Session } from "next-auth";
+import { loadStripe, Stripe } from "@stripe/stripe-js";
+const stripePromise:(Stripe | null) = 
+  await loadStripe(conf.stripe_publishable_key)
+
+type itemsType = {
+  items: {
+    name: string
+    price: number
+    quantity: number
+    image: string
+    itemId: string
+  }
+}
 
 class PaymentService {
 
@@ -86,11 +99,29 @@ class PaymentService {
   }
 
 
-  async initiateCheckout() {
+  async initiateCheckout({items}:itemsType) {
 
     try {
-      
-      
+      const stripe = stripePromise;
+
+      const res = await fetch("/api/checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items }),
+      });
+  
+      const { id } = await res.json();
+  
+      if (stripe) {
+        const { error } = await stripe
+          .redirectToCheckout({ sessionId: id });
+        if (error) {
+          console.error("Stripe checkout error:", 
+            error.message);
+        }
+      }
 
     } catch (err:any) {
       this.handleError({

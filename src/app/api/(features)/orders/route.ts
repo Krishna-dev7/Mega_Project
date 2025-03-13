@@ -1,3 +1,4 @@
+import Order, { IOrder } from "@/models/order.models";
 import { 
   NextResponse, 
   NextRequest 
@@ -6,28 +7,102 @@ import {
 const handler = async (req:NextRequest) => {
   try {
 
-    // const { data, status } = useSession();
-    // if(!status) {
-    //   return NextResponse.json({
-    //     success: false,
-    //     message: "Unauthorized user request"
-    //   }, {status: 401});
-    // }
+    const {searchParams} = new URL(req.url)
+    const orderId = searchParams.get('orderId')
+    const action = searchParams.get('action')
 
-    // extract userId from data
-    //  data.user._id
-    // request db for orders
-    // and send the obtain data to user
-    // test using postman 
-    // obtain bearer token from console.log on your vs code terminal
+    if(!orderId && !action) {
+      return NextResponse.json({
+        success: false,
+        message: "missing required params"
+      }, {status: 400})
+    }
+
+    let result;
+		if (action === "streamOrders") {
+			result = await Order.find().populate([
+				{
+					path: "userId",
+					model: "User",
+				},
+				{
+					path: "productId",
+					model: "Product ",
+				},
+			]);
+		}
+
+		if (orderId) {
+			result = await Order.findById(orderId).populate([
+				{
+					path: "userId",
+					model: "User",
+				},
+				{
+					path: "productId",
+					model: "Product ",
+				},
+			]);
+		}
     
-    
+
+    return NextResponse.json({
+      success: true,
+      message: `${action} done successfully`,
+      data:  result
+    }, {status: 200})
+
   } catch (error:any) {
-    console.log("Something went wrong on Cart route", error.message)
+    console.log("Something went wrong on Cart route",
+       error.message)
     return NextResponse.json({
       success: false,
       message:  error.message || "someting went wrong"
     }, {status: 500});
+  }
+}
+
+
+async function POST(req:NextRequest) {
+  try {
+
+    const body:IOrder = await req.json();
+
+    if(!body) {
+      return NextResponse.json({
+        success: false,
+        message: "didn't received body or data"
+      }, {status: 400})
+    }
+
+    // calculate esitmated date
+    const date = new Date()
+    date.setDate(date.getDate() + 3 )
+
+    const order = await Order.create({
+      userId: body.userId,
+      products: body.products,
+      totalAmount: body.totalAmount,
+      paymentId: body.paymentId,
+      status: body.status,
+      estimatedDate: date
+    })
+
+
+    return NextResponse.json({
+      success: true,
+      message: "order created successfully",
+      body: order
+    }, {status: 200})
+    
+  } catch (err:any) {
+    console.log("Something went wrong on Cart route",
+      err.message)
+   return NextResponse.json({
+     success: false,
+     message:  err.message 
+      || "someting went wrong"
+   }, {status: 500});
   }
 }
 

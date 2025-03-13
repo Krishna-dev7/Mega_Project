@@ -27,7 +27,8 @@ interface IOrder extends Document {
     quantity: number,
     size: Size,
     prize: number
-  }]
+  }],
+  estimatedDate: Date
 }
 
 
@@ -64,7 +65,8 @@ const orderSchema = new Schema<IOrder>({
       type: String,
       enum: Object.values(Size)
     },
-    price: Number
+    price: Number,
+    estimatedDate: Date
   }]
 }, {timestamps: true});
 
