@@ -17,8 +17,12 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "../ui/avatar";
+import { Separator } from "../ui/separator";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 
 const SideBar = () => {
+
+	const [trigger, setTrigger] = useState(false)
 
   const user:(UserSchema | null)
     = useAppSelector( 
@@ -67,7 +71,7 @@ const SideBar = () => {
 							variant={
 								currentURI == item.url ? "default" : "ghost"
 							}
-							className={`w-full flex duration-500
+							className={`w-full text-xs flex duration-500
               ${
 								toggleSidebar
 									? "justify-start"
@@ -89,10 +93,12 @@ const SideBar = () => {
 				})}
 			</nav>
 
+			<Separator />
+
 			<div className="mt-auto flex items-center ">
 				<Button
 					variant="ghost"
-					onClick={() => accountService.logout()}
+					onClick={() => setTrigger(true)}
 					className={`w-full gap-2
             ${
 							toggleSidebar
@@ -102,12 +108,31 @@ const SideBar = () => {
 					<LogOut className="h-4 w-4" />
 					<span
 						className={`opacity-0 transition-opacity 
-              duration-500 ease-in-out ${
+              duration-500 text-xs indent-2 ease-in-out ${
 							toggleSidebar ? "opacity-100 delay-0" : ""
 						}`}>
 						{toggleSidebar && "Logout"}
 					</span>
 				</Button>
+
+				<Dialog open={trigger} onOpenChange={setTrigger}>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Warning 🤚</DialogTitle>
+						</DialogHeader>
+						<DialogDescription>
+							Make sure before logging out
+						</DialogDescription>
+						<DialogFooter>
+							<Button
+								size={"sm"}
+								onClick={() => accountService.logout()}
+								>
+								Sure
+							</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
 			</div>
 
 			<div
@@ -124,7 +149,7 @@ const SideBar = () => {
 				/>
 				<span className={`${!toggleSidebar ?
            "opacity-0 transition-opacity duration-300"
-          : "opacity-100 transition-opacity delay-75 indent-5 duration-300"}`}>
+          : "opacity-100 text-xs transition-opacity delay-75 indent-5 duration-300"}`}>
 					{toggleSidebar && "Toggle sidebar"}
 				</span>
 			</div>

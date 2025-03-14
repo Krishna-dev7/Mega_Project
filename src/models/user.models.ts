@@ -26,6 +26,8 @@ interface UserSchema extends Document {
 	verifyCodeExpiry: Date;
 	forgotPasswordToken: string;
 	forgotPasswordTokenExpiry: Date;
+	createdAt: Date,
+	updatedAt: Date
 }
 
 const userSchema = new Schema<UserSchema>(

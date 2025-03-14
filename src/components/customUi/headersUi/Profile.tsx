@@ -12,7 +12,7 @@ import Link from "next/link";
 import React from "react";
 
 type props = {
-	account?: UserSchema;
+	account?: (UserSchema | null);
 };
 
 const Profile: React.FC<props> = ({ account }) => {
@@ -27,10 +27,7 @@ const Profile: React.FC<props> = ({ account }) => {
 				<Avatar className="flex-shrink-0 mr-4 ">
 					<AvatarImage
 						className="w-14 h-14 aspect-square rounded-full"
-						src={
-							account?.avatar ||
-							"https://i.pinimg.com/736x/95/9f/a4/959fa411d5cd2de255dd2cf64dd92723.jpg"
-						}
+						src={account?.avatar}
 					/>
 					<AvatarFallback>AV</AvatarFallback>
 				</Avatar>
@@ -41,8 +38,8 @@ const Profile: React.FC<props> = ({ account }) => {
 					</h2>
 
 					<p
-						className="text-ellipsis text-pretty text-yellow-200 text-xs overflow-hidden
-         line-clamp-1 ">
+						className="text-ellipsis text-pretty text-yellow-200
+						 text-xs overflow-hidden line-clamp-1 ">
 						{auth.data
 							? auth.data.email
 							: "panda@gmail.com"}
@@ -85,7 +82,8 @@ const Profile: React.FC<props> = ({ account }) => {
 				)}
 			</div>
 
-			<div className="profileSec flex flex-col gap-4 text-sm text-gray-200 mt-5 text-pretty">
+			<div className="profileSec flex flex-col gap-4 text-sm
+			 text-gray-200 mt-5 text-pretty">
 				<Link href={`${conf.url}/api/profile/profileId`}>
 					Payment
 				</Link>

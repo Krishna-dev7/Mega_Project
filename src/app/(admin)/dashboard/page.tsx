@@ -28,18 +28,67 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAppSelector } from "@/store/store";
+import { useEffect, useState } from "react";
+import Loading from "@/components/customUI/Loading";
+import accountService from "@/services/AccountService";
+import { UserSchema } from "@/models/user.models";
+import { IPayment } from "@/models/payment.models";
+import paymentService from "@/services/PaymentService";
+import orderService from "@/services/OrderService";
+import { IOrder } from "@/models/order.models";
+import { ChartComponent } from "@/components/customUI/charts/BarChart";
 
 export default function DashboardPage() {
+
+	const [isLoading, setIsLoading] = useState(false)
+	const [users, setUsers] = useState<UserSchema[]>([])
+	const [payments, setPayments] = useState<IPayment[]>([])
+	const [orders, setOrders] = useState<IOrder[]>([])
+	
+	useEffect(() => {
+		const fetch = async () => {
+			const res = await accountService
+				.streamUsers()
+
+			const payments = await paymentService
+				.streamPayments()
+
+			const orders = await orderService
+				.streamOrders()
+
+			setUsers(res.data)
+			setPayments(payments.data)
+			setOrders(orders.data)
+		}
+
+		fetch()
+	}, [])
+
+
+	const store = useAppSelector(store => store)
+
+	const user = store.auth.data
+	const products = store.product.products
+
+
+
+	if(isLoading) return <div className="loader
+		w-full min-h-screen flex justify-center items-center">
+		<Loading />
+	</div>
+
+
 	return (
-		<div className="min-h-screen flex dark:bg-transparent">
+		<div className="min-h-screen h-fit flex dark:bg-transparent">
 			{/* Main Content */}
 			<div className="flex-1 min-h-screen">
 				{/* Header */}
 				<header className="border-b">
 					<div className="flex h-16 items-center px-6 gap-4">
 						<div className="flex-1">
-							<h1 className="text-2xl font-semibold">
-								Welcome Back, Zac!
+							<h1 className="text-2xl capitalize font-semibold">
+								Welcome Back, {user?.username}!
 							</h1>
 							<p className="text-sm text-muted-foreground">
 								Here's what happening with your store today
@@ -60,8 +109,10 @@ export default function DashboardPage() {
 								/>
 								<AvatarFallback>ZH</AvatarFallback>
 							</Avatar>
-							<span>Zac Hudson</span>
-							<ChevronDown className="h-4 w-4" />
+							<span className="capitalize">
+								{user?.fullname}
+							</span>
+							{/* <ChevronDown className="h-4 w-4" /> */}
 						</Button>
 					</div>
 				</header>
@@ -78,10 +129,18 @@ export default function DashboardPage() {
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">
-									307.48K
+									{users.length}
 								</div>
 								<p className="text-xs text-green-500 flex items-center gap-1">
-									+30%
+									+
+									{(users.filter(
+										(user) =>
+											new Date(user.createdAt).getMonth() ==
+											new Date().getMonth(),
+									).length /
+										users.length) *
+										100}
+									%
 									<span className="text-muted-foreground">
 										this month
 									</span>
@@ -96,10 +155,18 @@ export default function DashboardPage() {
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">
-									$30.58K
+									{new Intl.NumberFormat("en-IN", {
+										style: "currency",
+										currency: "INR",
+									}).format(
+										payments.reduce(
+											(acc, payment) =>
+												acc + payment.amount_total,
+											0,
+										) / 100,
+									)}
 								</div>
 								<p className="text-xs text-red-500 flex items-center gap-1">
-									-15%
 									<span className="text-muted-foreground">
 										this month
 									</span>
@@ -109,15 +176,14 @@ export default function DashboardPage() {
 						<Card>
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 								<CardTitle className="text-sm font-medium">
-									Total Deals
+									Total Orders
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">
-									2.48K
+									{orders.length}
 								</div>
 								<p className="text-xs text-green-500 flex items-center gap-1">
-									+23%
 									<span className="text-muted-foreground">
 										this month
 									</span>
@@ -131,9 +197,10 @@ export default function DashboardPage() {
 						<CardHeader>
 							<CardTitle>Earnings</CardTitle>
 						</CardHeader>
-						<CardContent>
-							<div className="h-[200px] flex items-center justify-center text-muted-foreground">
-								Chart goes here
+						<CardContent className="flex items-center justify-center">
+							<div className="h-fit flex items-center justify-center
+							 text-muted-foreground lg-w-1/2 sm:w-2/3 xs:w-full">
+								<ChartComponent />
 							</div>
 						</CardContent>
 					</Card>
@@ -202,55 +269,6 @@ export default function DashboardPage() {
 					<CardHeader>
 						<div className="flex items-center justify-between">
 							<CardTitle className="text-sm font-medium">
-								Top Countries by Sells
-							</CardTitle>
-							<span className="text-sm text-muted-foreground">
-								34.48K
-							</span>
-						</div>
-						<p className="text-xs text-muted-foreground">
-							Since last week
-						</p>
-					</CardHeader>
-					<CardContent className="space-y-4">
-						<div className="flex items-center gap-4">
-							<Image
-								src="/placeholder.svg"
-								alt="AU"
-								className="h-6 w-6 rounded-full"
-								width={24}
-								height={24}
-							/>
-							<div className="flex-1">
-								<div className="text-sm font-medium">
-									Australia
-								</div>
-							</div>
-							<div className="text-sm">7.12K</div>
-						</div>
-						<Separator />
-						<div className="flex items-center gap-4">
-							<Image
-								src="/placeholder.svg"
-								alt="BE"
-								className="h-6 w-6 rounded-full"
-								width={24}
-								height={24}
-							/>
-							<div className="flex-1">
-								<div className="text-sm font-medium">
-									Belgium
-								</div>
-							</div>
-							<div className="text-sm">4.15K</div>
-						</div>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader>
-						<div className="flex items-center justify-between">
-							<CardTitle className="text-sm font-medium">
 								Recent Orders
 							</CardTitle>
 							<Button
@@ -268,14 +286,19 @@ export default function DashboardPage() {
 							</div>
 							<div className="flex-1">
 								<div className="text-sm font-medium">
-									Nike Air Force 1
+									Denim jenas T-shirts
 								</div>
 								<div className="text-xs text-muted-foreground">
-									Shoes
+									T-shirt
 								</div>
 							</div>
 							<div className="text-sm font-medium">
-								$110.96
+								{
+									new Intl.NumberFormat('en-IN', {
+										currency: 'INR',
+										style: 'currency'
+									}).format(110.96)
+								}
 							</div>
 						</div>
 						<Separator />
@@ -285,14 +308,19 @@ export default function DashboardPage() {
 							</div>
 							<div className="flex-1">
 								<div className="text-sm font-medium">
-									Men's Dri-FIT 7
+									Royal Rajasthani Saree
 								</div>
 								<div className="text-xs text-muted-foreground">
-									Sports
+									Sarees
 								</div>
 							</div>
 							<div className="text-sm font-medium">
-								$38.97
+							{
+									new Intl.NumberFormat('en-IN', {
+										currency: 'INR',
+										style: 'currency'
+									}).format(350)
+								}
 							</div>
 						</div>
 					</CardContent>

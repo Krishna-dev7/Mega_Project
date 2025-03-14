@@ -11,7 +11,7 @@ const AdminLayout = (
     </div>
 
     <div className="pages w-full 
-      h-screen overflow-hidden">
+      min-h-screen h-fit overflow-hidden">
       {children}
     </div>
   </div>

@@ -38,7 +38,7 @@ const UserSheet: React.FC = () => {
 					Your Detail
 				</SheetHeader>
 
-				<Profile />
+				<Profile account={auth.data} />
 
 				<SheetFooter className=" sm:text-smtext-pretty text-fuchsia-400">
 					<p className="mx-auto">
