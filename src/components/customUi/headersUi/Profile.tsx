@@ -59,7 +59,7 @@ const Profile: React.FC<props> = ({ account }) => {
 				{auth.authStatus ? (
 					<>
 						<Link
-							href={`${conf.url}/api/profile/profileId`}>
+							href={`${conf.url}/profile`}>
 							Profile
 						</Link>
 						<Link
