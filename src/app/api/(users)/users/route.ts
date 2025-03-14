@@ -54,7 +54,7 @@ async function handler(req:NextRequest) {
 }
 
 
-export async function DELETE(req:NextRequest) {
+async function DELETE(req:NextRequest) {
   try {
     const {searchParams} = new URL(req.url);
     const userID = searchParams.get("userID");
@@ -151,7 +151,48 @@ async function POST(req:NextRequest) {
 }
 
 
+
+async function PATCH(req:NextRequest) {
+  try {
+
+    const updateQuery = await req.json()
+    const {searchParams} = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    if(!updateQuery || !userId) {
+      return NextResponse.json({
+        success: false,
+        message: "Please send required params"
+      }, {status: 400 })
+    }
+
+    const updatedUser: UserSchema | null =
+			await User.findByIdAndUpdate(
+        userId, 
+        updateQuery, 
+        {new: true,});
+
+    return NextResponse.json({
+      success: true,
+      message: "user has been updated",
+      data: updatedUser
+    }, {status: 200})
+    
+  } catch (err:any) {
+    console.log("Users Route PATCH error",
+      err.message)
+    return NextResponse.json({
+      success: false,
+      message: err.message 
+        || "Something went wrong"
+    }, {status: 500});
+  }
+}
+
+
 export {
   handler as GET,
-  POST
+  POST,
+  DELETE,
+  PATCH
 }

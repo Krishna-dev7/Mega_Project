@@ -7,7 +7,7 @@ const profileFormSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  dob: z.date()
+  dob: z.coerce.string()
 })
 
 

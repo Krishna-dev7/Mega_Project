@@ -396,7 +396,7 @@ export default function EditProductPage() {
 										<label
 											htmlFor="images"
 											className="flex flex-col items-center justify-center 
-                        w-full h-32 border-2 border-dashed rounded-lg cursor-pointer
+                      w-full h-32 border-2 border-dashed rounded-lg cursor-pointer
                       bg-gray-50 hover:bg-gray-100 dark:border-gray-600
                       dark:hover:border-gray-500">
 											<div className="flex flex-col items-center justify-center pt-5 pb-6">

@@ -221,7 +221,19 @@ class AccountService {
       }
     }
 
-  async updateUser() {}
+  async updateUser(
+    userId:string,
+    data:mongoose.UpdateQuery<UserSchema>
+  ): Promise<ApiResponse> {
+
+    const res = await axios.patch(
+      `${conf.url}/api/users?userId=${userId}`,
+      data
+    )
+    return res.data;
+  }
+
+
   async queryUser(
     query:mongoose.RootFilterQuery<UserSchema>
   ): Promise<ApiResponse> {
@@ -230,9 +242,7 @@ class AccountService {
       `${conf.url}/api/users?action=queryUser`,
       query
     )
-
     return res.data;
-
   }
 
 
