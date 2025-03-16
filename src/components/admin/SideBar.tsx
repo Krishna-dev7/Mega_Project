@@ -18,7 +18,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "../ui/avatar";
 import { Separator } from "../ui/separator";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "../ui/dialog";
 
 const SideBar = () => {
 
@@ -57,7 +64,8 @@ const SideBar = () => {
 				</Avatar>
 
 				<span
-					className={`${!toggleSidebar && "hidden"} duration-500`}>
+					className={`${!toggleSidebar && "hidden"} 
+						duration-500`}>
 					{toggleSidebar && user?.username}
 				</span>
 			</div>
@@ -149,7 +157,8 @@ const SideBar = () => {
 				/>
 				<span className={`${!toggleSidebar ?
            "opacity-0 transition-opacity duration-300"
-          : "opacity-100 text-xs transition-opacity delay-75 indent-5 duration-300"}`}>
+          : "opacity-100 text-xs transition-opacity" +
+					"ease-in-out delay-75 indent-5 duration-300"}`}>
 					{toggleSidebar && "Toggle sidebar"}
 				</span>
 			</div>
