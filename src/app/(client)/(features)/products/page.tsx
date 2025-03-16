@@ -1,5 +1,10 @@
 "use client";
-import React, { useState, useEffect, useMemo, Suspense } from "react";
+import React, {
+	useState,
+	useEffect,
+	useMemo,
+	Suspense,
+} from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Select,
@@ -30,7 +35,7 @@ import Loading from "@/components/customUI/Loading";
 
 const ProductPage = () => {
 	// const [isSearchOpen, setIsSearchOpen] = useState(false);
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 	const [priceRange, setPriceRange] = useState([0, 5000]);
 	const [sortBy, setSortBy] = useState("newest");
 	const [filteredProducts, setFilteredProducts] = useState<
@@ -46,9 +51,8 @@ const ProductPage = () => {
 	const dispatch = useAppDispatch();
 
 	useMemo(() => {
+		setLoading(true);
 
-		setLoading(true)
-		
 		axios
 			.get(`${conf.url}/api/products`)
 			.then((res) => {
@@ -63,7 +67,7 @@ const ProductPage = () => {
 	}, []);
 
 	useEffect(() => {
-		setLoading(true)
+		setLoading(true);
 		setFilteredProducts(() => {
 			let filtered = [...products];
 			if (selectedCategories.length > 0) {
@@ -84,7 +88,7 @@ const ProductPage = () => {
 			return filtered;
 		});
 
-		setLoading(false)
+		setLoading(false);
 	}, [selectedCategories, priceRange, sortBy, products]);
 
 	const HorizontalFilters = () => (
@@ -140,7 +144,9 @@ const ProductPage = () => {
 					<PopoverTrigger asChild>
 						<Button
 							variant="outline"
-							className="border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-300/30 dark:text-gray-300 dark:hover:bg-orange-500/10 dark:hover:border-gray-300/50">
+							className="border-gray-300 text-gray-700 hover:bg-gray-100
+							 dark:border-gray-300/30 dark:text-gray-300 
+							 dark:hover:bg-orange-500/10 dark:hover:border-gray-300/50">
 							Price Range
 							<ChevronDown className="ml-2 h-4 w-4" />
 						</Button>
@@ -213,17 +219,17 @@ const ProductPage = () => {
 		</div>
 	);
 
-
-
 	// loader
 
 	if (loading) {
-			return <div className="loader w-full min-h-screen flex
+		return (
+			<div
+				className="loader w-full min-h-screen flex
 			justify-center items-center">
 				<Loading />
 			</div>
+		);
 	}
-
 
 	return (
 		<main className="min-h-screen  dark:bg-[#121212]">
@@ -231,8 +237,10 @@ const ProductPage = () => {
 				<HorizontalFilters />
 
 				<div className="mt-6 scroll-smooth">
-					<Suspense fallback={
-							<div className="loader w-full min-h-screen flex
+					<Suspense
+						fallback={
+							<div
+								className="loader w-full min-h-screen flex
 							justify-center items-center">
 								<Loading />
 							</div>

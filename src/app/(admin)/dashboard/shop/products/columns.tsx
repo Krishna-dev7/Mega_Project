@@ -28,7 +28,7 @@ const getColumns = (
               object-center aspect-square">
             <img
               className="w-full h-full rounded-lg"
-              src={row.original.images[0].url}
+              src={row.original.images?.[0]}
             />
           </div>
         ),

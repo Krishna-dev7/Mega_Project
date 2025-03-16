@@ -5,6 +5,7 @@ import {
 import connectDB from "@/db/connect";
 import Product, { IProduct } from "@/models/product.models";
 import Cart from "@/models/cart.models";
+import { getToken } from "next-auth/jwt";
 
 connectDB();
 
@@ -36,6 +37,7 @@ export const POST = async (req: NextRequest)
   : Promise<NextResponse> => {
   try {
     
+    const token = await getToken({req})
     const body:IProduct = await req.json();
 
     const {
@@ -62,7 +64,7 @@ export const POST = async (req: NextRequest)
       description,
       images,
       category,
-      owner,
+      owner : owner ?? token?._id,
       countInStock,
       discount: discount || 0
     })

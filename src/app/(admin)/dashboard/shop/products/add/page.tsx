@@ -38,13 +38,20 @@ import { toast } from "@/hooks/use-toast";
 import productSchema from "@/schemas/product.schema";
 import { Categories } from "@/models/product.models";
 import Loading from "@/components/customUI/Loading";
+import { log } from "console";
+import storageService from "@/services/StorageService";
+import productService from "@/services/productService";
+import { useAppSelector } from "@/store/store";
 
 export default function AddProductPage() {
 	const router = useRouter();
+	// images used to store image URLs
 	const [images, setImages] = useState<string[]>([]);
-  const [imageFiles, setImageFiles] = useState<File[]>([])
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [imageUploading, setImageUploading] =
+		useState(false);
 
+	const user = useAppSelector(store => store.auth.data)
 
 	const form = useForm<z.infer<typeof productSchema>>({
 		resolver: zodResolver(productSchema),
@@ -55,56 +62,118 @@ export default function AddProductPage() {
 			description: "",
 			category: "",
 			owner: "",
+			images: [],
 		},
 	});
 
 	async function onSubmit(
 		data: z.infer<typeof productSchema>,
 	) {
-		setIsSubmitting(true);
-
-		const productData = {
-			...data,
-			images, 
-		};
-
 		try {
+			setIsSubmitting(true);
+			
+			const submitResult = await productService.createProduct(
+				{
+					...data,
+					images,
+					owner:((user?._id.toString() || "")) 
+				}
+			)
+
+			submitResult.success 
+				&& toast({
+					title: 'success',
+					description: 'Product added successfully'
+				})
+
+			console.log(submitResult.data);
 			
 		} catch (error: any) {
-			toast(error.message || "Failed to add product.");
+			toast(error.message 
+				|| "Failed to add product.");
+
+				toast({
+					title: 'failure',
+					description: error.message
+				})
 		} finally {
 			setIsSubmitting(false);
 		}
 	}
 
+	if (isSubmitting) {
+		return (
+			<div
+				className="loader w-full min-h-screen 
+			flex items-center justify-center">
+				<Loading />
+			</div>
+		);
+	}
 
-  if(isSubmitting) {
-    return <div className="loader min-h-screen flex place-items-center">
-      <Loading />
-    </div>
-  }
-	
+	// function to remove images
+	async function removeImage(imageIndex: number) {
+		try {
+			setImages((prev) =>
+				prev.filter((_, index) => 
+					index !== imageIndex),
+			);
+		} catch (err: any) {
+			console.log(
+				"Error occurred while removing images",
+				err.message,
+			);
+		}
+	}
 
-  function handleImageChange(
-    event: ChangeEvent<HTMLInputElement>
-  ): void {
+	async function handleImageChange(
+		event: ChangeEvent<HTMLInputElement>,
+	): Promise<void> {
+		try {
+			setImageUploading(true);
+			const files = event.target.files;
+			console.log(files);
+			if (!files?.length) return;
 
-    try {
+			const tempImages:Array<string> = [];
+			// upload images
+			for (let file of files) {
+				let uploadedImage = await storageService.storeImage(
+					{
+						file,
+						type: "product",
+					},
+				);
 
-      imageFiles.map(file => console.log(file))
-      
-    } catch (err:any) {
-      console.log("Error occurred at handleImageChange",
-         err.message);
-    }
-    
-  }
+				let uploadedImageURL =
+					await storageService.getImagePreview(
+						"product",
+						uploadedImage.$id,
+					);
+
+				tempImages.push(uploadedImageURL.href);
+			}
+
+			console.log("All your uploaded images URI: ", images);
+
+			setImages(prev => [...prev, ...tempImages]);
+		} catch (err: any) {
+			console.log(
+				"Error occurred at handleImageChange",
+				err.message,
+			);
+		} finally {
+			setImageUploading(false);
+		}
+	}
 
 	return (
 		<div className="container mx-auto py-10 dark">
 			<Card className="max-w-2xl px-5 mx-auto">
 				<CardHeader className="mb-5">
-					<CardTitle className="text-lg">Add New Product</CardTitle>
+					<CardTitle className="text-lg">
+						Add New Product
+					</CardTitle>
 					<CardDescription>
 						Fill in the details to add a new product to your
 						inventory.
@@ -182,13 +251,15 @@ export default function AddProductPage() {
 												</SelectTrigger>
 											</FormControl>
 											<SelectContent>
-												{Object.values(Categories).map((category) => (
-													<SelectItem
-														key={category}
-														value={category}>
-														{category}
-													</SelectItem>
-												))}
+												{Object.values(Categories).map(
+													(category) => (
+														<SelectItem
+															key={category}
+															value={category}>
+															{category}
+														</SelectItem>
+													),
+												)}
 											</SelectContent>
 										</Select>
 										<FormMessage />
@@ -204,7 +275,7 @@ export default function AddProductPage() {
 										<FormLabel>Description</FormLabel>
 										<FormControl>
 											<Textarea
-                        rows={4}
+												rows={4}
 												placeholder="Describe your product..."
 												{...field}
 											/>
@@ -226,7 +297,7 @@ export default function AddProductPage() {
 								<div className="mt-2 flex flex-wrap gap-2">
 									{images.map((image, index) => (
 										<div
-											key={index}
+											key={index.toString()}
 											className="relative w-20 h-20">
 											<img
 												src={image}
@@ -235,9 +306,11 @@ export default function AddProductPage() {
 											/>
 											<button
 												type="button"
-												className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-												// onClick={() => removeImage(index)}
-                        >
+												className="absolute top-0 right-0 bg-red-500
+												 text-white w-6 h-6 text-center flex items-center
+												  justify-center text-lg font-semibold
+												  rounded-full" 
+												onClick={() => removeImage(index)}>
 												x
 											</button>
 										</div>
@@ -248,11 +321,13 @@ export default function AddProductPage() {
 							<Button
 								type="submit"
 								className="w-full"
-								disabled={isSubmitting}>
-								{isSubmitting ? (
+								disabled={isSubmitting || imageUploading}>
+								{isSubmitting || imageUploading ? (
 									<>
 										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-										Saving...
+										{imageUploading
+											? "saving images"
+											: "saving...."}
 									</>
 								) : (
 									"Add Product"

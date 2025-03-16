@@ -1,15 +1,15 @@
 "use client";
 
-import type React from "react";
-import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ImagePlus, Loader2 } from "lucide-react";
 import {
 	useRouter,
 	useSearchParams,
 } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ImagePlus, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,16 +19,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import {
 	Form,
 	FormControl,
@@ -38,99 +28,37 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { useAppSelector } from "@/store/store";
-import { IProduct } from "@/models/product.models";
+import { Categories, IProduct } from "@/models/product.models";
+import productSchema from "@/schemas/product.schema";
+import productService from "@/services/productService";
+import storageService from "@/services/StorageService";
 
-const formSchema = z.object({
-	slug: z
-		.string()
-		.min(3, {
-			message: "Slug must be at least 3 characters.",
-		})
-		.max(50),
-	price: z.coerce.number().positive({
-		message: "Price must be a positive number.",
-	}),
-	countInStock: z.coerce.number().int().nonnegative({
-		message:
-			"Count in stock must be a non-negative integer.",
-	}),
-	description: z.string().min(10, {
-		message: "Description must be at least 10 characters.",
-	}),
-	category: z.string({
-		required_error: "Please select a category.",
-	}),
-	owner: z.string().min(2, {
-		message: "Owner name must be at least 2 characters.",
-	}),
-	discount: z.coerce
-		.number()
-		.min(0, {
-			message: "Discount must be a non-negative number.",
-		})
-		.max(100, {
-			message: "Discount cannot exceed 100%.",
-		}),
-});
-
-const categories = [
-	"Electronics",
-	"Clothing",
-	"Home & Garden",
-	"Books",
-	"Toys",
-	"Sports",
-	"Beauty",
-	"Health",
-	"Automotive",
-	"Other",
-];
-
-// Mock product data - in a real app, you would fetch this from your API
-const mockProduct = {
-	id: "1",
-	slug: "sample-product",
-	price: 99.99,
-	countInStock: 25,
-	description:
-		"This is a sample product description that is longer than 10 characters.",
-	category: "Electronics",
-	owner: "John Doe",
-	discount: 10,
-	images: [
-		// In a real app, these would be URLs to your stored images
-		"/placeholder.svg?height=200&width=200",
-		"/placeholder.svg?height=200&width=200",
-	],
-};
-
-type ProductImage = {
-	id?: string;
-	url: string;
-	file?: File;
-	isNew?: boolean;
-};
 
 export default function EditProductPage() {
 	const router = useRouter();
 	const { toast } = useToast();
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [productImages, setProductImages] = useState<
-		ProductImage[]
-	>([]);
-	const params = useSearchParams();
-	const productId = params.get("productId");
-	const product = useAppSelector((store) =>
-		store.product.products.find(
-			(product) => product._id.toString() == productId,
-		),
-	);
+	const searchParams = useSearchParams();
+	const productId = searchParams.get("productId");
+	const [product, setProduct] = useState<IProduct | null>(null);
 
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const [productImages, setProductImages] 
+		= useState<string[]>([]);
+
+	const form = useForm<z.infer<typeof productSchema>>({
+		resolver: zodResolver(productSchema),
 		defaultValues: {
 			slug: "",
 			price: 0,
@@ -139,48 +67,56 @@ export default function EditProductPage() {
 			category: "",
 			owner: "",
 			discount: 0,
+			images: []
 		},
 	});
 
+
+	useEffect(()=> {
+
+		async function fetchProduct() {
+			try {
+				const res = await productService
+					.getProduct(productId);
+
+					console.log("fetching product: ", res)
+					setProduct(res.data)
+			} catch (err:any) {
+				console.log("error occurred at fetch", 
+					err.message);
+			}
+		}
+		fetchProduct()
+	}, [])
+
 	// Fetch product data
 	useEffect(() => {
-		// In a real app, you would fetch the product data from your API
-		// For example: fetch(`/api/products/${productId}`)
+		if(!product) return
+		setIsLoading(true);
+		console.log("product for edit: ", product);
+		
+		form.reset({
+			slug: product.slug,
+			price: product.price,
+			countInStock: product.countInStock,
+			description: product.description,
+			category: product.category,
+			owner: product.owner?.toString(),
+			discount: product.discount,
+			images: product.images
+		});
 
-		// Simulate API call with mock data
-		if (!product) return;
-
-		setTimeout(() => {
-			form.reset({
-				slug: product?.slug,
-				price: product?.price,
-				countInStock: product.countInStock,
-				description: product.description,
-				category: product.category,
-				owner: product.owner?.toString(),
-				discount: product.discount,
-			});
-
-			// Set initial images
-			setProductImages(
-				mockProduct.images.map((url, index) => ({
-					id: `existing-${index}`,
-					url,
-					isNew: false,
-				})),
-			);
-
-			setIsLoading(false);
-		}, 1000);
+		setProductImages(product.images);
+		setIsLoading(false);
 	}, [product]);
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	function onSubmit(values: z.infer<typeof productSchema>) {
 		setIsSubmitting(true);
 
 		// Here you would typically handle the form submission
 		// including uploading any new images to your backend
 		console.log("Form values:", values);
-		console.log("Images:", productImages);
+		// console.log("Images:", productImages);
 
 		// Simulate API call
 		setTimeout(() => {
@@ -193,26 +129,34 @@ export default function EditProductPage() {
 					"Your product has been successfully updated.",
 				variant: "default",
 			});
-
-			// In a real app, you might redirect to the product page
-			// router.push(`/products/${values.slug}`)
 		}, 1500);
 	}
 
-	const handleImageChange = (
+	 const handleImageChange = async (
 		e: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		if (e.target.files) {
 			const fileArray = Array.from(e.target.files);
-			const newImages: ProductImage[] = fileArray.map(
-				(file) => ({
-					url: URL.createObjectURL(file),
-					file,
-					isNew: true,
-				}),
-			);
+			const newImages: string[] = [];
+			fileArray.forEach(
+				async (file) => {
 
-			setProductImages((prev) => [...prev, ...newImages]);
+					const res = await storageService.storeImage({
+						file,
+						type: "product",
+					})
+
+					const newImageURI = await storageService
+						.getImagePreview(
+							'product',
+							res.$id
+						)
+
+					newImages.push(newImageURI.href)
+				});
+
+			setProductImages((prev) =>
+				[...prev, ...newImages]);
 		}
 	};
 
@@ -318,7 +262,7 @@ export default function EditProductPage() {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{categories.map((category) => (
+													{Object.values(Categories).map((category) => (
 														<SelectItem
 															key={category}
 															value={category}>
@@ -434,18 +378,12 @@ export default function EditProductPage() {
                         overflow-hidden bg-gray-100 border">
 													<img
 														src={
-															image.url ||
+															image ||
 															"/placeholder.svg"
 														}
 														alt={`Product image ${index + 1}`}
 														className="w-full h-full object-cover"
 													/>
-													{image.isNew && (
-														<div className="absolute top-1 left-1 bg-blue-500
-                             text-white text-xs px-1 rounded">
-															New
-														</div>
-													)}
 												</div>
 												<button
 													type="button"

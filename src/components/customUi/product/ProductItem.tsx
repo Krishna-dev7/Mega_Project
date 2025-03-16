@@ -54,7 +54,7 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
       <div className="relative overflow-hidden">
         <img
           src={
-            product.images[0].url
+            product.images[0]
               || placeholderImage
           }
           alt={product.slug}

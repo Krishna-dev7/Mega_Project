@@ -10,12 +10,13 @@ interface IProduct extends Document {
   category: Categories,
   countInStock: number;
   description: string;
-  images: Array<{url: string, color?: string}>;
+  images: Array<string>;
   slug: string;
   price: number;
   rating: number;
   owner?: Types.ObjectId;
   discount: number;
+  isPublished: boolean
 }
 
 export enum Categories {
@@ -31,51 +32,55 @@ export enum Categories {
   FASHION = "fashion"
 }
 
-const productSchema = new Schema<IProduct>({
-  slug: {
-    type: String,
-    required: true,
-    trim: true,
-  },  
-  category: {
-    type: String,
-    required: true,
-    enum: Object.values(Categories),
-  },
-  discount: {
-    type: Number,
-    default: 0
-  },
-  countInStock: {
-    type: Number,
-    default: 0,
-    min: 0
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  images: [{
-      url: String,
-      color: String,
-  }],
-  price: {
-    type: Number,
-    required: true,
-    min: 0,
-    default: 0
-  },
-  rating: {
-    type: Number,
-    max: 5,
-    min: 0,
-    default: 0
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-}, {timestamps: true});
+const productSchema = new Schema<IProduct>(
+	{
+		slug: {
+			type: String,
+			required: true,
+			trim: true,
+		},
+		category: {
+			type: String,
+			required: true,
+			enum: Object.values(Categories),
+		},
+		discount: {
+			type: Number,
+			default: 0,
+		},
+		countInStock: {
+			type: Number,
+			default: 0,
+			min: 0,
+		},
+		description: {
+			type: String,
+			required: true,
+		},
+		images: [{ type: String }],
+		price: {
+			type: Number,
+			required: true,
+			min: 0,
+			default: 0,
+		},
+		rating: {
+			type: Number,
+			max: 5,
+			min: 0,
+			default: 0,
+		},
+		owner: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
+		},
+		isPublished: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	{ timestamps: true },
+);
 
 productSchema.index({
   slug: 1
