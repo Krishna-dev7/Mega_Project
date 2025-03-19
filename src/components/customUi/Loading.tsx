@@ -1,7 +1,5 @@
-import star from "@/../public/star.svg";
-import Image from "next/image";
 
-function Loading() {
+const Loading:React.FC = () => {
 	return (
 		<div className="flex flex-col items-center gap-4">
 			<div className="relative h-14 w-14">

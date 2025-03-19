@@ -56,7 +56,11 @@ const OrderPage: React.FC = () => {
 		},
 	};
 
-	const table = useTable(data, initialState, columns);
+	const table = useTable(
+		data, 
+		initialState, 
+		columns
+	);
 
   if (loading) {
 		return (
