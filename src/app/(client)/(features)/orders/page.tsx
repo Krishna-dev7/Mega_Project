@@ -20,6 +20,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 const Orders: React.FC = () => {
 	const orderDetails = {
@@ -105,7 +106,7 @@ const Orders: React.FC = () => {
 										key={index}
 										className="flex items-start gap-4">
 										<div className="h-16 w-16 rounded-md bg-muted flex items-center justify-center">
-											<img
+											<Image
 												src="/placeholder.svg?height=64&width=64"
 												alt={item.name}
 												className="h-12 w-12 object-cover"

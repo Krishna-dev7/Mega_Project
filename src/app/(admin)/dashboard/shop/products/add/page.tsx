@@ -42,6 +42,7 @@ import { log } from "console";
 import storageService from "@/services/StorageService";
 import productService from "@/services/productService";
 import { useAppSelector } from "@/store/store";
+import Image from "next/image";
 
 export default function AddProductPage() {
 	const router = useRouter();
@@ -137,15 +138,15 @@ export default function AddProductPage() {
 
 			const tempImages:Array<string> = [];
 			// upload images
-			for (let file of files) {
-				let uploadedImage = await storageService.storeImage(
+			for (const file of files) {
+				const uploadedImage = await storageService.storeImage(
 					{
 						file,
 						type: "product",
 					},
 				);
 
-				let uploadedImageURL =
+				const uploadedImageURL =
 					await storageService.getImagePreview(
 						"product",
 						uploadedImage.$id,
@@ -299,7 +300,7 @@ export default function AddProductPage() {
 										<div
 											key={index.toString()}
 											className="relative w-20 h-20">
-											<img
+											<Image
 												src={image}
 												alt={`Product ${index}`}
 												className="w-full h-full object-cover rounded-lg"

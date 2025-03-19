@@ -49,7 +49,7 @@ function SubRootProvider({
 				data: null,
 			}),
 		);
-	}, [session.status, dispatch]);
+	}, [session, dispatch]);
 
 	return <>{children}</>;
 }

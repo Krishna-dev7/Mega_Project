@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
       );
     return amount
 
-  }, [data]);
+  }, [ table]);
 
 
   useEffect(() => {
@@ -198,7 +198,7 @@ export function DataTable<TData, TValue>({
             name: (row.original as cartType).product.slug,
             price: (row.original as cartType).product.price,
             quantity: (row.original as cartType).quantity,
-            image: (row.original as cartType).product.images[0].url,
+            image: (row.original as cartType).product.images[0],
 						itemId: (row.original as cartType).product._id.toString()
           }))} />
       </div> }

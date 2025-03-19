@@ -33,6 +33,7 @@ import { ShoppingCart } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import DataTable from "../checkout/DataTable";
 import Loading from "../Loading";
+import Image from "next/image";
 
 
 const Cart: React.FC = () => {
@@ -119,9 +120,9 @@ const Cart: React.FC = () => {
       header: 'Products',
       cell: ({row}) => {
         return <div className="flex items-center">
-          <img 
+          <Image 
             className="w-16 h-16 aspect-square rounded-sm mr-4"
-            src={row.original.product.images[0].url} 
+            src={row.original.product.images[0]} 
             alt="image"/>
 
           <div className="w-full">

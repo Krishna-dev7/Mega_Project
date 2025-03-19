@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import { setCart } from "@/store/cartSlice";
 import Loading from "@/components/customUI/Loading";
+import Image from "next/image";
 
 type customType = {
 	owner: UserSchema;
@@ -56,7 +57,7 @@ const ProductDetail: React.FC = () => {
 			.catch((err) => {
 				console.log("error in product: ", err.message);
 			});
-	}, []);
+	}, [id]);
 
 	const scroll = (direction: "left" | "right") => {
 		const container =
@@ -128,7 +129,7 @@ const ProductDetail: React.FC = () => {
 								<div
 									className="relative aspect-square rounded-xl 
                 overflow-hidden ">
-									<img
+									<Image
 										src={
 											activeImage || product?.images[0]
 										}
@@ -165,7 +166,7 @@ const ProductDetail: React.FC = () => {
 															? "ring-2 ring-gray-300"
 															: ""
 													}`}>
-												<img
+												<Image
 													src={image}
 													alt={`Thumbnail ${index + 1}`}
 													className="w-full h-full object-cover object-center"

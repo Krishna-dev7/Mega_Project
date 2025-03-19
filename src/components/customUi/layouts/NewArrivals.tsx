@@ -1,6 +1,7 @@
 "use client"
 import React from "react";
 import { ShoppingCart, Eye,ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 // function NewArrivals({ products = [{
 //   id: 1,
@@ -120,7 +121,7 @@ function NewArrivals() {
           {products.map((product, index) => (
             <div key={index} className="group cursor-pointer">
               <div className="relative overflow-hidden">
-                <img 
+                <Image
                   src={product.image} 
                   alt={product.name}
                   className="w-full h-[400px] object-cover transform 

@@ -11,7 +11,8 @@ interface CheckoutButtonProps {
   items: { 
     name: string; 
     price: number; 
-    quantity: number 
+    quantity: number,
+    image: string,
     itemId: string
   }[];
   props?: React.HTMLAttributes<HTMLDivElement>;

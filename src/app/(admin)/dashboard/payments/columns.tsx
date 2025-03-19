@@ -23,6 +23,179 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Download, MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 
+
+const StatusCellCoomponent: React.FC<{ row: any }> = ({ row }) => {
+	
+		const [status, setStatus] = useState(
+			row.original.payment_intent_status,
+		);
+
+		const [loading, setLoading] = useState(false);
+		useEffect(() => {
+			try {
+				setLoading(true);
+				let res;
+				(async () => {
+					res = (
+						await paymentService.getPaymentIntent(
+							row.original.paymentIntentId,
+						)
+					).data.status;
+
+					setStatus(res);
+				})();
+			} catch (err: any) {
+				console.log(err.message);
+			} finally {
+				setLoading(false);
+			}
+		}, [setStatus, row.original.paymentIntentId]);
+
+		if (loading) {
+			return (
+				<Skeleton className="w-full animate-pulse bg-pink-300/50" />
+			);
+			//   <Skeleton className="h-6 w-full bg-pink-300/80" />
+			// </Skeleton>
+		}
+
+		return (
+			<span className="status text-amber-500">
+				{status}
+			</span>
+		);
+	
+}
+
+const ActionCellComponent: React.FC<{ row: any }> = ({
+	row,
+}) => {
+	const [trigger, setTrigger] = useState(false);
+	const role = useAppSelector(
+		(store) => store.auth.data?.role,
+	);
+	const [deleteTrigger, setDeleteTrigger] 
+		= useState(false);
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger
+				className="cursor-pointer"
+				suppressHydrationWarning
+				asChild>
+				<MoreHorizontal size={15} />
+			</DropdownMenuTrigger>
+
+			<DropdownMenuContent className=" bg-black ">
+				<DropdownMenuLabel className="w-36 mb-1">
+					Actions
+				</DropdownMenuLabel>
+
+				<DropdownMenuSeparator className="font-bold bg-neutral-600" />
+
+				<DropdownMenuItem
+					className="cursor-pointer mb-1"
+					onClick={() => setTrigger(true)}>
+					Refund amount
+				</DropdownMenuItem>
+
+				<DropdownMenuItem className="cursor-pointer mb-1">
+					<a
+						className="flex items-center gap-2 text-orange-400 "
+						href={row.original.invoice_url}
+						download={true}>
+						invoice <Download size={14} />
+					</a>
+				</DropdownMenuItem>
+
+				<DropdownMenuItem
+					className="cursor-pointer mb-1 capitalize"
+					onClick={() =>
+						navigator.clipboard.writeText(
+							row.getValue("id"),
+						)
+					}>
+					copy paymentID
+				</DropdownMenuItem>
+
+				{role == "admin" && (
+					<DropdownMenuItem
+						className="cursor-pointer mb-1 capitalize"
+						onClick={() => setDeleteTrigger(true)}>
+						Delete record
+					</DropdownMenuItem>
+				)}
+			</DropdownMenuContent>
+
+			{/*  dialog box */}
+			<Dialog
+				open={trigger}
+				onOpenChange={setTrigger}>
+				<DialogContent>
+					<DialogTitle className="text-orange-500 ">
+						Warning 🤚
+					</DialogTitle>
+					<DialogDescription>
+						Make sure because this step cannot be revert
+					</DialogDescription>
+					<DialogFooter>
+						<Button
+							size={"sm"}
+							className="text-xs"
+							onClick={async () => {
+								try {
+									await paymentService.createRefund(
+										row.original.paymentIntentId,
+									);
+
+									toast({
+										title: "success",
+										description: "amount refunded",
+									});
+								} catch (err: any) {
+									console.log(
+										"Columns error payment refund",
+										err.message,
+									);
+								}
+							}}>
+							Refund
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+
+			{/* super admin alert */}
+
+			<Dialog
+				open={deleteTrigger}
+				onOpenChange={setDeleteTrigger}>
+				<DialogContent>
+					<DialogTitle className="text-orange-500 ">
+						Warning 🤚
+					</DialogTitle>
+					<DialogDescription>
+						Sensitive information once removed cannot be
+						revert
+					</DialogDescription>
+					<DialogFooter>
+						<Button
+							size={"sm"}
+							className="text-xs"
+							onClick={() =>
+								paymentService.deletePayment(
+									row.original.sessionId,
+								)
+							}>
+							Delete
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+		</DropdownMenu>
+	);
+};
+
 const columns: ColumnDef<IPayment>[] = [
 	{
 		id: "id",
@@ -47,46 +220,7 @@ const columns: ColumnDef<IPayment>[] = [
 				value,
 			);
 		},
-		cell: ({ row }) => {
-			const [status, setStatus] = useState(
-				row.original.payment_intent_status,
-			);
-
-			const [loading, setLoading] = useState(false);
-			useEffect(() => {
-				try {
-					setLoading(true);
-					let res;
-					(async () => {
-						res = (
-							await paymentService.getPaymentIntent(
-								row.original.paymentIntentId,
-							)
-						).data.status;
-
-						setStatus(res);
-					})();
-				} catch (err: any) {
-					console.log(err.message);
-				} finally {
-					setLoading(false);
-				}
-			}, [setStatus]);
-
-			if (loading) {
-				return (
-					<Skeleton className="w-full animate-pulse bg-pink-300/50" />
-				);
-				//   <Skeleton className="h-6 w-full bg-pink-300/80" />
-				// </Skeleton>
-			}
-
-			return (
-				<span className="status text-amber-500">
-					{status}
-				</span>
-			);
-		},
+		cell: ({ row }) => <StatusCellCoomponent row={row} />,
 	},
 
 	{
@@ -126,132 +260,7 @@ const columns: ColumnDef<IPayment>[] = [
 	{
 		id: "actions",
 		header: "Action",
-		cell: ({ row }) => {
-			const [trigger, setTrigger] = useState(false);
-			const role = useAppSelector(
-				(store) => store.auth.data?.role,
-			);
-			const [deleteTrigger, setDeleteTrigger] =
-				useState(false);
-
-			return (
-				<DropdownMenu>
-					<DropdownMenuTrigger
-						className="cursor-pointer"
-						suppressHydrationWarning
-						asChild>
-						<MoreHorizontal size={15} />
-					</DropdownMenuTrigger>
-
-					<DropdownMenuContent className=" bg-black ">
-						<DropdownMenuLabel className="w-36 mb-1">
-							Actions
-						</DropdownMenuLabel>
-
-						<DropdownMenuSeparator className="font-bold bg-neutral-600" />
-
-						<DropdownMenuItem
-							className="cursor-pointer mb-1"
-							onClick={() => setTrigger(true)}>
-							Refund amount
-						</DropdownMenuItem>
-
-						<DropdownMenuItem className="cursor-pointer mb-1">
-							<a
-								className="flex items-center gap-2 text-orange-400 "
-								href={row.original.invoice_url}
-								download={true}>
-								invoice <Download size={14} />
-							</a>
-						</DropdownMenuItem>
-
-						<DropdownMenuItem
-							className="cursor-pointer mb-1 capitalize"
-							onClick={() =>
-								navigator.clipboard.writeText(
-									row.getValue("id"),
-								)
-							}>
-							copy paymentID
-						</DropdownMenuItem>
-
-						{role == "admin" && (
-							<DropdownMenuItem
-								className="cursor-pointer mb-1 capitalize"
-								onClick={() => setDeleteTrigger(true)}>
-								Delete record
-							</DropdownMenuItem>
-						)}
-					</DropdownMenuContent>
-
-					{/*  dialog box */}
-					<Dialog
-						open={trigger}
-						onOpenChange={setTrigger}>
-						<DialogContent>
-							<DialogTitle className="text-orange-500 ">
-								Warning 🤚
-							</DialogTitle>
-							<DialogDescription>
-								Make sure because this step cannot be revert
-							</DialogDescription>
-							<DialogFooter>
-								<Button
-									size={"sm"}
-									className="text-xs"
-									onClick={async () => {
-										try {
-											await paymentService.createRefund(
-												row.original.paymentIntentId,
-											);
-
-											toast({
-												title: "success",
-												description: "amount refunded",
-											});
-										} catch (err: any) {
-											console.log(
-												"Columns error payment refund",
-												err.message,
-											);
-										}
-									}}>
-									Refund
-								</Button>
-							</DialogFooter>
-						</DialogContent>
-					</Dialog>
-
-					{/* super admin alert */}
-
-					<Dialog
-						open={deleteTrigger}
-						onOpenChange={setDeleteTrigger}>
-						<DialogContent>
-							<DialogTitle className="text-orange-500 ">
-								Warning 🤚
-							</DialogTitle>
-							<DialogDescription>
-								Sensitive information once removed cannot be
-								revert
-							</DialogDescription>
-							<DialogFooter>
-								<Button
-									size={"sm"}
-									className="text-xs"
-									onClick={() =>
-										paymentService.deletePayment(
-											row.original.sessionId,
-										)
-									}>
-									Delete
-								</Button>
-							</DialogFooter>
-						</DialogContent>
-					</Dialog>
-				</DropdownMenu>
-			);
-		},
+		cell: ({ row }) => <ActionCellComponent row={row} />,
 	},
 ];
 

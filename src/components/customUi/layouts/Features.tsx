@@ -1,4 +1,5 @@
 import { Shield, Truck, Package,Headphones,ChevronRight, Star} from "lucide-react"
+import Image from "next/image";
 function FeatureCategory({ categories = [{
   image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFzaGlvbnxlbnwwfHwwfHx8MA%3D%3D",
   alt: "Fashion",
@@ -32,7 +33,7 @@ function FeatureCategory({ categories = [{
               className="relative overflow-hidden group cursor-pointer"
             >
               <div className="aspect-[3/4] relative">
-                <img
+                <Image
                   src={category.image}
                   alt={category.alt}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"

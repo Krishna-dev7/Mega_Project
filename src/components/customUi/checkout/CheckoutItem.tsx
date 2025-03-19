@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { cartType, delCart } from "@/store/cartSlice";
 import cartService from "@/services/CartService";
 import DataTable from "@/components/customUI/checkout/DataTable";
+import Image from "next/image";
 
 type props = {
   product: cartType
@@ -64,8 +65,8 @@ export const columns: ColumnDef<cartType>[] = [
     header: "",
     cell: ({ row }) => (
       <div className="w-20 h-20 rounded-lg overflow-hidden">
-        <img
-          src={row.original.product.images[0].url}
+        <Image
+          src={row.original.product.images[0]}
           alt={row.original.product.slug}
           className="w-full h-full object-cover"
         />
@@ -126,7 +127,7 @@ export const columns: ColumnDef<cartType>[] = [
 
 const CheckoutItem: React.FC = () => {
   const carts = useAppSelector((store) => store.cart.carts);
-  return <DataTable columns={columns} data={carts} />;
+  return <DataTable message="Checkout " columns={columns} data={carts} />;
 };
 
 export default CheckoutItem;

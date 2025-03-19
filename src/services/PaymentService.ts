@@ -13,7 +13,7 @@ type itemsType = {
 		quantity: number;
 		image: string;
 		itemId: string;
-	};
+	}[];
 };
 
 class PaymentService {

@@ -56,7 +56,7 @@ const CartItem:React.FC<props> = ({cart}) => {
       <Avatar>
         <AvatarImage 
           className="w-16 h-16 aspect-square rounded-lg"
-          src={cart?.product.images[0].url 
+          src={cart?.product.images[0] 
           || "https://i.pinimg.com/236x/25/2f/ae/252fae4c0fe38159bd193c94e25438a5.jpg"} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>

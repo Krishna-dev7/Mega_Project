@@ -5,6 +5,7 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { Button } from "@/components/ui/button";
 import { Router, ShoppingBagIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // export function Hero() {
 
@@ -39,7 +40,7 @@ function Hero() {
   return (
     <section className="relative h-screen">
       <div className="absolute overflow-hidden inset-0">
-        <img 
+        <Image 
           src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
           alt="Luxury Fashion"
           className="w-full h-full object-cover scale-200 

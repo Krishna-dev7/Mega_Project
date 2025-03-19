@@ -62,29 +62,30 @@ const SettingPage: React.FC = () => {
 	}, [file])
 
 
-	useEffect(() => {
-		form.reset({
-			email: user?.email,
-      name: user?.fullname,
-      dob: user?.dob 
-			? new Date(user.dob).toISOString().split("T")[0] 
-			: new Date().toISOString().split("T")[0]
-		})
-	}, [user])
-
   type profileformValuesType = 
 		z.infer<typeof profileFormSchema>
 
   const form = useForm<profileformValuesType>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: {
-      email: user?.email ?? "",
-      name: user?.fullname ?? "",
-      dob: user?.dob 
+	resolver: zodResolver(profileFormSchema),
+	defaultValues: {
+	  email: user?.email ?? "",
+	  name: user?.fullname ?? "",
+	  dob: user?.dob 
 			? new Date(user.dob).toISOString().split("T")[0] 
 			: new Date().toISOString().split("T")[0]
-    }
+	}
   })
+
+	useEffect(() => {
+		form.reset({
+			email: user?.email,
+	  name: user?.fullname,
+	  dob: user?.dob 
+			? new Date(user.dob).toISOString().split("T")[0] 
+			: new Date().toISOString().split("T")[0]
+		})
+	}, [user, form])
+   
 
 
 	const submitForm = async (data: profileformValuesType) => {

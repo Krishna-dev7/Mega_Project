@@ -31,7 +31,7 @@ export default function SuccessPage() {
   const params = useSearchParams();
   useEffect(() => {
 		const fetch = async () => {
-      let session_id =  params.get('session_id')
+      const session_id =  params.get('session_id')
 		if ( session_id && userId) {
 			await paymentService.createPayment(
 				session_id,

@@ -9,22 +9,7 @@ const badgeConfig = {
     hoverBgColor: "bg-orange-400",
     darkHoverBgColor: "bg-orange-800"
   },
-  [Categories.DRINKWARE]: {
-    bgColor: "bg-blue-300",
-    textColor: "text-blue-800",
-    darkBgColor: "dark:bg-blue-900",
-    darkTextColor: "dark:text-blue-300",
-    hoverBgColor: "bg-blue-400",
-    darkHoverBgColor: "bg-blue-800"
-  },
-  [Categories.ELECTRONICS]: {
-    bgColor: "bg-purple-300",
-    textColor: "text-purple-800",
-    darkBgColor: "dark:bg-purple-900",
-    darkTextColor: "dark:text-purple-300",
-    hoverBgColor: "bg-purple-400",
-    darkHoverBgColor: "bg-purple-800"
-  },
+
   [Categories.FOOTWEAR]: {
     bgColor: "bg-green-300",
     textColor: "text-green-800",

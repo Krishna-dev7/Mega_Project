@@ -64,7 +64,7 @@ const ProductPage = () => {
 				console.log("product fetch error: ", err.message),
 			)
 			.finally(() => setLoading(false));
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
 		setLoading(true);

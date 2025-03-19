@@ -85,7 +85,7 @@ const CartSheet:React.FC = () => {
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={() => {
-                cartService.deleteCarts();
+                cartService.deleteCarts({});
                 dispatch(clearCarts());
               }} >Continue</AlertDialogAction>
             </AlertDialogFooter>

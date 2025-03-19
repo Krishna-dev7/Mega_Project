@@ -7,6 +7,7 @@ import cartService from "@/services/CartService";
 import { toast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import { setCart } from "@/store/cartSlice";
+import Image from "next/image";
 
 type Props = {
   product: IProduct;
@@ -52,7 +53,7 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
       }}
       className="group cursor-pointer mb-7">
       <div className="relative overflow-hidden">
-        <img
+        <Image
           src={
             product.images[0]
               || placeholderImage

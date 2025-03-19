@@ -46,6 +46,7 @@ import {
 import productSchema from "@/schemas/product.schema";
 import productService from "@/services/productService";
 import storageService from "@/services/StorageService";
+import Image from "next/image";
 
 export default function EditProductPage() {
 	const router = useRouter();
@@ -112,7 +113,7 @@ export default function EditProductPage() {
 
 		setProductImages(product.images);
 		setIsLoading(false);
-	}, [product]);
+	}, [product, form]);
 
 	function onSubmit(values: z.infer<typeof productSchema>) {
 		setIsSubmitting(true);
@@ -349,7 +350,7 @@ export default function EditProductPage() {
 										<div
 											key={index.toString()}
 											className="relative w-20 h-20">
-											<img
+											<Image
 												src={image}
 												alt={`Product ${index}`}
 												className="w-full h-full object-cover rounded-lg"
