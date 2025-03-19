@@ -130,7 +130,7 @@ const ProductDetail: React.FC = () => {
                 overflow-hidden ">
 									<img
 										src={
-											activeImage || product?.images[0]?.url
+											activeImage || product?.images[0]
 										}
 										alt={product?.description || "Product"}
 										className="w-full h-full object-cover object-center
@@ -144,7 +144,7 @@ const ProductDetail: React.FC = () => {
 										onClick={() => scroll("left")}
 										className="absolute border border-black left-0 top-1/2 
                     -translate-y-1/2 rounded-full p-1 shadow-md
-                  hover:bg-white transition-colors z-10">
+										hover:bg-white transition-colors z-10">
 										<ChevronLeft className="w-5 h-5 text-gray-600" />
 									</button>
 
@@ -156,17 +156,17 @@ const ProductDetail: React.FC = () => {
 											<button
 												key={index}
 												onClick={() =>
-													setActiveImage(image.url)
+													setActiveImage(image)
 												}
 												className={`flex-shrink-0 sm:w-20 sm:h-20 w-14 
                         h-14 rounded-lg overflow-hidden transition-all
                          duration-200 ${
-														activeImage === image.url
+														activeImage === image
 															? "ring-2 ring-gray-300"
 															: ""
 													}`}>
 												<img
-													src={image.url}
+													src={image}
 													alt={`Thumbnail ${index + 1}`}
 													className="w-full h-full object-cover object-center"
 												/>
@@ -243,7 +243,8 @@ const ProductDetail: React.FC = () => {
 										</div>
 									</div>
 
-									<p className="dark:text-gray-400 text-black text-ellipsis line-clamp-3 leading-relaxed">
+									<p className="dark:text-gray-400 text-black text-ellipsis 
+									line-clamp-3 leading-relaxed">
 										{product?.description}
 									</p>
 
@@ -292,7 +293,7 @@ const ProductDetail: React.FC = () => {
 					<button
 						onClick={() => setIsReviewOpen(false)}
 						className={`border border-black dark:border-gray-400 
-          rounded-sm px-4 py-2 ${
+						rounded-sm px-4 py-2 ${
 						!isReviewOpen ? "bg-violet-400 text-black" : ""
 					}`}>
 						Description

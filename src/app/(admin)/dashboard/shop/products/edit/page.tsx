@@ -39,11 +39,13 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Categories, IProduct } from "@/models/product.models";
+import {
+	Categories,
+	IProduct,
+} from "@/models/product.models";
 import productSchema from "@/schemas/product.schema";
 import productService from "@/services/productService";
 import storageService from "@/services/StorageService";
-
 
 export default function EditProductPage() {
 	const router = useRouter();
@@ -52,10 +54,13 @@ export default function EditProductPage() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const searchParams = useSearchParams();
 	const productId = searchParams.get("productId");
-	const [product, setProduct] = useState<IProduct | null>(null);
+	const [product, setProduct] = useState<IProduct | null>(
+		null,
+	);
 
-	const [productImages, setProductImages] 
-		= useState<string[]>([]);
+	const [productImages, setProductImages] = useState<
+		string[]
+	>([]);
 
 	const form = useForm<z.infer<typeof productSchema>>({
 		resolver: zodResolver(productSchema),
@@ -67,34 +72,33 @@ export default function EditProductPage() {
 			category: "",
 			owner: "",
 			discount: 0,
-			images: []
+			images: [],
 		},
 	});
 
-
-	useEffect(()=> {
+	useEffect(() => {
+		console.log("call by first useEffect", productId);
 
 		async function fetchProduct() {
 			try {
-				const res = await productService
-					.getProduct(productId);
+				const res =
+					await productService.getProduct(productId);
 
-					console.log("fetching product: ", res)
-					setProduct(res.data)
-			} catch (err:any) {
-				console.log("error occurred at fetch", 
-					err.message);
+				console.log("fetching product: ", res);
+				setProduct(res.data);
+			} catch (err: any) {
+				console.log("error occurred at fetch", err.message);
 			}
 		}
-		fetchProduct()
-	}, [])
+		fetchProduct();
+	}, [productId]);
 
 	// Fetch product data
 	useEffect(() => {
-		if(!product) return
+		if (!product) return;
 		setIsLoading(true);
 		console.log("product for edit: ", product);
-		
+
 		form.reset({
 			slug: product.slug,
 			price: product.price,
@@ -103,7 +107,7 @@ export default function EditProductPage() {
 			category: product.category,
 			owner: product.owner?.toString(),
 			discount: product.discount,
-			images: product.images
+			images: product.images,
 		});
 
 		setProductImages(product.images);
@@ -132,31 +136,28 @@ export default function EditProductPage() {
 		}, 1500);
 	}
 
-	 const handleImageChange = async (
+	const handleImageChange = async (
 		e: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		if (e.target.files) {
 			const fileArray = Array.from(e.target.files);
 			const newImages: string[] = [];
-			fileArray.forEach(
-				async (file) => {
-
-					const res = await storageService.storeImage({
-						file,
-						type: "product",
-					})
-
-					const newImageURI = await storageService
-						.getImagePreview(
-							'product',
-							res.$id
-						)
-
-					newImages.push(newImageURI.href)
+			fileArray.forEach(async (file) => {
+				const res = await storageService.storeImage({
+					file,
+					type: "product",
 				});
 
-			setProductImages((prev) =>
-				[...prev, ...newImages]);
+				const newImageURI =
+					await storageService.getImagePreview(
+						"product",
+						res.$id,
+					);
+
+				newImages.push(newImageURI.href);
+			});
+
+			setProductImages((prev) => [...prev, ...newImages]);
 		}
 	};
 
@@ -168,7 +169,8 @@ export default function EditProductPage() {
 
 	if (isLoading) {
 		return (
-			<div className="container mx-auto py-10 flex items-center
+			<div
+				className="container mx-auto py-10 flex items-center
        justify-center min-h-[400px] dark">
 				<Loader2 className="h-8 w-8 animate-spin text-primary" />
 			</div>
@@ -262,13 +264,15 @@ export default function EditProductPage() {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{Object.values(Categories).map((category) => (
-														<SelectItem
-															key={category}
-															value={category}>
-															{category}
-														</SelectItem>
-													))}
+													{Object.values(Categories).map(
+														(category) => (
+															<SelectItem
+																key={category}
+																value={category}>
+																{category}
+															</SelectItem>
+														),
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />
@@ -331,71 +335,37 @@ export default function EditProductPage() {
 								)}
 							/>
 
-							<div>
-								<Label htmlFor="images">
-									Product Images
-								</Label>
-								<div className="mt-2">
-									<div className="flex items-center justify-center w-full">
-										<label
-											htmlFor="images"
-											className="flex flex-col items-center justify-center 
-                      w-full h-32 border-2 border-dashed rounded-lg cursor-pointer
-                      bg-gray-50 hover:bg-gray-100 dark:border-gray-600
-                      dark:hover:border-gray-500">
-											<div className="flex flex-col items-center justify-center pt-5 pb-6">
-												<ImagePlus className="w-8 h-8 mb-3 text-gray-500" />
-												<p className="mb-2 text-sm text-gray-500">
-													<span className="font-semibold">
-														Click to upload
-													</span>{" "}
-													or drag and drop
-												</p>
-												<p className="text-xs text-gray-500">
-													PNG, JPG, GIF up to 10MB
-												</p>
-											</div>
-											<Input
-												id="images"
-												type="file"
-												multiple
-												accept="image/*"
-												className="hidden"
-												onChange={handleImageChange}
+							{/* Image Upload Section */}
+							<div className="space-y-4 mt-2">
+								<Label>Product Images</Label>
+								<Input
+									type="file"
+									multiple
+									accept="image/*"
+									onChange={handleImageChange}
+								/>
+								<div className="mt-2 flex flex-wrap gap-2">
+									{product?.images.map((image, index) => (
+										<div
+											key={index.toString()}
+											className="relative w-20 h-20">
+											<img
+												src={image}
+												alt={`Product ${index}`}
+												className="w-full h-full object-cover rounded-lg"
 											/>
-										</label>
-									</div>
+											<button
+												type="button"
+												className="absolute top-0 right-0 bg-red-500
+																	 text-white w-6 h-6 text-center flex items-center
+																		justify-center text-lg font-semibold
+																		rounded-full"
+												onClick={() => removeImage(index)}>
+												x
+											</button>
+										</div>
+									))}
 								</div>
-
-								{productImages.length > 0 && (
-									<div className="mt-4 grid grid-cols-2 sm:grid-cols-3 
-                    md:grid-cols-4 gap-4">
-										{productImages.map((image, index) => (
-											<div
-												key={index}
-												className="relative group">
-												<div className="aspect-square rounded-md 
-                        overflow-hidden bg-gray-100 border">
-													<img
-														src={
-															image ||
-															"/placeholder.svg"
-														}
-														alt={`Product image ${index + 1}`}
-														className="w-full h-full object-cover"
-													/>
-												</div>
-												<button
-													type="button"
-													onClick={() => removeImage(index)}
-													className="absolute top-1 right-1 bg-red-500 text-white
-                           rounded-full w-5 h-5 flex items-center justify-center text-xs">
-													×
-												</button>
-											</div>
-										))}
-									</div>
-								)}
 							</div>
 
 							<div className="flex gap-4">
