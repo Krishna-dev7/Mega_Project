@@ -31,7 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/store/store";
 import { setProducts as dispatchProducts } from "@/store/productSlice";
-import Loading from "@/components/customUI/Loading";
+import Loading from "@/components/customUI/misc/Loading";
 
 const ProductPage = () => {
 	// const [isSearchOpen, setIsSearchOpen] = useState(false);

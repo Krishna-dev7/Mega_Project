@@ -32,7 +32,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import DataTable from "../checkout/DataTable";
-import Loading from "../Loading";
+import Loading from "../misc/Loading";
 import Image from "next/image";
 
 

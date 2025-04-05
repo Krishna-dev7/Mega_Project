@@ -7,7 +7,7 @@ import BenefitComponent from '@/components/customUI/layouts/WhyUs';
 import BrandComponent 
   from '@/components/customUI/layouts/BrandCollaboration';
 import { Suspense } from 'react';
-import Loading from '@/components/customUI/Loading';
+import Loading from '@/components/customUI/misc/Loading';
 
 function Home() {
 

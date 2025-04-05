@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/table";
 import { useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
-import Loading from "@/components/customUI/Loading";
+import Loading from "@/components/customUI/misc/Loading";
 import accountService from "@/services/AccountService";
 import { UserSchema } from "@/models/user.models";
 import { IPayment } from "@/models/payment.models";

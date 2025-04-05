@@ -1,6 +1,6 @@
 "use client";
 
-import TableComponent from "@/components/customUI/Table";
+import TableComponent from "@/components/customUI/misc/Table";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -23,7 +23,7 @@ import { InitialTableState } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import getColumns from "./columns";
-import Loading from "@/components/customUI/Loading";
+import Loading from "@/components/customUI/misc/Loading";
 import { UserSchema } from "@/models/user.models";
 
 const OrderPage: React.FC = () => {

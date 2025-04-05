@@ -37,7 +37,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import productSchema from "@/schemas/product.schema";
 import { Categories } from "@/models/product.models";
-import Loading from "@/components/customUI/Loading";
+import Loading from "@/components/customUI/misc/Loading";
 import { log } from "console";
 import storageService from "@/services/StorageService";
 import productService from "@/services/productService";

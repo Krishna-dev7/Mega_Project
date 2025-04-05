@@ -1,7 +1,7 @@
 "use client";
 
-import Loading from "@/components/customUI/Loading";
-import TableComponent from "@/components/customUI/Table";
+import Loading from "@/components/customUI/misc/Loading";
+import TableComponent from "@/components/customUI/misc/Table";
 import useTable from "@/hooks/use-table";
 import { IPayment } from "@/models/payment.models";
 import paymentService from "@/services/PaymentService";

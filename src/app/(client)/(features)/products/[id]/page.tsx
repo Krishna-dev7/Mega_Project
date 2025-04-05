@@ -24,7 +24,7 @@ import { useSession } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import { setCart } from "@/store/cartSlice";
-import Loading from "@/components/customUI/Loading";
+import Loading from "@/components/customUI/misc/Loading";
 import Image from "next/image";
 
 type customType = {
