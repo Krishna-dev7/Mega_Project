@@ -40,7 +40,7 @@ function Hero() {
   return (
     <section className="relative h-screen">
       <div className="absolute overflow-hidden inset-0">
-        <Image 
+        <img 
           src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80"
           alt="Luxury Fashion"
           className="w-full h-full object-cover scale-200 

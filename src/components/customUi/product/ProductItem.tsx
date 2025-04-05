@@ -53,7 +53,7 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
       }}
       className="group cursor-pointer mb-7">
       <div className="relative overflow-hidden">
-        <Image
+        <img
           src={
             product.images[0]
               || placeholderImage

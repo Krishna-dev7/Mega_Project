@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
       .rows.reduce(
         (sum, row) =>
           sum +
-          (row.original as cartType)?.product.price *
+          (row.original as cartType)?.product?.price *
             (row.original as cartType)?.quantity,
         0
       );
@@ -192,15 +192,16 @@ export function DataTable<TData, TValue>({
                   : "remove" }
             </span>
         </ConfirmDialog>
-
+        
         <CheckoutButton 
           items={table.getRowModel().rows.map((row) => ({
-            name: (row.original as cartType).product.slug,
-            price: (row.original as cartType).product.price,
-            quantity: (row.original as cartType).quantity,
-            image: (row.original as cartType).product.images[0],
-						itemId: (row.original as cartType).product._id.toString()
-          }))} />
+            name: (row.original as cartType).product?.slug,
+            price: (row.original as cartType).product?.price,
+            quantity: (row.original as cartType)?.quantity,
+            image: (row.original as cartType).product?.images[0],
+						itemId: (row.original as cartType).product?._id.toString()
+          }))} /> 
+        
       </div> }
 
 

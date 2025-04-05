@@ -33,7 +33,7 @@ function FeatureCategory({ categories = [{
               className="relative overflow-hidden group cursor-pointer"
             >
               <div className="aspect-[3/4] relative">
-                <Image
+                <img
                   src={category.image}
                   alt={category.alt}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"

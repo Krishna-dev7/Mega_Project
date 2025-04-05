@@ -122,12 +122,12 @@ const Cart: React.FC = () => {
         return <div className="flex items-center">
           <Image 
             className="w-16 h-16 aspect-square rounded-sm mr-4"
-            src={row.original.product.images[0]} 
+            src={row.original.product?.images[0]} 
             alt="image"/>
 
           <div className="w-full">
             <h3 className="text-sm font-normal text-pretty text-ellipsis">
-              {row.original.product.slug}</h3>
+              {row.original.product?.slug}</h3>
             <p className="text-sm">
               <span className="text-gray-400">size: </span> 
               {row.original.productSize[0]}</p>

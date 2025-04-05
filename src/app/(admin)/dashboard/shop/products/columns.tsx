@@ -100,7 +100,7 @@ const getColumns = (
 				<div
 					className="image w-12 h-12  object-cover
               object-center aspect-square">
-					<Image
+					<img
 						className="w-full h-full rounded-lg"
 						alt="product image"
 						src={row.original.images?.[0]}

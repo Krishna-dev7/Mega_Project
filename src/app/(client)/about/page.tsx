@@ -31,12 +31,10 @@ export default function AboutUs() {
       {/* Hero Section */}
       <div className="relative h-screen w-full flex items-center">
         <div className="absolute inset-0 overflow-hidden">
-          <Image
+          <img
             src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=2070"
             alt="Luxury Fashion"
-            fill
             className="object-cover scale-110 animate-[ken-burns_20s_ease-in-out_infinite_alternate]"
-            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/70 via-zinc-900/80 to-zinc-900"></div>
         </div>
@@ -159,10 +157,9 @@ export default function AboutUs() {
             </div>
             <div className="relative h-[600px] animate-on-scroll opacity-0 -translate-x-8 transition-all duration-1000">
               <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                <Image
+                <img
                   src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070"
                   alt="Heritage"
-                  fill
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/20 to-transparent"></div>

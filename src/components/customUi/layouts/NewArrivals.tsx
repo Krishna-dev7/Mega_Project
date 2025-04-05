@@ -121,7 +121,7 @@ function NewArrivals() {
           {products.map((product, index) => (
             <div key={index} className="group cursor-pointer">
               <div className="relative overflow-hidden">
-                <Image
+                <img
                   src={product.image} 
                   alt={product.name}
                   className="w-full h-[400px] object-cover transform 

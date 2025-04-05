@@ -112,4 +112,4 @@ const TableComponent = <TData,>({
 	);
 };
 
-export default TableComponent;
+export default TableComponent;     
