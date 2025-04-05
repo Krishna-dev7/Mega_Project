@@ -37,7 +37,7 @@ import { IPayment } from "@/models/payment.models";
 import paymentService from "@/services/PaymentService";
 import orderService from "@/services/OrderService";
 import { IOrder } from "@/models/order.models";
-import { ChartComponent } from "@/components/customUI/charts/BarChart";
+import ChartComponent from "@/components/customUI/charts/BarChart";
 
 export default function DashboardPage() {
 
