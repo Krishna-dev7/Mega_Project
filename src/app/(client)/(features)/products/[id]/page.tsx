@@ -129,7 +129,7 @@ const ProductDetail: React.FC = () => {
 								<div
 									className="relative aspect-square rounded-xl 
                 overflow-hidden ">
-									<Image
+									<img
 										src={
 											activeImage || product?.images[0]
 										}
@@ -166,7 +166,7 @@ const ProductDetail: React.FC = () => {
 															? "ring-2 ring-gray-300"
 															: ""
 													}`}>
-												<Image
+												<img
 													src={image}
 													alt={`Thumbnail ${index + 1}`}
 													className="w-full h-full object-cover object-center"

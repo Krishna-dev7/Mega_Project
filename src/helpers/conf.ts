@@ -13,7 +13,7 @@ const conf = {
     appwrite_projectId: process.env.NEXT_PUBLIC_APPWRITE_PROJECTID,
     appwrite_apiKey: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
     appwrite_images_bucketId: process.env.NEXT_PUBLIC_APPWRITE_IMAGES_BUCKETID,
-
+    appwrite_review_bucketId: process.env.NEXT_PUBLIC_APPWRITE_REVIEWS_BUCKETID
     
 }
 

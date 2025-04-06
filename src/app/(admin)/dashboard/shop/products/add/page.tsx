@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -52,7 +52,7 @@ export default function AddProductPage() {
 	const [imageUploading, setImageUploading] =
 		useState(false);
 
-	const user = useAppSelector(store => store.auth.data)
+	const user = useAppSelector((store) => store.auth.data);
 
 	const form = useForm<z.infer<typeof productSchema>>({
 		resolver: zodResolver(productSchema),
@@ -72,31 +72,28 @@ export default function AddProductPage() {
 	) {
 		try {
 			setIsSubmitting(true);
-			
-			const submitResult = await productService.createProduct(
-				{
+
+			const submitResult =
+				await productService.createProduct({
 					...data,
 					images,
-					owner:((user?._id.toString() || "")) 
-				}
-			)
+					owner: user?._id.toString() || "",
+				});
 
-			submitResult.success 
-				&& toast({
-					title: 'success',
-					description: 'Product added successfully'
-				})
+			submitResult.success &&
+				toast({
+					title: "success",
+					description: "Product added successfully",
+				});
 
 			console.log(submitResult.data);
-			
 		} catch (error: any) {
-			toast(error.message 
-				|| "Failed to add product.");
+			toast(error.message || "Failed to add product.");
 
-				toast({
-					title: 'failure',
-					description: error.message
-				})
+			toast({
+				title: "failure",
+				description: error.message,
+			});
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -116,8 +113,7 @@ export default function AddProductPage() {
 	async function removeImage(imageIndex: number) {
 		try {
 			setImages((prev) =>
-				prev.filter((_, index) => 
-					index !== imageIndex),
+				prev.filter((_, index) => index !== imageIndex),
 			);
 		} catch (err: any) {
 			console.log(
@@ -136,15 +132,14 @@ export default function AddProductPage() {
 			console.log(files);
 			if (!files?.length) return;
 
-			const tempImages:Array<string> = [];
+			const tempImages: Array<string> = [];
 			// upload images
 			for (const file of files) {
-				const uploadedImage = await storageService.storeImage(
-					{
+				const uploadedImage =
+					await storageService.storeImage({
 						file,
 						type: "product",
-					},
-				);
+					});
 
 				const uploadedImageURL =
 					await storageService.getImagePreview(
@@ -152,12 +147,12 @@ export default function AddProductPage() {
 						uploadedImage.$id,
 					);
 
-				tempImages.push(uploadedImageURL.href);
+				tempImages.push(uploadedImageURL);
 			}
 
 			console.log("All your uploaded images URI: ", images);
 
-			setImages(prev => [...prev, ...tempImages]);
+			setImages((prev) => [...prev, ...tempImages]);
 		} catch (err: any) {
 			console.log(
 				"Error occurred at handleImageChange",
@@ -296,26 +291,42 @@ export default function AddProductPage() {
 									onChange={handleImageChange}
 								/>
 								<div className="mt-2 flex flex-wrap gap-2">
-									{images.map((image, index) => (
-										<div
-											key={index.toString()}
-											className="relative w-20 h-20">
-											<Image
-												src={image}
-												alt={`Product ${index}`}
-												className="w-full h-full object-cover rounded-lg"
-											/>
-											<button
-												type="button"
-												className="absolute top-0 right-0 bg-red-500
-												 text-white w-6 h-6 text-center flex items-center
-												  justify-center text-lg font-semibold
-												  rounded-full" 
-												onClick={() => removeImage(index)}>
-												x
-											</button>
+									{images.length > 0 && (
+										<div className="space-y-2">
+											<Label>Uploaded Files</Label>
+											<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+												{images.map(
+													(preview, index) => (
+														<div
+															key={index}
+															className="relative group">
+															<div className="aspect-square rounded-md overflow-hidden border bg-muted">
+																<img
+																	src={
+																		preview ||
+																		"/placeholder.svg"
+																	}
+																	alt={`Attachment ${index + 1}`}
+																	className="w-full h-full object-cover"
+																/>
+															</div>
+															<button
+																type="button"
+																onClick={() =>
+																	removeImage(index)
+																}
+																className="absolute top-1 right-1 bg-background/80 backdrop-blur-sm rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+																<X className="h-4 w-4" />
+																<span className="sr-only">
+																	Remove attachment
+																</span>
+															</button>
+														</div>
+													),
+												)}
+											</div>
 										</div>
-									))}
+									)}
 								</div>
 							</div>
 

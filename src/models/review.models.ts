@@ -9,6 +9,9 @@ interface IReview extends Document {
   productId: Types.ObjectId,
   rating: number,
   comment: string;
+  attachments: string[],
+  createdAt: Date,
+  updatedAt: Date
 }
 
 
@@ -29,7 +32,8 @@ const reviewSchema = new Schema<IReview>({
     required: true,
     min: 1,
     default: 1
-  }
+  },
+  attachments: [{type: String}]
 }, {timestamps: true});
 
 

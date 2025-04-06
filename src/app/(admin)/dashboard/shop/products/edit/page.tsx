@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Loader2 } from "lucide-react";
+import { ImagePlus, Loader2, X } from "lucide-react";
 import {
 	useRouter,
 	useSearchParams,
@@ -155,7 +155,7 @@ export default function EditProductPage() {
 						res.$id,
 					);
 
-				newImages.push(newImageURI.href);
+				newImages.push(newImageURI);
 			});
 
 			setProductImages((prev) => [...prev, ...newImages]);
@@ -346,26 +346,42 @@ export default function EditProductPage() {
 									onChange={handleImageChange}
 								/>
 								<div className="mt-2 flex flex-wrap gap-2">
-									{product?.images.map((image, index) => (
-										<div
-											key={index.toString()}
-											className="relative w-20 h-20">
-											<Image
-												src={image}
-												alt={`Product ${index}`}
-												className="w-full h-full object-cover rounded-lg"
-											/>
-											<button
-												type="button"
-												className="absolute top-0 right-0 bg-red-500
-																	 text-white w-6 h-6 text-center flex items-center
-																		justify-center text-lg font-semibold
-																		rounded-full"
-												onClick={() => removeImage(index)}>
-												x
-											</button>
+									{product?.images && (
+										<div className="space-y-2">
+											<Label>Uploaded Files</Label>
+											<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+												{product?.images.map(
+													(preview, index) => (
+														<div
+															key={index}
+															className="relative group">
+															<div className="aspect-square rounded-md overflow-hidden border bg-muted">
+																<img
+																	src={
+																		preview ||
+																		"/placeholder.svg"
+																	}
+																	alt={`Attachment ${index + 1}`}
+																	className="w-full h-full object-cover"
+																/>
+															</div>
+															<button
+																type="button"
+																onClick={() =>
+																	removeImage(index)
+																}
+																className="absolute top-1 right-1 bg-background/80 backdrop-blur-sm rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+																<X className="h-4 w-4" />
+																<span className="sr-only">
+																	Remove attachment
+																</span>
+															</button>
+														</div>
+													),
+												)}
+											</div>
 										</div>
-									))}
+									)}
 								</div>
 							</div>
 

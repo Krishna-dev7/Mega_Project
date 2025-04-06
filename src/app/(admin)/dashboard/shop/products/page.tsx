@@ -74,7 +74,7 @@ export default function ProductsDataTable() {
 		columns,
 	)
 
-	if(!data.length || loading) {
+	if( loading) {
 		return <div className="loader w-full min-h-screen 
 			flex justify-center items-center">
 			<Loading />

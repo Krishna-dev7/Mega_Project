@@ -55,7 +55,7 @@ const SettingPage: React.FC = () => {
 			console.log(image);
 			const imagePreview = await storageService
 				.getImagePreview('avatar', image.$id)
-			setImageURL(imagePreview.href)
+			setImageURL(imagePreview)
 		}
 
 		getImage()
@@ -128,54 +128,44 @@ const SettingPage: React.FC = () => {
 	}
 
 	return (
-		<div className="space-y-6 mx-20 min-h-screen
-			 flex flex-col justify-center">
+		<div className="space-y-6 px-4 sm:px-6 md:px-10 py-6 min-h-screen flex flex-col">
 			<div>
-				<h1 className="text-2xl font-bold tracking-tight">
+				<h1 className="text-xl sm:text-2xl font-bold tracking-tight">
 					Profile
 				</h1>
-				<p className="text-muted-foreground">
-					Manage your profile information and how it appears
-					to others.
+				<p className="text-sm sm:text-base text-muted-foreground">
+					Manage your profile information and how it appears to others.
 				</p>
 			</div>
-
+	
 			<Separator />
-
-			{/* Profile picture section */}
+	
+			{/* Profile Picture Section */}
 			<Card>
 				<CardHeader>
-					<CardTitle 
-						className="text-lg">
-						Profile Picture
-					</CardTitle>
-					<CardDescription
-						className="text-xs">
-						This is your public profile picture. It will be
-						shown across the platform.
+					<CardTitle className="text-base sm:text-lg">Profile Picture</CardTitle>
+					<CardDescription className="text-xs sm:text-sm">
+						This is your public profile picture. It will be shown across the platform.
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex items-center gap-6">
+					<div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
 						<Avatar className="h-24 w-24">
-							<AvatarImage
-								src={imageURL ?? user?.avatar}
-								alt="Profile picture"
-							/>
+							<AvatarImage src={imageURL ?? user?.avatar} alt="Profile picture" />
 							<AvatarFallback>JD</AvatarFallback>
 						</Avatar>
-						<div className="flex flex-col gap-2">
+						<div className="flex flex-col gap-2 w-full sm:w-auto">
 							<Button
 								variant="outline"
 								size="sm"
-								onClick={() => document
-									.getElementById('avatar')?.click() }
-								className="w-fit">
-									<Camera className="mr-2 h-4 w-4" />
-									Change picture
+								onClick={() => document.getElementById('avatar')?.click()}
+								className="w-full sm:w-fit"
+							>
+								<Camera className="mr-2 h-4 w-4" />
+								Change picture
 							</Button>
-								
-							<Input 
+	
+							<Input
 								type="file"
 								name="avatar"
 								id="avatar"
@@ -184,30 +174,25 @@ const SettingPage: React.FC = () => {
 								multiple={false}
 								onChange={(e) => setFile(e.target.files?.[0])}
 							/>
-
-							<p className="text-xs text-muted-foreground">
-								JPG, GIF or PNG. Max size 2MB.
-							</p>
+	
+							<p className="text-xs text-muted-foreground">JPG, GIF or PNG. Max size 2MB.</p>
 						</div>
 					</div>
 				</CardContent>
 			</Card>
-
-			{/* Profile information form */}
+	
+			{/* Profile Info Form */}
 			<Card>
 				<CardHeader>
-					<CardTitle className="text-lg">
-						Profile Information
-					</CardTitle>
-					<CardDescription 
-						className="text-xs">
-						Update your profile information and contact
-						details.
+					<CardTitle className="text-base sm:text-lg">Profile Information</CardTitle>
+					<CardDescription className="text-xs sm:text-sm">
+						Update your profile information and contact details.
 					</CardDescription>
 				</CardHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(submitForm)}>
 						<CardContent className="space-y-6">
+							{/* Name */}
 							<FormField
 								control={form.control}
 								name="name"
@@ -215,10 +200,7 @@ const SettingPage: React.FC = () => {
 									<FormItem>
 										<FormLabel>Name</FormLabel>
 										<FormControl>
-											<Input
-												placeholder="Your name"
-												{...field}
-											/>
+											<Input placeholder="Your name" {...field} />
 										</FormControl>
 										<FormDescription>
 											This is your public display name.
@@ -227,6 +209,8 @@ const SettingPage: React.FC = () => {
 									</FormItem>
 								)}
 							/>
+	
+							{/* Email */}
 							<FormField
 								control={form.control}
 								name="email"
@@ -234,19 +218,17 @@ const SettingPage: React.FC = () => {
 									<FormItem>
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input
-												placeholder="Your email"
-												{...field}
-											/>
+											<Input placeholder="Your email" {...field} />
 										</FormControl>
 										<FormDescription>
-											This email will be used for
-											notifications and account recovery.
+											This email will be used for notifications and account recovery.
 										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
+	
+							{/* DOB */}
 							<FormField
 								control={form.control}
 								name="dob"
@@ -261,33 +243,35 @@ const SettingPage: React.FC = () => {
 											/>
 										</FormControl>
 										<FormDescription>
-											Brief description for your profile.
-											Max 160 characters.
+											Select your date of birth.
 										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
 						</CardContent>
-						<CardFooter 
-							className="flex justify-end space-x-2  
-							px-6 py-4 my-5">
+						<CardFooter className="flex flex-col-reverse sm:flex-row justify-end gap-2 px-6 py-4">
 							<Button
-								onClick={() => form.reset({
-									name: user?.fullname,
-									email: user?.email,
-									dob: user?.dob 
-									? new Date(user.dob).toLocaleDateString()
-									: new Date().toLocaleDateString()
-										
-								})}
+								onClick={() =>
+									form.reset({
+										name: user?.fullname,
+										email: user?.email,
+										dob: user?.dob
+											? new Date(user.dob).toLocaleDateString()
+											: new Date().toLocaleDateString(),
+									})
+								}
 								variant="outline"
-								type="button">
+								type="button"
+								className="w-full sm:w-auto"
+							>
 								Cancel
 							</Button>
 							<Button
 								type="submit"
-								disabled={isLoading}>
+								disabled={isLoading}
+								className="w-full sm:w-auto"
+							>
 								{isLoading ? "Saving..." : "Save changes"}
 							</Button>
 						</CardFooter>
@@ -296,6 +280,7 @@ const SettingPage: React.FC = () => {
 			</Card>
 		</div>
 	);
+	
 };
 
 export default SettingPage;

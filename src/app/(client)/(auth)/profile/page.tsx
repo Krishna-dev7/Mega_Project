@@ -7,8 +7,7 @@ const clientProfilePage:React.FC = () => {
 		<div
 			className="profile-page w-full flex
       min-h-screen items-center justify-center">
-			<div className="client w-full h-fit 
-       bg-black pt-10">
+			<div className="client w-full h-fit  pt-10">
 				<SettingPage />
 			</div>
 		</div>

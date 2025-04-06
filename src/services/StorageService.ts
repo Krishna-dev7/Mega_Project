@@ -1,7 +1,7 @@
 import conf from "@/helpers/conf";
 import { Client, Storage, ID, Models } from "appwrite";
 
-type bucketType = "avatar" | "product";
+type bucketType = "avatar" | "product" | "review";
 
 class StorageProvider {
 	private client: Client;
@@ -38,15 +38,17 @@ class StorageProvider {
 		}
 	}
 	async getImagePreview(
-		type: "avatar" | "product",
+		type: bucketType,
 		fileId: string,
-	): Promise<URL> {
+	): Promise<string> {
 		try {
 			const bucketId = this.getBucketId(type);
-			return await this.storage.getFilePreview(
+			const res = await this.storage.getFilePreview(
 				bucketId,
 				fileId,
 			);
+
+			return res.href.replace("preview", "view");
 		} catch (err: any) {
 			this.handleError({ type: "Image Preview", err });
 		}
@@ -110,7 +112,9 @@ class StorageProvider {
 	private getBucketId(type: bucketType): string {
 		return type === "avatar"
 			? conf.appwrite_avatar_bucketId!
-			: conf.appwrite_images_bucketId!;
+			: type === "review"
+					? conf.appwrite_review_bucketId!
+					: conf.appwrite_images_bucketId!;
 	}
 }
 

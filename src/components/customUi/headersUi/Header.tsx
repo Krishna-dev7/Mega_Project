@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import navItems from "@/helpers/navConfig";
 import UserSheet from "./UserSheet";
 import { useAppSelector } from "@/store/store";
+import ThemeToggle from "../misc/theme-toggle";
 
 const Header = () => {
 	const currentTab = usePathname();
@@ -106,6 +107,10 @@ const Header = () => {
 										</>
 									)}
 								</div>
+
+								{/* // theme toggle */}
+
+								<ThemeToggle />
 
 								{/* Mobile Menu Button */}
 								<button
