@@ -110,7 +110,8 @@ export default function EditReviewForm() {
     const res = await reviewService.updateReview({
       rating,
       attachments: attachmentPreviews,
-      comment
+      comment,
+      _id: reviewId
     })
 
     if(res.success) {

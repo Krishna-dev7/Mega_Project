@@ -205,7 +205,7 @@ const ProductDetail: React.FC = () => {
 										</BadgeComponent>
 
 										<div className="flex items-center gap-5">
-											<p className="flex items-center  ">
+											{/* <p className="flex items-center  ">
 												{new Array(5)
 													.fill(0)
 													.map((item, idx) => (
@@ -220,11 +220,10 @@ const ProductDetail: React.FC = () => {
 															size={14}
 														/>
 													))}
-											</p>
+											</p> */}
 
 											<div
-												className="profile flex border-l 
-                      border-yellow-400 px-5 items-center gap-1">
+												className="profile flex px-1 items-center gap-1">
 												<Avatar>
 													<AvatarImage
 														className="w-6 h-6 rounded-full"

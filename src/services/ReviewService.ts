@@ -56,6 +56,7 @@ class ReviewService {
       `${this.url}?id=${updateQuery._id}`, updateQuery
     )
 
+    return res.data;
   }
 
 

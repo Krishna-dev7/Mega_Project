@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import { IProduct } from "@/models/product.models";
 import { UserSchema } from "@/models/user.models";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage
-} from "@/components/ui/avatar"
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@/components/ui/avatar";
 import React, { useEffect, useState } from "react";
 import { Edit2, Star, Trash2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
@@ -14,6 +14,8 @@ import reviewService from "@/services/ReviewService";
 import Loading from "../misc/Loading";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
+import { useAppSelector } from "@/store/store";
 
 // const dummyReviews = [
 //   { userId: '64a5f86eb5d9b8e8a1c7e9c1', productId: '64a5f86eb5d9b8e8a1c7e9c2', comment: 'Excellent product!', rating: 5 },
@@ -29,43 +31,53 @@ import { toast } from "@/hooks/use-toast";
 // ];
 
 function Review({
-  product
-}: {product: IProduct & {owner: UserSchema}}) {
+	product,
+}: {
+	product: IProduct & { owner: UserSchema };
+}) {
+	const [loading, setLoading] = useState(false);
+	const [reviewCount, setReviewCount] = useState(
+		new Array<number>(5).fill(0),
+	);
+	const [reviews, setReviews] = useState<
+		Array<
+			IReview & {
+				userId: UserSchema;
+			}
+		>
+	>([]);
+	const router = useRouter();
+	const userId = useAppSelector(store => store.auth.data?._id)
 
-  const [loading, setLoading] = useState(false);
-  const [reviewCount, setReviewCount] = useState(new Array<number>(5).fill(0))
-  const [reviews, setReviews] = useState<Array<IReview & {
-    userId: UserSchema
-  }>>([]);
-  const router = useRouter()
+	useEffect(() => {
+		setLoading(true);
+		const fetchReviews = async () => {
+			const res = await reviewService.streamReviews(
+				product._id.toString(),
+			);
+			setReviews(res.data);
+			console.log(res);
+		};
+		fetchReviews();
+		setLoading(false);
+	}, []);
 
-  useEffect(() => {
-    setLoading(true)
-    const fetchReviews = async () => {
-      const res = await reviewService.streamReviews(product._id.toString());
-      setReviews(res.data);
-      console.log(res);
-    }
-    fetchReviews();
-    setLoading(false);
-  }, [])
+	useEffect(() => {
+		// count reviews
+		if (!reviews.length) return;
+		setReviewCount(new Array<number>(5).fill(0));
 
-  useEffect(() => {
-    // count reviews
-    if(!reviews.length) return;
-    setReviewCount(new Array<number>(5).fill(0));
+		reviews.forEach((review) => {
+			setReviewCount((prev) => {
+				const copy = [...prev];
+				console.log("Review count length: ", prev);
+				copy[review.rating - 1]++;
+				return [...copy];
+			});
+		});
+	}, [reviews, setReviewCount]);
 
-    reviews.forEach(review => {
-      setReviewCount( prev => {
-        const copy = [...prev];
-        console.log("Review count length: ", prev)
-        copy[review.rating-1]++ ;
-        return [...copy];
-      } );
-    });
-  }, [reviews, setReviewCount]);
-
-  return (
+	return (
 		<div
 			className="reviews flex sm:flex-row flex-col-reverse justify-center 
       text-center w-full 
@@ -75,8 +87,7 @@ function Review({
 			<div className="left sm:w-2/3 relative w-full h-full items-center  px-2  ">
 				<h1 className="text-xl my-2 mb-4">Reviews</h1>
 
-				{(product &&
-					reviews.length) ?
+				{product && reviews.length ? (
 					reviews?.map((review, idx) => (
 						<div
 							key={idx}
@@ -114,7 +125,7 @@ function Review({
 									))}
 							</p>
 
-							<p className="flex items-center text-center gap-2">
+							<p className="flex mb-4 items-center text-center gap-2">
 								{/* <Circle className="w-10" size={8} fill="black" />  */}
 								<span className="text-pretty text-sm my-1 text-justify">
 									{" "}
@@ -122,48 +133,78 @@ function Review({
 								</span>
 							</p>
 
-							<p className="text-light text-gray-400 text-start mt-2">
+							{review.attachments.length > 0 && (
+								<div className="flex gap-2">
+									{review.attachments.map(
+										(attachment, idx) => (
+											<a
+												href={attachment}
+												key={idx}
+												target="_blank">
+												<img
+													key={idx}
+													className="w-20 h-20"
+													src={attachment}
+													alt="review"
+												/>
+											</a>
+										),
+									)}
+								</div>
+							)}
+
+							<p className="text-light mt-5 text-gray-300 text-start">
 								{new Date(
 									review.createdAt,
 								).toLocaleDateString()}
 							</p>
 
-							<div className="absolute top-5 right-5 flex gap-3 w-fit">
-								<span 
-                  onClick={() => router.push(`/review/edit?reviewId=${review._id.toString()}`) }
-                  className="cursor-pointer">
-									<Edit2 size={13} />
-								</span>
+							{userId == review.userId._id && (
+								<div className="absolute top-5 right-5 flex gap-3 w-fit">
+									<span
+										onClick={() =>
+											router.push(
+												`/review/edit?reviewId=${review._id.toString()}`,
+											)
+										}
+										className="cursor-pointer">
+										<Edit2 size={13} />
+									</span>
 
-								<span 
-                  onClick={async () => {
-                    const res = await reviewService
-                    .deleteReview(review._id.toString())
+									<span
+										onClick={async () => {
+											const res =
+												await reviewService.deleteReview(
+													review._id.toString(),
+												);
 
-                    if(res.success) {
-                      toast({
-                        title: "success",
-                        description: 'deleted review'
-                      })
+											if (res.success) {
+												toast({
+													title: "success",
+													description: "deleted review",
+												});
 
-                      window.location.reload();
-                    }
-                  }}
-                  className="cursor-pointer">
-									<Trash2 size={13} />
-								</span>
-							</div>
+												window.location.reload();
+											}
+										}}
+										className="cursor-pointer">
+										<Trash2 size={13} />
+									</span>
+								</div>
+							)}
 						</div>
 					))
-          : <div className="loader-div w-full h-full 
+				) : (
+					<div
+						className="loader-div w-full h-full 
           flex justify-center items-center ">
-            { 
-              loading 
-                ? <Loading classname="w-6 h-8"/>   
-                : "no Review found"
-            }  
-          </div>
-        }
+						{loading ? (
+							<Loading classname="w-6 h-8" />
+						) : (
+							"no Review found"
+						)}
+					</div>
+				)}
 			</div>
 			<div
 				className="right w-full mx-auto 
@@ -187,6 +228,5 @@ function Review({
 		</div>
 	);
 }
-
 
 export default Review;

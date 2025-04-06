@@ -122,7 +122,7 @@ async function PATCH(req: NextRequest) {
   try {
 
     const body = await req.json();
-    const {id, ratings, comment,attachments} = body;
+    const {_id: id , rating, comment, attachments} = body;
 
     if(!id) { 
       return NextResponse.json({
@@ -132,7 +132,7 @@ async function PATCH(req: NextRequest) {
     } 
 
     const updatedReview = await Review
-      .findByIdAndUpdate(id, {$set: {ratings, comment, attachments}}, {new: true});
+      .findByIdAndUpdate(id, {$set: {rating, comment, attachments}}, {new: true});
 
     if(!updatedReview) {
       return NextResponse.json({

@@ -120,7 +120,7 @@ const Cart: React.FC = () => {
       header: 'Products',
       cell: ({row}) => {
         return <div className="flex items-center">
-          <Image 
+          <img 
             className="w-16 h-16 aspect-square rounded-sm mr-4"
             src={row.original.product?.images[0]} 
             alt="image"/>
