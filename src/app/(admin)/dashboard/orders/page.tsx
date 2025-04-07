@@ -74,10 +74,10 @@ const OrderPage: React.FC = () => {
 
 	return (
 		<div
-			className="payment-div w-full min-h-screen
+			className="order-div w-full min-h-screen
   flex flex-col items-center mx-auto sm:px-5 sm:py-4 
-  justify-start text-xs gap-6 ">
-			<div className="filter-bar flex gap-1 items-center w-full">
+  justify-start text-xs gap-6">
+			<div className="filter-bar mt-4 flex gap-1 items-center w-full">
 				{/* search bar */}
 				<Input
 					type="text"

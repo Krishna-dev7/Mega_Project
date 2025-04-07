@@ -58,6 +58,7 @@ export async function POST(req:NextRequest) {
     let cart:ICart;
     if(existingCart) {
       existingCart.quantity += quantity;
+      existingCart.productSize = productSize || existingCart.productSize;
       cart = await existingCart.save();
     } else {
       cart = await Cart.create({

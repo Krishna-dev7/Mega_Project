@@ -5,6 +5,7 @@ import {
 import connectDB from "@/db/connect";
 import Product, { IProduct } from "@/models/product.models";
 import { date } from "zod";
+import { UpdateQuery } from "mongoose";
 
 connectDB();
 
@@ -51,6 +52,42 @@ const handler
 
 // update wala id
 
+async function PATCH(req: NextRequest, {params}:paramType) {
+  try {
+
+    const { id } = await params;
+    const body:UpdateQuery<IProduct> = await req.json();
+
+    if(!id) {
+      return NextResponse.json({
+        success: false,
+        message: "productID not found"
+      }, {status: 200})
+    }
+
+    const product:(IProduct | null)
+      = await Product.findByIdAndUpdate(id, {
+        $set: { ...body, sizes: body.sizes }
+      }, {new: true});
+
+    return NextResponse.json({
+      success: true,
+      message: "Your products",
+      data: product
+    }, {status: 200});
+    
+  } catch (err:any) {
+    console.log("error in products route: ", err.message);
+      return NextResponse.json({
+        success: false,
+        message: err.message
+          || "Something went wrong in products route"
+      }, {status: 500});
+  }
+
+}
+
 export {
-  handler as GET
+  handler as GET,
+  PATCH
 }

@@ -6,7 +6,9 @@ import { cartType } from "@/store/cartSlice";
 
 interface props {
   userId: string,
-  productId: string
+  productId: string,
+  quantity: number,
+  productSize: Size
 }
 
 class CartService {
@@ -25,13 +27,14 @@ class CartService {
 
   async createCart({
     userId,
-    productId
+    productId,
+    quantity,
+    productSize
   }:props): Promise<cartType | false>{
     try {
       const res = await axios.post<ApiResponse>(
         `${conf.url}/api/carts`,
-        {userId, product:productId, 
-          quantity: 1, productSize: Size.L }, 
+        {userId, product:productId, productSize, quantity: quantity || 1 }, 
           {
             headers: {
               'Content-Type': "application/json"
@@ -79,7 +82,7 @@ class CartService {
         `${conf.url}/api/carts`,
         {cartId, quantity}
       )
-      console.log("CartService:UpdateCart " + res)
+      console.log("CartService:UpdateCart " + res.data)
       return res.data || false;
     } catch (err:any) {
       this.handleError(

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
 	ArrowLeft,
@@ -37,96 +37,113 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { useSearchParams } from "next/navigation";
+import { IOrder } from "@/models/order.models";
+import orderService from "@/services/OrderService";
 
 export default function TrackOrder() {
 	const { toast } = useToast();
 	const [activeTab, setActiveTab] = useState("tracking");
+	const [orderDetails, setOrderDetails] = useState<IOrder | null>(null);
 
 	// Order tracking details would typically come from your order/shipping management system
-	const orderDetails = {
-		orderNumber: "ORD-38291",
-		date: "March 16, 2025",
-		estimatedDelivery: "March 20-22, 2025",
-		carrier: "FedEx",
-		trackingNumber: "FX-7391824650",
-		status: "in_transit", // Can be: processing, shipped, in_transit, out_for_delivery, delivered
-		items: [
-			{
-				name: "Minimalist Desk Lamp",
-				variant: "Matte Black",
-				price: 89.0,
-				quantity: 1,
-			},
-			{
-				name: "Ergonomic Office Chair",
-				variant: "Light Gray",
-				price: 249.0,
-				quantity: 1,
-			},
-		],
-		shippingAddress: {
-			name: "Alex Johnson",
-			street: "123 Main Street",
-			apt: "Apt 4B",
-			city: "San Francisco",
-			state: "CA",
-			zip: "94103",
-			country: "United States",
-		},
-		trackingHistory: [
-			{
-				status: "Delivered",
-				location: "San Francisco, CA",
-				timestamp: "March 22, 2025 • 2:30 PM",
-				description: "Package delivered to recipient",
-				completed: false,
-			},
-			{
-				status: "Out for Delivery",
-				location: "San Francisco, CA",
-				timestamp: "March 22, 2025 • 8:15 AM",
-				description: "On FedEx vehicle for delivery",
-				completed: false,
-			},
-			{
-				status: "At Local Facility",
-				location: "San Francisco, CA",
-				timestamp: "March 21, 2025 • 11:42 PM",
-				description:
-					"Arrived at FedEx destination facility",
-				completed: true,
-			},
-			{
-				status: "In Transit",
-				location: "Oakland, CA",
-				timestamp: "March 20, 2025 • 3:17 PM",
-				description: "Departed FedEx hub",
-				completed: true,
-			},
-			{
-				status: "Shipped",
-				location: "Portland, OR",
-				timestamp: "March 18, 2025 • 10:23 AM",
-				description: "Picked up by carrier",
-				completed: true,
-			},
-			{
-				status: "Processing",
-				location: "Portland, OR",
-				timestamp: "March 17, 2025 • 1:45 PM",
-				description:
-					"Order processed and ready for shipment",
-				completed: true,
-			},
-			{
-				status: "Order Placed",
-				location: "Online",
-				timestamp: "March 16, 2025 • 4:32 PM",
-				description: "Order confirmed and payment received",
-				completed: true,
-			},
-		],
-	};
+	// const orderDetails = {
+	// 	orderNumber: "ORD-38291",
+	// 	date: "March 16, 2025",
+	// 	estimatedDelivery: "March 20-22, 2025",
+	// 	carrier: "FedEx",
+	// 	trackingNumber: "FX-7391824650",
+	// 	status: "in_transit", // Can be: processing, shipped, in_transit, out_for_delivery, delivered
+	// 	items: [
+	// 		{
+	// 			name: "Minimalist Desk Lamp",
+	// 			variant: "Matte Black",
+	// 			price: 89.0,
+	// 			quantity: 1,
+	// 		},
+	// 		{
+	// 			name: "Ergonomic Office Chair",
+	// 			variant: "Light Gray",
+	// 			price: 249.0,
+	// 			quantity: 1,
+	// 		},
+	// 	],
+	// 	shippingAddress: {
+	// 		name: "Alex Johnson",
+	// 		street: "123 Main Street",
+	// 		apt: "Apt 4B",
+	// 		city: "San Francisco",
+	// 		state: "CA",
+	// 		zip: "94103",
+	// 		country: "United States",
+	// 	},
+	// 	trackingHistory: [
+	// 		{
+	// 			status: "Delivered",
+	// 			location: "San Francisco, CA",
+	// 			timestamp: "March 22, 2025 • 2:30 PM",
+	// 			description: "Package delivered to recipient",
+	// 			completed: false,
+	// 		},
+	// 		{
+	// 			status: "Out for Delivery",
+	// 			location: "San Francisco, CA",
+	// 			timestamp: "March 22, 2025 • 8:15 AM",
+	// 			description: "On FedEx vehicle for delivery",
+	// 			completed: false,
+	// 		},
+	// 		{
+	// 			status: "At Local Facility",
+	// 			location: "San Francisco, CA",
+	// 			timestamp: "March 21, 2025 • 11:42 PM",
+	// 			description:
+	// 				"Arrived at FedEx destination facility",
+	// 			completed: true,
+	// 		},
+	// 		{
+	// 			status: "In Transit",
+	// 			location: "Oakland, CA",
+	// 			timestamp: "March 20, 2025 • 3:17 PM",
+	// 			description: "Departed FedEx hub",
+	// 			completed: true,
+	// 		},
+	// 		{
+	// 			status: "Shipped",
+	// 			location: "Portland, OR",
+	// 			timestamp: "March 18, 2025 • 10:23 AM",
+	// 			description: "Picked up by carrier",
+	// 			completed: true,
+	// 		},
+	// 		{
+	// 			status: "Processing",
+	// 			location: "Portland, OR",
+	// 			timestamp: "March 17, 2025 • 1:45 PM",
+	// 			description:
+	// 				"Order processed and ready for shipment",
+	// 			completed: true,
+	// 		},
+	// 		{
+	// 			status: "Order Placed",
+	// 			location: "Online",
+	// 			timestamp: "March 16, 2025 • 4:32 PM",
+	// 			description: "Order confirmed and payment received",
+	// 			completed: true,
+	// 		},
+	// 	],
+	// };
+
+	const orderId = useSearchParams().get('id');
+
+	useEffect(() => {
+		if(!orderId) return
+
+		async function fetchOrderDetails() {
+			const res = await orderService.getOrder(orderId?.toString() ?? '');
+			setOrderDetails(res.data);
+		}
+
+		fetchOrderDetails();
+	}, [orderId])
 
 	// Helper function to determine current step
 	const getCurrentStep = (status: string) => {
@@ -146,7 +163,7 @@ export default function TrackOrder() {
 		}
 	};
 
-	const currentStep = getCurrentStep(orderDetails.status);
+	const currentStep = getCurrentStep(orderDetails?.status ?? "processing");
 
 	// Steps for the progress indicator
 	const steps = [
@@ -174,7 +191,7 @@ export default function TrackOrder() {
 
 	const copyTrackingNumber = () => {
 		navigator.clipboard.writeText(
-			orderDetails.trackingNumber,
+			"N/A",
 		);
 		toast({
 			description: "Tracking number copied to clipboard",
@@ -198,8 +215,8 @@ export default function TrackOrder() {
 					Track Your Order
 				</h1>
 				<p className="text-muted-foreground mt-2">
-					Order #{orderDetails.orderNumber} • Placed on{" "}
-					{orderDetails.date}
+					Order #{orderDetails?._id.toString().slice(0,8)} • Placed on{" "}
+					{new Date(orderDetails?.createdAt || new Date()).toLocaleDateString()}
 				</p>
 			</div>
 
@@ -208,7 +225,7 @@ export default function TrackOrder() {
 					<CardTitle>Shipping Status</CardTitle>
 					<CardDescription>
 						Estimated delivery:{" "}
-						{orderDetails.estimatedDelivery}
+						{new Date(orderDetails?.estimatedDate  || new Date()).toLocaleDateString()}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -257,8 +274,8 @@ export default function TrackOrder() {
 							</h3>
 							<div className="flex items-center mt-1">
 								<p className="text-sm text-muted-foreground mr-2">
-									{orderDetails.carrier}:{" "}
-									{orderDetails.trackingNumber}
+									{"FED-X" }:{" "}
+									{"N/A"}
 								</p>
 								<TooltipProvider>
 									<Tooltip>
@@ -287,10 +304,10 @@ export default function TrackOrder() {
 							className="gap-2"
 							asChild>
 							<a
-								href={`https://www.fedex.com/tracking?tracknumbers=${orderDetails.trackingNumber}`}
+								href={`https://www.fedex.com/tracking?tracknumbers=${"N/A"}`}
 								target="_blank"
 								rel="noopener noreferrer">
-								Track on {orderDetails.carrier}
+								Track on {"FED-X"}
 								<ExternalLink className="h-3.5 w-3.5" />
 							</a>
 						</Button>

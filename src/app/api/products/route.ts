@@ -4,7 +4,7 @@ import {
 } from "next/server";
 import connectDB from "@/db/connect";
 import Product, { IProduct } from "@/models/product.models";
-import Cart from "@/models/cart.models";
+import Cart, { Size } from "@/models/cart.models";
 import { getToken } from "next-auth/jwt";
 
 connectDB();
@@ -48,7 +48,8 @@ export const POST = async (req: NextRequest)
       description,
       category,
       owner,
-      discount
+      discount,
+      sizes
     } = body;
 
     if(!body) {
@@ -66,7 +67,9 @@ export const POST = async (req: NextRequest)
       category,
       owner : owner ?? token?._id,
       countInStock,
-      discount: discount || 0
+      discount: discount || 0,
+      sizes: sizes || Object.values(Size),
+      isPublished: true
     })
 
     return NextResponse.json({

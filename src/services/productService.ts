@@ -1,7 +1,9 @@
 import conf from '@/helpers/conf';
+import { IProduct } from '@/models/product.models';
 import productSchema from '@/schemas/product.schema';
 import ApiResponse from '@/types/ApiResponse';
 import axios from 'axios';
+import { UpdateQuery } from 'mongoose';
 import { z } from 'zod';
 
 class Product {
@@ -60,10 +62,10 @@ class Product {
 
 	async updateProduct(
 		productId: any, 
-		updateData: any)
+		updateData: UpdateQuery<IProduct>)
 		: Promise<ApiResponse> {
 			try {
-				const res = await axios.put(
+				const res = await axios.patch(
 					`${conf.url}/api/products/${productId}`,
 					updateData
 				)

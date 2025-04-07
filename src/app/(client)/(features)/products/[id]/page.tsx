@@ -26,6 +26,10 @@ import { useAppDispatch } from "@/store/store";
 import { setCart } from "@/store/cartSlice";
 import Loading from "@/components/customUI/misc/Loading";
 import Image from "next/image";
+import { Size } from "@/models/cart.models";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 type customType = {
 	owner: UserSchema;
@@ -43,6 +47,17 @@ const ProductDetail: React.FC = () => {
 	const session = useSession();
 	const { toast } = useToast();
 	const dispatch = useAppDispatch();
+	const [selectedSize, setSelectedSize] = useState<Size>(
+		Size.L,
+	);
+	const [quantity, setQuantity] = useState<number>(1);
+
+	const handleQuantityChange = (change: number) => {
+    const newQuantity = quantity + change
+    if (newQuantity >= 1 && newQuantity <= 10) {
+      setQuantity(newQuantity)
+    }
+  }
 
 	useEffect(() => {
 		axios
@@ -90,6 +105,8 @@ const ProductDetail: React.FC = () => {
 			const cart = await cartService.createCart({
 				userId: session.data?.user._id,
 				productId: product?._id.toString(),
+				productSize: selectedSize,
+				quantity: quantity
 			});
 
 			console.log("Cart 😄", cart);
@@ -130,9 +147,7 @@ const ProductDetail: React.FC = () => {
 									className="relative aspect-square rounded-xl 
                 overflow-hidden ">
 									<img
-										src={
-											activeImage || product?.images[0]
-										}
+										src={activeImage || product?.images[0]}
 										alt={product?.description || "Product"}
 										className="w-full h-full object-cover object-center
                    transition-all duration-300"
@@ -204,7 +219,7 @@ const ProductDetail: React.FC = () => {
 											{product?.category}
 										</BadgeComponent>
 
-										<div className="flex items-center gap-5">
+										<div className="flex flex-col items-start gap-5">
 											{/* <p className="flex items-center  ">
 												{new Array(5)
 													.fill(0)
@@ -222,8 +237,7 @@ const ProductDetail: React.FC = () => {
 													))}
 											</p> */}
 
-											<div
-												className="profile flex px-1 items-center gap-1">
+											<div className="profile flex px-1 mt-2 items-center gap-1">
 												<Avatar>
 													<AvatarImage
 														className="w-6 h-6 rounded-full"
@@ -240,10 +254,116 @@ const ProductDetail: React.FC = () => {
 														"Random"}
 												</span>
 											</div>
+
+											<br />
+
+											{/* <div className="product-size-container">
+												<p className="dark:text-gray-400 text-black text-sm">
+													Size :
+												</p>
+												<div className="flex items-center gap-2">
+													{product?.sizes?.map(
+														(size, idx) => (
+															<div
+																className="size-item"
+																key={idx}>
+																{size}
+															</div>
+														)
+												)}
+												</div>
+											</div> */}
+
+											{/* Size Selection */}
+											<div className="space-y-4 ">
+												<div className="flex items-center justify-between">
+													<Label
+														htmlFor="size-options"
+														className="text-base font-medium">
+														Size
+													</Label>
+												</div>
+
+												<div
+													id="size-options"
+													className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+													{product.sizes.map((size) => {
+														const isSelected =
+															selectedSize === size;
+														const isAvailable =
+															Boolean(size); // Assuming size is not null/undefined if available
+
+														return (
+															<button
+																key={size}
+																type="button"
+																onClick={() =>
+																	setSelectedSize(size)
+																}
+																disabled={!isAvailable}
+																aria-pressed={isSelected}
+																className={cn(
+																	"h-10 rounded-lg border flex items-center justify-center text-sm px-6 font-medium transition-colors duration-200",
+																	isAvailable
+																		? "cursor-pointer hover:bg-accent hover:text-accent-foreground"
+																		: "cursor-not-allowed opacity-50",
+																	isSelected &&
+																		"border-primary bg-primary/10 text-primary",
+																)}>
+																{size.charAt(0)}
+															</button>
+														);
+													})}
+												</div>
+
+												{!selectedSize && (
+													<p className="text-sm text-muted-foreground">
+														Please select a size
+													</p>
+												)}
+											</div>
+
+											{/* Quantity */}
+											<div className="space-y-4">
+												<Label
+													htmlFor="quantity"
+													className="text-base font-medium">
+													Quantity
+												</Label>
+
+												<div className="flex items-center">
+													<Button
+														type="button"
+														variant="outline"
+														size="icon"
+														onClick={() =>
+															handleQuantityChange(-1)
+														}
+														disabled={quantity <= 1}
+														className="h-10 w-10 rounded-r-none">
+														-
+													</Button>
+													<div className="h-10 px-4 flex items-center justify-center border-y">
+														{quantity}
+													</div>
+													<Button
+														type="button"
+														variant="outline"
+														size="icon"
+														onClick={() =>
+															handleQuantityChange(1)
+														}
+														disabled={quantity >= 10}
+														className="h-10 w-10 rounded-l-none">
+														+
+													</Button>
+												</div>
+											</div>
 										</div>
 									</div>
 
-									<p className="dark:text-gray-400 text-black text-ellipsis 
+									<p
+										className="dark:text-gray-400 text-black text-ellipsis 
 									line-clamp-3 leading-relaxed">
 										{product?.description}
 									</p>
@@ -251,7 +371,7 @@ const ProductDetail: React.FC = () => {
 									<div className="flex gap-3">
 										<ShinyButton>
 											<span className="text-[.6rem] text-yellow-400 ">
-												Purchase
+												Add to Wishlist
 											</span>
 										</ShinyButton>
 
@@ -294,8 +414,10 @@ const ProductDetail: React.FC = () => {
 						onClick={() => setIsReviewOpen(false)}
 						className={`border border-black dark:border-gray-400 
 						rounded-sm px-4 py-2 ${
-						!isReviewOpen ? "bg-violet-400 text-black" : ""
-					}`}>
+							!isReviewOpen
+								? "bg-violet-400 text-black"
+								: ""
+						}`}>
 						Description
 					</button>
 				</div>

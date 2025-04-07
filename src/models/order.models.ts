@@ -20,7 +20,6 @@ export enum OrderStatus {
 interface IOrder extends Document {
   _id: Types.ObjectId
   userId: Types.ObjectId,
-  totalAmount: number,
   status: OrderStatus,
   paymentId: Types.ObjectId,
 	shipping_details: {
@@ -38,9 +37,11 @@ interface IOrder extends Document {
     productId: Types.ObjectId,
     quantity: number,
     size: Size,
-    prize: number
+    price: number
   }],
   estimatedDate: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 
@@ -50,10 +51,10 @@ const orderSchema = new Schema<IOrder>({
     ref: "User",
     required: true
   },
-  totalAmount: {
-    type: Number,
-    required: true,
-    min: 1
+  paymentId: {
+    type: Schema.Types.ObjectId,
+    ref: "Payment",
+    required: true
   },
   status: {
     type: String,
@@ -77,9 +78,10 @@ const orderSchema = new Schema<IOrder>({
       type: String,
       enum: Object.values(Size)
     },
-    price: Number,
-    estimatedDate: Date,
-    Shipping_detail: {
+    price: Number
+  }],
+   estimatedDate: Date,
+   shipping_details: {
       city: String,
       country: String,
       line1: String,
@@ -90,10 +92,9 @@ const orderSchema = new Schema<IOrder>({
       tracking_number: String,
       shipping_cost: Number,
     }
-  }]
 }, {timestamps: true});
 
-
+  
 const handleProductStock = async function(this: IOrder, 
   next:CallbackWithoutResultAndOptionalError
 ) {
@@ -107,9 +108,6 @@ const handleProductStock = async function(this: IOrder,
       if(productDoc) {
         productDoc.countInStock -= product.quantity;
         await productDoc.save();
-        // also calculates the total amount of the order
-        this.totalAmount 
-          = productDoc.price * product.quantity; 
       }
     })
     

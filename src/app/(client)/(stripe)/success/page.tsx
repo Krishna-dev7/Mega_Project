@@ -16,11 +16,13 @@ import { useRouter } from "next/navigation"
 import paymentService from "@/services/PaymentService"
 import { useSearchParams } from "next/navigation"
 import { useAppSelector } from "@/store/store"
+import orderService from "@/services/OrderService"
+import conf from "@/helpers/conf"
+import axios from "axios"
 
 export default function SuccessPage() {
   const confettiRef = useRef<ConfettiRef>(null);
   const router = useRouter()
-
   const userId = useAppSelector(store => store.auth.data?._id)
   
   // Function to trigger confetti
@@ -33,12 +35,23 @@ export default function SuccessPage() {
 		const fetch = async () => {
       const session_id =  params.get('session_id')
 		if ( session_id && userId) {
-			await paymentService.createPayment(
+			const res = await paymentService.createPayment(
 				session_id,
 				userId.toString(),
 			);
 
-      return 
+      if(res.success)  {
+          const result = await axios.get(
+                `${conf.url}/api/checkout-session?sessionId=${session_id}`,
+              );
+        const Orderres = await orderService.createOrder(
+          {...res.data, products: result.data.data.products}, userId)
+        console.log(Orderres);
+        
+        if(Orderres.data.success) {
+          router.push("/orders")
+        }
+      }
 		}
 
     console.log(`didn't recieve any params 

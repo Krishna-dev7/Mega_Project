@@ -2,6 +2,7 @@ import React from "react";
 import { IProduct } from "@/models/product.models";
 import { useRouter } from "next/navigation";
 import { useAppDispatch} from "@/store/store";
+import { Size } from "@/models/cart.models";
 import { selectProduct } from "@/store/productSlice";
 import cartService from "@/services/CartService";
 import { toast } from "@/hooks/use-toast";
@@ -31,7 +32,9 @@ const ProductItem: React.FC<Props> = ({ product, className }) => {
     if (session.data?.user._id && product?._id) {
       const cart = await cartService.createCart({
         userId: session.data?.user._id,
-        productId: product?._id.toString()
+        productId: product?._id.toString(),
+        productSize: Size.M,
+        quantity: 1
       });
 
       console.log("Cart 😄", cart);

@@ -47,6 +47,8 @@ import productSchema from "@/schemas/product.schema";
 import productService from "@/services/productService";
 import storageService from "@/services/StorageService";
 import Image from "next/image";
+import { Size } from "@/models/cart.models";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function EditProductPage() {
 	const router = useRouter();
@@ -74,6 +76,7 @@ export default function EditProductPage() {
 			owner: "",
 			discount: 0,
 			images: [],
+			sizes: []
 		},
 	});
 
@@ -106,35 +109,45 @@ export default function EditProductPage() {
 			countInStock: product.countInStock,
 			description: product.description,
 			category: product.category,
-			owner: product.owner?.toString(),
+			owner: product.owner?._id.toString(),
 			discount: product.discount,
 			images: product.images,
+			sizes: product.sizes,
 		});
 
 		setProductImages(product.images);
 		setIsLoading(false);
 	}, [product, form]);
 
-	function onSubmit(values: z.infer<typeof productSchema>) {
-		setIsSubmitting(true);
+	async function onSubmit(
+		data: z.infer<typeof productSchema>,
+	) {
+		try {
+			setIsSubmitting(true);
 
-		// Here you would typically handle the form submission
-		// including uploading any new images to your backend
-		console.log("Form values:", values);
-		// console.log("Images:", productImages);
+			const submitResult =
+				await productService.updateProduct(
+					productId,
+					{...data, images: productImages}
+				);
 
-		// Simulate API call
-		setTimeout(() => {
-			setIsSubmitting(false);
+			submitResult.success &&
+				toast({
+					title: "success",
+					description: "Product added successfully",
+				});
 
-			// Show success toast
+			console.log(submitResult.data);
+		} catch (error: any) {
+			toast(error.message || "Failed to add product.");
+
 			toast({
-				title: "Product Updated",
-				description:
-					"Your product has been successfully updated.",
-				variant: "default",
+				title: "failure",
+				description: error.message,
 			});
-		}, 1500);
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 
 	const handleImageChange = async (
@@ -156,9 +169,10 @@ export default function EditProductPage() {
 					);
 
 				newImages.push(newImageURI);
+				setProductImages((prev) => [...prev, newImageURI]);
+				
 			});
-
-			setProductImages((prev) => [...prev, ...newImages]);
+			
 		}
 	};
 
@@ -179,7 +193,7 @@ export default function EditProductPage() {
 	}
 
 	return (
-		<div className="container mx-auto py-10">
+		<div className="container h-fit overflow-y-auto mx-auto py-10">
 			<Card className="max-w-2xl mx-auto">
 				<CardHeader>
 					<CardTitle>Edit Product</CardTitle>
@@ -257,6 +271,7 @@ export default function EditProductPage() {
 										<FormItem>
 											<FormLabel>Category</FormLabel>
 											<Select
+												value={field.value}
 												onValueChange={field.onChange}
 												defaultValue={field.value}>
 												<FormControl>
@@ -301,7 +316,7 @@ export default function EditProductPage() {
 								/>
 							</div>
 
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name="owner"
 								render={({ field }) => (
@@ -309,6 +324,7 @@ export default function EditProductPage() {
 										<FormLabel>Owner</FormLabel>
 										<FormControl>
 											<Input
+												type="hidden"
 												placeholder="Product owner name"
 												{...field}
 											/>
@@ -316,7 +332,42 @@ export default function EditProductPage() {
 										<FormMessage />
 									</FormItem>
 								)}
-							/>
+							/> */}
+
+
+								<FormField
+									control={form.control}
+									name="sizes"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Sizes</FormLabel>
+											<FormControl>
+												<div className="flex flex-wrap gap-4">
+													{Object.values(Size).map(
+														(size) => (
+															<div key={size} className="flex items-center space-x-2">
+																<Checkbox 
+																	id={size}
+																	checked={field.value?.includes(size)}
+																	onCheckedChange={(checked) => {
+																		const currentSizes = field.value || [];
+																		if (checked) {
+																			field.onChange([...currentSizes, size]);
+																		} else {
+																			field.onChange(currentSizes.filter((s) => s !== size));
+																		}
+																	}}
+																/>
+																<label htmlFor={size}>{size}</label>
+															</div>
+														)
+													)}
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+									/>
 
 							<FormField
 								control={form.control}
@@ -346,11 +397,11 @@ export default function EditProductPage() {
 									onChange={handleImageChange}
 								/>
 								<div className="mt-2 flex flex-wrap gap-2">
-									{product?.images && (
+									{productImages && (
 										<div className="space-y-2">
 											<Label>Uploaded Files</Label>
 											<div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-												{product?.images.map(
+												{productImages.map(
 													(preview, index) => (
 														<div
 															key={index}

@@ -5,9 +5,7 @@ import {
 	type SortingState,
 	type VisibilityState,
 } from "@tanstack/react-table";
-import {
-	ChevronDown
-} from "lucide-react";
+import { ChevronDown, RefreshCcwDot } from "lucide-react";
 import * as React from "react";
 
 import TableComponent from "@/components/customUI/misc/Table";
@@ -17,7 +15,7 @@ import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
-	DropdownMenuTrigger
+	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
@@ -37,13 +35,12 @@ import useTable from "@/hooks/use-table";
 import { useRouter } from "next/navigation";
 
 export default function ProductsDataTable() {
-
 	const [globalFilter, setGlobalFilter] = useState("");
 	const [data, setData] = React.useState<IProduct[]>([]);
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 
 	React.useEffect(() => {
-		setLoading(true)
+		setLoading(true);
 		axios
 			.get(`${conf.url}/api/products`)
 			.then((res) => {
@@ -57,28 +54,25 @@ export default function ProductsDataTable() {
 			.finally(() => setLoading(false));
 	}, []);
 
-
 	const columns = getColumns(setData);
-	const router = useRouter()
-	const initialState:InitialTableState = {
+	const router = useRouter();
+	const initialState: InitialTableState = {
 		pagination: {
 			pageIndex: 0,
-			pageSize: 8
-		}
-	}
+			pageSize: 8,
+		},
+	};
 
+	const table = useTable(data, initialState, columns);
 
-	const table = useTable(
-		data,
-		initialState,
-		columns,
-	)
-
-	if( loading) {
-		return <div className="loader w-full min-h-screen 
+	if (loading) {
+		return (
+			<div
+				className="loader w-full min-h-screen 
 			flex justify-center items-center">
-			<Loading />
-		</div>
+				<Loading />
+			</div>
+		);
 	}
 
 	return (
@@ -155,14 +149,39 @@ export default function ProductsDataTable() {
 					</Select>
 
 					<Button
-						onClick={() => router.push('/dashboard/shop/products/add')}
+						className=""
+						onClick={() => {
+							axios
+								.get(`${conf.url}/api/products`)
+								.then((res) => {
+									setData(res.data?.data);
+									// setProducts([...res.data.data]);
+									dispatch(dispatchProducts(res.data.data));
+								})
+								.catch((err) =>
+									console.log(
+										"product fetch error: ",
+										err.message,
+									),
+								)
+								.finally(() => setLoading(false));
+						}}
 						variant={"default"}
-						className="mr-4 text-lg border-neutral-600 font-bold"
-						size={"icon"}
-						>
+						size={"icon"}>
+						<RefreshCcwDot className="h-4 w-4" />
+					</Button>
+
+					<Button
+						onClick={() =>
+							router.push("/dashboard/shop/products/add")
+						}
+						variant={"default"}
+						className="mx-1 text-lg border-neutral-600 font-bold"
+						size={"icon"}>
 						+
 					</Button>
 
+					
 				</div>
 				<div className="rounded-md border">
 					{/* <Table>
@@ -217,7 +236,7 @@ export default function ProductsDataTable() {
 						</TableBody>
 					</Table> */}
 
-					<TableComponent 
+					<TableComponent
 						table={table}
 						columns={columns}
 					/>

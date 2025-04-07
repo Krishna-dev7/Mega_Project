@@ -17,8 +17,8 @@ const productSchema = z.object({
 		.number()
 		.min(0, "discount must be greater than or equals to 0")
 		.max(100, "discount cannot be more than 100")
-		.optional()
-
+		.optional(),
+	sizes: z.array(z.string()),
 });
 
 

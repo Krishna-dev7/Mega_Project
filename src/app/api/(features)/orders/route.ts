@@ -30,9 +30,17 @@ const handler = async (req:NextRequest) => {
 		if (orderId) {
 			result = await Order.findById(orderId).populate([
 				{
-					path: "owner",
+					path: "userId",
 					model: "User",
 				},
+        {
+          path: "products.productId",
+          model: "Product"
+        },
+        {
+          path: "paymentId",
+          model: "Payment"
+        }
 			]);
 		}
     
@@ -73,12 +81,11 @@ async function POST(req:NextRequest) {
     const order = await Order.create({
       userId: body.userId,
       products: body.products,
-      totalAmount: body.totalAmount,
-      paymentId: body.paymentId,
+      paymentId: body._id,
       status: body.status,
-      estimatedDate: date
+      estimatedDate: date,
+      shipping_details: body.shipping_details
     })
-
 
     return NextResponse.json({
       success: true,

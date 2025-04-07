@@ -3,7 +3,7 @@ import mongoose, {
   Types,
   Document,
  } from "mongoose";
-import Cart from "./cart.models";
+import Cart, { Size } from "./cart.models";
 
 interface IProduct extends Document {
   _id: Types.ObjectId
@@ -16,7 +16,8 @@ interface IProduct extends Document {
   rating: number;
   owner?: Types.ObjectId;
   discount: number;
-  isPublished: boolean
+  isPublished: boolean;
+	sizes: Size[]
 }
 
 export enum Categories {
@@ -78,6 +79,11 @@ const productSchema = new Schema<IProduct>(
 			type: Boolean,
 			default: false,
 		},
+		sizes: [{
+			type: String,
+			enum: Object.values(Size),
+			required: true
+		}]
 	},
 	{ timestamps: true },
 );

@@ -43,6 +43,9 @@ import storageService from "@/services/StorageService";
 import productService from "@/services/productService";
 import { useAppSelector } from "@/store/store";
 import Image from "next/image";
+import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Size } from "@/models/cart.models";
 
 export default function AddProductPage() {
 	const router = useRouter();
@@ -64,6 +67,7 @@ export default function AddProductPage() {
 			category: "",
 			owner: "",
 			images: [],
+			sizes: []
 		},
 	});
 
@@ -262,6 +266,39 @@ export default function AddProductPage() {
 									</FormItem>
 								)}
 							/>
+
+							<FormField
+								control={form.control}
+								name="sizes"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Sizes</FormLabel>
+										<FormControl>
+											<div className="flex flex-wrap gap-4">
+												{Object.values(Size).map(
+													(size) => (
+														<div key={size} className="flex items-center space-x-2">
+															<Checkbox 
+																id={size}
+																onCheckedChange={(checked) => {
+																	const currentSizes = field.value || [];
+																	if (checked) {
+																		field.onChange([...currentSizes, size]);
+																	} else {
+																		field.onChange(currentSizes.filter((s) => s !== size));
+																	}
+																}}
+															/>
+															<label htmlFor={size}>{size}</label>
+														</div>
+													)
+												)}
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+								/>
 
 							<FormField
 								control={form.control}

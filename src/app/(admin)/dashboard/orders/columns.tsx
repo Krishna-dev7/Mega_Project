@@ -125,7 +125,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 									Address
 								</Label>
 								<Input
-									value={row.original.shipping_details.line1}
+									value={(row.original as IOrder)?.shipping_details?.line1 }
 									readOnly
 									id="address"
 									placeholder="123 Main St"
@@ -135,7 +135,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 								<div className="space-y-2">
 									<Label htmlFor="city">City</Label>
 									<Input
-										value={row.original.shipping_details.city}
+										value={(row.original as IOrder)?.shipping_details?.city}
 										readOnly
 										id="city"
 										placeholder="San Francisco"
@@ -144,7 +144,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 								<div className="space-y-2">
 									<Label htmlFor="state">State</Label>
 									<Input
-										value={row.original.shipping_details.state}
+										value={(row.original as IOrder)?.shipping_details?.state}
 										readOnly
 										id="city"
 										placeholder="San Francisco"
@@ -157,7 +157,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 										Zip code
 									</Label>
 									<Input
-										value={row.original.shipping_details.postal_code}
+										value={(row.original as IOrder)?.shipping_details?.postal_code}	
 										id="zip"
 										placeholder="94103"
 									/>
@@ -167,7 +167,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 										Country
 									</Label>
 									<Input
-										value={row.original.shipping_details.country}
+										value={(row.original as IOrder)?.shipping_details?.country}
 										id="zip"
 										placeholder="94103"
 									/>
@@ -179,7 +179,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 										Shipping Cost
 									</Label>
 									<Input
-										value={row.original.shipping_details.shipping_cost}
+										value={(row.original as IOrder)?.shipping_details?.shipping_cost || 40}
 										id="cost"
 										placeholder="40"
 									/>

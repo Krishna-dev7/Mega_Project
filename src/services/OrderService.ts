@@ -3,11 +3,12 @@ import { IOrder } from "@/models/order.models";
 import ApiResponse from "@/types/ApiResponse";
 import axios from "axios";
 import { OrderStatus } from "@/models/order.models";
+import { Types } from "mongoose";
 
 class OrderService {
   private url = `${conf.url}/api/orders`;
 
-  async createOrder(data: IOrder) {
+  async createOrder(data: IOrder, userId: Types.ObjectId) {
     try {
       const order = await axios.post<ApiResponse>(
         this.url, data)     
@@ -33,6 +34,14 @@ class OrderService {
   }
   async queryStatus(){}
   async cancelOrder(){}
+  async getOrder(id: string): Promise<ApiResponse> {
+    const res = await axios.get<ApiResponse>(
+      `${conf.url}/api/orders?orderId=${id}`
+    )
+
+    return res.data;
+
+  }
 
   async deleteOrder(orderId:string)
   : Promise<ApiResponse>{

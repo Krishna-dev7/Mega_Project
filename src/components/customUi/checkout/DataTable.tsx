@@ -21,13 +21,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cartType} from "@/store/cartSlice";
+import { cartType, delCarts} from "@/store/cartSlice";
 import { Button } from "@/components/ui/button";
 import CheckoutButton from "./CheckoutButton";
 import cartService from "@/services/CartService";
 import { toast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import ConfirmDialog from "../reusable/AlertDialog";
+import { IconBrandWindows } from "@tabler/icons-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -60,7 +61,7 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const totalAmount = useMemo(() => {
+  useEffect(() => {
     const amount = table
       .getRowModel()
       .rows.reduce(
@@ -70,14 +71,9 @@ export function DataTable<TData, TValue>({
             (row.original as cartType)?.quantity,
         0
       );
-    return amount
-
-  }, [ table]);
-
-
-  useEffect(() => {
-    setTotal(totalAmount)
-  }, [setTotal, totalAmount])
+    // return amount
+    setTotal(amount)
+  }, [setTotal, table.getRowModel().rows])
 
   return (
     <div className="w-[100%] flex flex-col text-xs 
@@ -166,11 +162,15 @@ export function DataTable<TData, TValue>({
             if(table.getIsAllPageRowsSelected()) {
               const res = await cartService.deleteCarts({});
               // dispatch()
+
               res && toast({
                 title: "cart cleared",
                 description: "cart cleared successfully",
                 variant: "default"
               })
+
+              dispatch(delCarts({ids: data.map((item) => (item as cartType)._id)}))
+              // window.location.reload()
             }
             else 
               await cartService.deleteCarts({
@@ -178,6 +178,8 @@ export function DataTable<TData, TValue>({
                   .rows.map((row) => (row.original as cartType)
                     ?._id.toString())
                 })
+
+                dispatch(delCarts({ids: table.getSelectedRowModel().rows.map((item) => (item.original as cartType)?._id.toString())}))
           }}
           >
             <span

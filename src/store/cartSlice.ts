@@ -37,7 +37,8 @@ const cartSlice = createSlice({
           if(cart._id == action.payload._id) {
             return {
               ...cart,
-              quantity: cart.quantity+1
+              quantity: cart.quantity+1,
+              productSize: action.payload.productSize
             }
           }
           return cart;
