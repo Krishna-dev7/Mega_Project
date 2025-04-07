@@ -25,18 +25,17 @@ import orderService from "@/services/OrderService";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
-
-const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
-	
+const ActionCellComponent: React.FC<{ row: any }> = ({
+	row,
+}) => {
 	const [trigger, setTrigger] = useState(false);
-	const [deleteTrigger, setDeleteTrigger] 
-		= useState(false);
-
+	const [deleteTrigger, setDeleteTrigger] = useState(false);
+	const router = useRouter()
 	const role = useAppSelector(
 		(store) => store.auth.data?.role,
 	);
-
 
 	return (
 		<DropdownMenu>
@@ -76,6 +75,44 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 					copy paymentID
 				</DropdownMenuItem>
 
+				<DropdownMenuItem
+					className="cursor-pointer mb-1 capitalize"
+					onClick={() =>
+						navigator.clipboard.writeText(
+							row.getValue("id"),
+						)
+					}>
+					copy paymentID
+				</DropdownMenuItem >
+
+				<DropdownMenuItem
+					className="cursor-pointer mb-1 capitalize"
+					onClick={() => router.push(`/orders/${row.original._id}`)}>
+						Get detail
+					</DropdownMenuItem>
+
+				<DropdownMenuItem className="cursor-pointer mb-1 capitalize">
+					<select
+						className="bg-transparent text-xs outline-none"
+						onChange={async (e) => {
+							const newStatus = e.target.value;
+							await orderService.updateOrderStatus(
+								row.original._id,
+								newStatus
+							);
+							console.log(`Order status updated to: ${newStatus}`);
+						}}
+					>
+						<option value="" disabled selected>
+							Update Status
+						</option>
+						<option value="pending">Pending</option>
+						<option value="shipped">Shipped</option>
+						<option value="delivered">Delivered</option>
+						<option value="cancelled">Cancelled</option>
+					</select>
+				</DropdownMenuItem>
+
 				{role == "admin" && (
 					<DropdownMenuItem
 						className="cursor-pointer mb-1 capitalize"
@@ -99,7 +136,7 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 							<div className="grid border-none  grid-cols-2 gap-4">
 								<div className="space-y-2 ">
 									<Label htmlFor="firstName">
-										Username 
+										Username
 									</Label>
 									<Input
 										value={row.original.userId.username}
@@ -121,11 +158,12 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 								</div>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="address">
-									Address
-								</Label>
+								<Label htmlFor="address">Address</Label>
 								<Input
-									value={(row.original as IOrder)?.shipping_details?.line1 }
+									value={
+										(row.original as IOrder)
+											?.shipping_details?.line1
+									}
 									readOnly
 									id="address"
 									placeholder="123 Main St"
@@ -135,7 +173,10 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 								<div className="space-y-2">
 									<Label htmlFor="city">City</Label>
 									<Input
-										value={(row.original as IOrder)?.shipping_details?.city}
+										value={
+											(row.original as IOrder)
+												?.shipping_details?.city
+										}
 										readOnly
 										id="city"
 										placeholder="San Francisco"
@@ -144,7 +185,10 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 								<div className="space-y-2">
 									<Label htmlFor="state">State</Label>
 									<Input
-										value={(row.original as IOrder)?.shipping_details?.state}
+										value={
+											(row.original as IOrder)
+												?.shipping_details?.state
+										}
 										readOnly
 										id="city"
 										placeholder="San Francisco"
@@ -153,33 +197,39 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 							</div>
 							<div className="grid grid-cols-2 gap-4">
 								<div className="space-y-2">
-									<Label htmlFor="zip">
-										Zip code
-									</Label>
+									<Label htmlFor="zip">Zip code</Label>
 									<Input
-										value={(row.original as IOrder)?.shipping_details?.postal_code}	
+										value={
+											(row.original as IOrder)
+												?.shipping_details?.postal_code
+										}
 										id="zip"
 										placeholder="94103"
 									/>
 								</div>
 								<div className="space-y-2">
-									<Label htmlFor="country">
-										Country
-									</Label>
+									<Label htmlFor="country">Country</Label>
 									<Input
-										value={(row.original as IOrder)?.shipping_details?.country}
+										value={
+											(row.original as IOrder)
+												?.shipping_details?.country
+										}
 										id="zip"
 										placeholder="94103"
 									/>
 								</div>
 							</div>
 							<div className="grid grid-cols-2 gap-4">
-							<div className="space-y-2">
+								<div className="space-y-2">
 									<Label htmlFor="country">
 										Shipping Cost
 									</Label>
 									<Input
-										value={(row.original as IOrder)?.shipping_details?.shipping_cost || 40}
+										value={
+											(row.original as IOrder)
+												?.shipping_details?.shipping_cost ||
+											40
+										}
 										id="cost"
 										placeholder="40"
 									/>
@@ -189,13 +239,14 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 										Estimated date
 									</Label>
 									<Input
-										value={new Date(row.original.estimatedDate).toDateString()}
+										value={new Date(
+											row.original.estimatedDate,
+										).toDateString()}
 										id="date"
 										placeholder="date"
 									/>
 								</div>
 							</div>
-							
 						</CardContent>
 					</Card>
 
@@ -216,8 +267,8 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 						Warning 🤚
 					</DialogTitle>
 					<DialogDescription>
-						Sensitive information once removed cannot
-						be revert
+						Sensitive information once removed cannot be
+						revert
 					</DialogDescription>
 					<DialogFooter>
 						<Button
@@ -236,89 +287,90 @@ const ActionCellComponent:React.FC<{row:any}> = ({row}) => {
 			</Dialog>
 		</DropdownMenu>
 	);
-}
+};
 
-const getColumns = () : ColumnDef<IOrder & {
-  userId: UserSchema
-}>[] => {
+const getColumns = (): ColumnDef<
+	IOrder & {
+		userId: UserSchema;
+	}
+>[] => {
+	const columns: ColumnDef<
+		IOrder & {
+			userId: UserSchema;
+		}
+	>[] = [
+		{
+			id: "id",
+			header: "Order ID",
+			accessorKey: "_id",
+			cell: ({ row }) => {
+				const id: string = row.getValue("id");
+				return (
+					<span className="text-ellipsis line-clamp-1">
+						Order-#
+						{id.substring(id.length - 1, id.length - 8)}
+					</span>
+				);
+			},
+		},
 
+		{
+			id: "username",
+			header: "Username",
+			accessorKey: "userId.username",
+			cell: ({ row }) => {
+				// const [user, setUser] = useState<UserSchema>()
 
-  const columns: ColumnDef<IOrder & {
-    userId: UserSchema
-  }>[] = [
-    {
-      id: 'id',
-      header: 'Order ID',
-      accessorKey: '_id',
-      cell: ({row}) => {
-        const id:string = row.getValue('id')
-        return <span className="text-ellipsis line-clamp-1">
-          Order-#{id.substring(id.length-1, id.length-8)}
-        </span>
-      }
-    },
+				// useEffect(() => {
+				//   (async () => (
+				//     await accountService
+				//       .getUser(row.original.userId._id.toString())
+				//   ))
+				// }, [setUser])
 
-    {
-      id: 'username',
-      header: 'Username',
-      accessorKey: 'userId.username',
-      cell: ({row}) => {
+				return <span>{row.original.userId?.username}</span>;
+			},
+		},
 
-        // const [user, setUser] = useState<UserSchema>()
+		{
+			id: "status",
+			accessorKey: "status",
+			header: "Order status",
+			filterFn: (row, columnId, value) => {
+				if (value == "all") return true;
 
-        // useEffect(() => {
-        //   (async () => (
-        //     await accountService
-        //       .getUser(row.original.userId._id.toString())
-        //   ))
-        // }, [setUser])
+				const cellValue = row.original.status;
+				return cellValue.includes(value);
+			},
+			cell: ({ row }) => (
+				<span className="capitalize">
+					{row.getValue("status")}
+				</span>
+			),
+		},
 
-        return <span>
-          {row.original.userId?.username}
-        </span>
+		{
+			id: "Payment Id",
+			accessorKey: "paymentId",
+			header: "Payment Id",
+			cell: ({ row }) => {
+				const id: string = row.getValue("Payment Id");
+				return (
+					<span>
+						PayId-#{id.substring(15, id.length - 1)}
+					</span>
+				);
+			},
+		},
 
-      }
-    },
+		{
+			id: "action",
+			header: "Action",
+			cell: ({ row }) => <ActionCellComponent row={row} />,
+		},
+	];
 
-    {
-      id: 'status',
-      accessorKey: 'status',
-      header: 'Order status',
-      filterFn: (row, columnId, value) => {
-        if(value == "all") return true
-
-        const cellValue = row.original.status;
-        return cellValue.includes(value)
-      },
-      cell: ({row}) => (
-        <span className="capitalize">
-          {row.getValue('status')}
-        </span>
-      )
-    },
-
-    {
-      id: 'Payment Id',
-      accessorKey: 'paymentId',
-      header: 'Payment Id',
-      cell: ({row}) => {
-        const id:string = row.getValue('Payment Id')
-        return <span>
-          PayId-#{id.substring(15, id.length-1)}
-        </span>
-      }
-    },
-
-    {
-      id: 'action',
-      header: 'Action',
-      cell: ({ row }) => <ActionCellComponent row={row} />,
-    }
-  ]
-
-  return columns;
-
-}
-
+	return columns;
+};
 
 export default getColumns;

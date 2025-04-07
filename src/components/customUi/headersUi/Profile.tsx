@@ -53,15 +53,15 @@ const Profile: React.FC<props> = ({ account }) => {
 						<Link href={`${conf.url}/profile`} className="hover:text-blue-600 dark:hover:text-blue-400">
 							Profile
 						</Link>
-						<Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
+						{/* <Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
 							Wishlist
-						</Link>
+						</Link> */}
 						<Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
 							Orders
 						</Link>
-						<Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
+						{/* <Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
 							History
-						</Link>
+						</Link> */}
 						<button
 							className="text-start capitalize text-red-600 dark:text-red-400 hover:underline"
 							onClick={accountService.logout}
@@ -78,12 +78,12 @@ const Profile: React.FC<props> = ({ account }) => {
 
 			{/* Secondary Section */}
 			<div className="profileSec flex flex-col gap-4 text-sm text-gray-800 dark:text-gray-300 mt-5 text-pretty">
-				<Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
+				<Link href={`${conf.url}/payment-list`} className="hover:text-blue-600 dark:hover:text-blue-400">
 					Payment
 				</Link>
-				<Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
+				{/* <Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
 					Issue
-				</Link>
+				</Link> */}
 			</div>
 		</div>
 	);

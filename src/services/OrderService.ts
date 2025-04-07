@@ -34,6 +34,15 @@ class OrderService {
   }
   async queryStatus(){}
   async cancelOrder(){}
+  async updateOrderStatus(id: string, status: OrderStatus):Promise<ApiResponse> {
+    const res = await axios.patch(
+      `${conf.url}/api/orders?orderId=${id}`,
+      {status}
+    )
+    
+    return res.data
+  }
+
   async getOrder(id: string): Promise<ApiResponse> {
     const res = await axios.get<ApiResponse>(
       `${conf.url}/api/orders?orderId=${id}`
