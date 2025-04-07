@@ -36,10 +36,10 @@ class OrderService {
   async cancelOrder(){}
   async updateOrderStatus(id: string, status: OrderStatus):Promise<ApiResponse> {
     const res = await axios.patch(
-      `${conf.url}/api/orders?orderId=${id}`,
+      `${conf.url}/api/orders?id=${id}`,
       {status}
     )
-    
+
     return res.data
   }
 

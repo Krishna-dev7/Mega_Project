@@ -1,4 +1,4 @@
-import { IOrder } from "@/models/order.models";
+import { IOrder, OrderStatus } from "@/models/order.models";
 import { UserSchema } from "@/models/user.models";
 import accountService from "@/services/AccountService";
 import { ColumnDef } from "@tanstack/react-table";
@@ -32,6 +32,7 @@ const ActionCellComponent: React.FC<{ row: any }> = ({
 }) => {
 	const [trigger, setTrigger] = useState(false);
 	const [deleteTrigger, setDeleteTrigger] = useState(false);
+	const [statusTrigger, setStatusTrigger] = useState(false);
 	const router = useRouter()
 	const role = useAppSelector(
 		(store) => store.auth.data?.role,
@@ -91,29 +92,11 @@ const ActionCellComponent: React.FC<{ row: any }> = ({
 						Get detail
 					</DropdownMenuItem>
 
-				<DropdownMenuItem className="cursor-pointer mb-1 capitalize">
-					<select
-						className="bg-transparent text-xs outline-none"
-						onChange={async (e) => {
-							const newStatus = e.target.value;
-							await orderService.updateOrderStatus(
-								row.original._id,
-								newStatus
-							);
-							console.log(`Order status updated to: ${newStatus}`);
-						}}
-					>
-						<option value="" disabled selected>
-							Update Status
-						</option>
-						<option value="pending">Pending</option>
-						<option value="shipped">Shipped</option>
-						<option value="delivered">Delivered</option>
-						<option value="cancelled">Cancelled</option>
-					</select>
-				</DropdownMenuItem>
-
-				{role == "admin" && (
+					{role == "admin" && (
+						<DropdownMenuItem className="cursor-pointer mb-1 capitalize">
+						<span onClick={() => setStatusTrigger(true)}>Update Status</span>
+					</DropdownMenuItem>
+					
 					<DropdownMenuItem
 						className="cursor-pointer mb-1 capitalize"
 						onClick={() => setDeleteTrigger(true)}>
@@ -121,6 +104,46 @@ const ActionCellComponent: React.FC<{ row: any }> = ({
 					</DropdownMenuItem>
 				)}
 			</DropdownMenuContent>
+
+				{/* Dialog for updating status */}
+				<Dialog open={statusTrigger} onOpenChange={setStatusTrigger}>
+					<DialogContent>
+						<DialogTitle className="text-orange-500">
+							Update Order Status
+						</DialogTitle>
+						<DialogDescription>
+							Select a new status for the order.
+						</DialogDescription>
+						<div className="space-y-4">
+							<select
+								className="w-full bg-neutral-800 text-white p-2 rounded-md outline-none"
+								onChange={async (e) => {
+									const newStatus: OrderStatus = e.target.value as OrderStatus;
+									await orderService.updateOrderStatus(
+										row.original._id,
+										newStatus
+									);
+									window.location.reload();
+									console.log(`Order status updated to: ${newStatus}`);
+									setTrigger(false);
+								}}
+							>
+								<option value="" disabled selected>
+									Select Status
+								</option>
+								<option value={OrderStatus.PENDING}>Pending</option>
+								<option value={OrderStatus.SHIPPED}>Shipped</option>
+								<option value={OrderStatus.DELIVERED}>Delivered</option>
+								<option value={OrderStatus.CANCELLED}>Cancelled</option>
+							</select>
+						</div>
+						<DialogFooter>
+							<Button size="sm" onClick={() => setTrigger(false)}>
+								Close
+							</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
 
 			{/*  dialog box */}
 			<Dialog

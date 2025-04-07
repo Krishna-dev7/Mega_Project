@@ -105,7 +105,44 @@ async function POST(req:NextRequest) {
 }
 
 
+async function PATCH(req: NextRequest) {
+
+  try {
+
+    const body = await req.json();
+    const {searchParams} = new URL(req.url);
+    const orderId = searchParams.get("id");
+    
+    if(!orderId) {
+      return NextResponse.json({
+        success: false,
+        message: "missing required params"
+      }, {status: 400})
+    }
+
+
+    const res = await Order.findByIdAndUpdate(orderId, body, {new: true});
+
+    return NextResponse.json({
+      success: true,
+      message: "order updated successfully",
+      data: res
+    }, {status: 200})
+
+
+  } catch (err:any) {
+    console.log("Something went wrong on Cart route",
+      err.message)
+   return NextResponse.json({
+     success: false,
+     message:  err.message 
+      || "someting went wrong"
+   }, {status: 500});
+  }
+}
+
 export {
   handler as GET,
-  POST
+  POST,
+  PATCH
 }
