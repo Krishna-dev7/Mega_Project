@@ -56,7 +56,7 @@ const Profile: React.FC<props> = ({ account }) => {
 						{/* <Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
 							Wishlist
 						</Link> */}
-						<Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
+						<Link href={`${conf.url}/orders`} className="hover:text-blue-600 dark:hover:text-blue-400">
 							Orders
 						</Link>
 						{/* <Link href={`${conf.url}/api/profile/profileId`} className="hover:text-blue-600 dark:hover:text-blue-400">
