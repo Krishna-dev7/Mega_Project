@@ -1,45 +1,61 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest, NextResponse } from "next/server";
-// import { withAuth } from "next-auth/middleware";
-export { default } from "next-auth/middleware";
+// middleware.ts
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export async function middleware(req: NextRequest) {
-	const token = await getToken({ req });
-	console.log('token', token);
-	const url = req.nextUrl;
-	const isAuthUrl =
-		url.pathname.startsWith("/signin") ||
-		url.pathname.startsWith("/signup") ||
-		url.pathname.startsWith("/verify") ||
-		url.pathname.startsWith("/forgot-password");
+export default withAuth(
+	function middleware(req) {
+		const { pathname } = req.nextUrl;
+		const token = req.nextauth.token;
 
-	console.log(url);
+		const isAuthUrl = [
+			"/signin",
+			"/signup",
+			"/verify",
+			"/forgot-password",
+		].some((path) => pathname.startsWith(path));
 
-	const isProtectedUrl =
-		url.pathname.startsWith("/orders") ||
-		url.pathname.startsWith("/carts") ||
-		url.pathname.startsWith("/profile");
+		const isProtectedUrl = [
+			"/orders",
+			"/carts",
+			"/profile",
+		].some((path) => pathname.startsWith(path));
 
-	const isDashboardUrl = url.pathname.startsWith("/dashboard");
+		const isDashboardUrl =
+			pathname.startsWith("/dashboard");
 
-	if (isDashboardUrl) {
-		if (token?.role === "superAdmin" || token?.role === "admin") {
-			return NextResponse.next();
-		} else {
-			return NextResponse.redirect(new URL("/signin", req.url));
+		// If token exists and trying to access auth page
+		if (token && isAuthUrl) {
+			return NextResponse.redirect(new URL("/", req.url));
 		}
-	}
 
-	if (token && isAuthUrl) {
-		return NextResponse.redirect(new URL("/", req.url));
-	}
+		// Admin-only dashboard
+		if (
+			isDashboardUrl &&
+			!(
+				token?.role === "admin" ||
+				token?.role === "superAdmin"
+			)
+		) {
+			return NextResponse.redirect(
+				new URL("/signin", req.url),
+			);
+		}
 
-	if (!token?.username && isProtectedUrl) {
-		return NextResponse.redirect(new URL("/signin", req.url));
-	}
+		// General protected routes
+		if (!token && isProtectedUrl) {
+			return NextResponse.redirect(
+				new URL("/signin", req.url),
+			);
+		}
 
-	return NextResponse.next();
-}
+		return NextResponse.next();
+	},
+	{
+		callbacks: {
+			authorized: () => true, // Allow all routes through initially
+		},
+	},
+);
 
 export const config = {
 	matcher: [
@@ -47,8 +63,9 @@ export const config = {
 		"/signup",
 		"/verify",
 		"/forgot-password",
-		"/dashboard",
-		"/carts",
-		"/orders",
+		"/dashboard/:path*",
+		"/orders/:path*",
+		"/carts/:path*",
+		"/profile/:path*",
 	],
 };
