@@ -1,4 +1,4 @@
-import Cart from "@/components/customUI/headersUi/Cart"
+import Cart from "@/components/customUi/headersUi/Cart"
 
 const CartPage:React.FC = () => {
   return <Cart />

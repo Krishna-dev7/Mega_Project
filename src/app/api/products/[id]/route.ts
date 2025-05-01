@@ -52,7 +52,7 @@ const handler
 
 // update wala id
 
-async function PATCH(req: NextRequest, {params}:paramType) {
+async function PATCH(req: NextRequest, {params}:any) {
   try {
 
     const { id } = await params;

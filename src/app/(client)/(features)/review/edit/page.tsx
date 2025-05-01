@@ -1,7 +1,7 @@
 "use client"
 
-import EditReviewForm from "@/components/customUI/review/edit-review";
-import AddReviewForm from "@/components/customUI/review/Review";
+import EditReviewForm from "@/components/customUi/review/edit-review";
+import AddReviewForm from "@/components/customUi/review/Review";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const ReviewAddFormPage:React.FC = () => {

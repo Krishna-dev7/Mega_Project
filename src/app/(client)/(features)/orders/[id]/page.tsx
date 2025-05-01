@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import orderService from "@/services/OrderService";
 import { IOrder } from "@/models/order.models";
-import Loading from "@/components/customUI/misc/Loading";
+import Loading from "@/components/customUi/misc/Loading";
 import { UserSchema } from "@/models/user.models";
 import { IPayment } from "@/models/payment.models";
 import { IProduct } from "@/models/product.models";

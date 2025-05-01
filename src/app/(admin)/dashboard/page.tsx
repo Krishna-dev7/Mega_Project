@@ -30,14 +30,14 @@ import {
 } from "@/components/ui/table";
 import { useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
-import Loading from "@/components/customUI/misc/Loading";
+import Loading from "@/components/customUi/misc/Loading";
 import accountService from "@/services/AccountService";
 import { UserSchema } from "@/models/user.models";
 import { IPayment } from "@/models/payment.models";
 import paymentService from "@/services/PaymentService";
 import orderService from "@/services/OrderService";
 import { IOrder } from "@/models/order.models";
-import ChartComponent from "@/components/customUI/charts/BarChart";
+import ChartComponent from "@/components/customUi/charts/BarChart";
 
 export default function DashboardPage() {
 

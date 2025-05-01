@@ -1,7 +1,7 @@
 "use client"
-import Header from "@/components/customUI/headersUi/Header";
-import Footer from "@/components/customUI/layouts/Footer";
-import Loading from "@/components/customUI/misc/Loading";
+import Header from "@/components/customUi/headersUi/Header";
+import Footer from "@/components/customUi/layouts/Footer";
+import Loading from "@/components/customUi/misc/Loading";
 import { useEffect, useState } from "react";
 
 const ClientLayout = ({children}: {children: React.ReactNode}) => {

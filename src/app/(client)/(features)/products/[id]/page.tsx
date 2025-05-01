@@ -9,7 +9,7 @@ import {
 	ChevronRight,
 	Star,
 } from "lucide-react";
-import BadgeComponent from "@/components/customUI/product/Badge";
+import BadgeComponent from "@/components/customUi/product/Badge";
 import { UserSchema } from "@/models/user.models";
 import {
 	Avatar,
@@ -17,14 +17,14 @@ import {
 	AvatarImage,
 } from "@radix-ui/react-avatar";
 import ShinyButton from "@/components/ui/shiny-button";
-import Review from "@/components/customUI/product/Review";
-import Description from "@/components/customUI/product/Description";
+import Review from "@/components/customUi/product/Review";
+import Description from "@/components/customUi/product/Description";
 import cartService from "@/services/CartService";
 import { useSession } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/store/store";
 import { setCart } from "@/store/cartSlice";
-import Loading from "@/components/customUI/misc/Loading";
+import Loading from "@/components/customUi/misc/Loading";
 import Image from "next/image";
 import { Size } from "@/models/cart.models";
 import { Label } from "@/components/ui/label";

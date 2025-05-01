@@ -1,5 +1,5 @@
 "use client";
-import Profile from "@/components/customUI/headersUi/Profile";
+import Profile from "@/components/customUi/headersUi/Profile";
 import {
   Sheet,
   SheetContent,

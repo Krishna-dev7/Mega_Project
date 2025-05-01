@@ -1,13 +1,13 @@
 "use client"
 import FeatureCategory 
-  from '@/components/customUI/layouts/Features';
-import HeroComponent from '@/components/customUI/layouts/Hero';
-import NewArrivals from '@/components/customUI/layouts/NewArrivals';
-import BenefitComponent from '@/components/customUI/layouts/WhyUs';
+  from '@/components/customUi/layouts/Features';
+import HeroComponent from '@/components/customUi/layouts/Hero';
+import NewArrivals from '@/components/customUi/layouts/NewArrivals';
+import BenefitComponent from '@/components/customUi/layouts/WhyUs';
 import BrandComponent 
-  from '@/components/customUI/layouts/BrandCollaboration';
+  from '@/components/customUi/layouts/BrandCollaboration';
 import { Suspense } from 'react';
-import Loading from '@/components/customUI/misc/Loading';
+import Loading from '@/components/customUi/misc/Loading';
 
 function Home() {
 

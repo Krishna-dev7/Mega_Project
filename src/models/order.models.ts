@@ -6,7 +6,7 @@ import mongoose, {
 } from "mongoose";
 import Product from "./product.models";
 import { Size } from "./cart.models";
-import ShippingAddress from "@/components/customUI/checkout/ShippingAddress";
+import ShippingAddress from "@/components/customUi/checkout/ShippingAddress";
 
 export enum OrderStatus {
   PENDING = "pending",

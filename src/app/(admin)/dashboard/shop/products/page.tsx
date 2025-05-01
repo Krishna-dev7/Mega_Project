@@ -8,7 +8,7 @@ import {
 import { ChevronDown, RefreshCcwDot } from "lucide-react";
 import * as React from "react";
 
-import TableComponent from "@/components/customUI/misc/Table";
+import TableComponent from "@/components/customUi/misc/Table";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -30,7 +30,7 @@ import axios from "axios";
 import { useState } from "react";
 import { IProduct } from "@/models/product.models";
 import getColumns from "./columns";
-import Loading from "@/components/customUI/misc/Loading";
+import Loading from "@/components/customUi/misc/Loading";
 import useTable from "@/hooks/use-table";
 import { useRouter } from "next/navigation";
 

@@ -93,15 +93,13 @@ const ActionCellComponent: React.FC<{ row: any }> = ({
 					</DropdownMenuItem>
 
 					{role == "admin" && (
-						<DropdownMenuItem className="cursor-pointer mb-1 capitalize">
+						<><DropdownMenuItem className="cursor-pointer mb-1 capitalize">
 						<span onClick={() => setStatusTrigger(true)}>Update Status</span>
-					</DropdownMenuItem>
-					
-					<DropdownMenuItem
+					</DropdownMenuItem><DropdownMenuItem
 						className="cursor-pointer mb-1 capitalize"
 						onClick={() => setDeleteTrigger(true)}>
-						Delete record
-					</DropdownMenuItem>
+							Delete record
+						</DropdownMenuItem></>
 				)}
 			</DropdownMenuContent>
 

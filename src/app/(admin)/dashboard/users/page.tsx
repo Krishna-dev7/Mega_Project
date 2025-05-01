@@ -13,8 +13,8 @@ import {
 	InitialTableState,
 } from "@tanstack/react-table";
 
-import Loading from "@/components/customUI/misc/Loading";
-import ConfirmDialog from "@/components/customUI/reusable/AlertDialog";
+import Loading from "@/components/customUi/misc/Loading";
+import ConfirmDialog from "@/components/customUi/reusable/AlertDialog";
 import { Button } from "@/components/ui/button";
 import useTable from "@/hooks/use-table";
 import { toast } from "@/hooks/use-toast";
@@ -36,7 +36,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import TableComponent from "@/components/customUI/misc/Table";
+import TableComponent from "@/components/customUi/misc/Table";
 
 const ManageUser = () => {
 	const initialState: InitialTableState = {

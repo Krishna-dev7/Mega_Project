@@ -26,12 +26,12 @@ import {
 } from "@/models/product.models";
 import axios from "axios";
 import conf from "@/helpers/conf";
-import ProductItem from "@/components/customUI/product/ProductItem";
+import ProductItem from "@/components/customUi/product/ProductItem";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/store/store";
 import { setProducts as dispatchProducts } from "@/store/productSlice";
-import Loading from "@/components/customUI/misc/Loading";
+import Loading from "@/components/customUi/misc/Loading";
 
 const ProductPage = () => {
 	// const [isSearchOpen, setIsSearchOpen] = useState(false);
