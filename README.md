@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center">🧢 E-Commerce Clothing Store</h1>
+<p align="center">A full-stack, modern web application for selling clothes with seamless UX and smart admin tools.</p>
 
-## Getting Started
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=rect&color=F38BA8,F9E2AF,A6E3A1,94E2D5,89B4FA&height=5&section=footer"/>
+</p>
 
-First, run the development server:
+## ✨ Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is an in-progress e-commerce platform built using **Next.js**, **Tailwind CSS**, and **MongoDB**, offering a stylish, responsive experience for both users and admins.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Key Features:
+- 🔐 JWT + NextAuth authentication
+- 🛒 Cart, Wishlist, Secure Checkout
+- 📦 Admin Dashboard for managing products & users
+- 💳 Stripe Payment Integration
+- 📊 Sales analytics and inventory tracking
+- ⚙️ Fully API-driven using REST/Next.js API Routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> Designed to scale, built to impress.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📷 Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+| Home Page | Admin Panel | Cart |
+|----------|-------------|------|
+| ![home](assets/screens/home.png) | ![admin](assets/screens/admin.png) | ![cart](assets/screens/cart.png) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Tech Stack
 
-## Deploy on Vercel
+**Frontend**  
+> `Next.js`, `Tailwind CSS`, `Shadcn UI`, `Axios`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Backend**  
+> `Next.js API Routes`, `MongoDB`, `Mongoose`, `Redis`, `Zod`, `JWT`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Dev Tools & Deployment**  
+> `Vercel`, `Postman`, `ESLint`, `Prettier`, `Git`, `GitHub`
+
+---
+
+## 🗺️ System Architecture
+
+- **Frontend**: Next.js Pages + Components  
+- **Backend**: API Routes handling auth, cart, orders, payments  
+- **Database**: MongoDB Atlas  
+- **External Services**: Stripe, SendGrid, Vercel Serverless Functions
+
+```mermaid
+flowchart TD
+  User -->|Login| Auth[JWT/NextAuth]
+  User -->|Browse| UI[Next.js + Tailwind]
+  UI --> API[API Routes]
+  API --> DB[(MongoDB)]
+  API --> Stripe
+  Admin --> Dashboard
