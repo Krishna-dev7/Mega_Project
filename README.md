@@ -28,7 +28,7 @@ Key Features:
 ![image](https://github.com/user-attachments/assets/442ef380-1122-490f-8b77-918fc8762752)
 ![image](https://github.com/user-attachments/assets/6a97f9ec-ae3e-47b4-ad10-691a13a2180b)
 ![image](https://github.com/user-attachments/assets/e306fabd-40ca-4281-98b4-e25115b85ba8)
-![image](https://github.com/user-attachments/assets/98dc1140-7586-433e-ba19-cac323413952)
+![image](https://github.com/user-attachments/assets/658d4dd7-6011-4207-b9e0-e851c20be01d)
 ![image](https://github.com/user-attachments/assets/ef8ec6a2-7311-4a77-94ff-3d7fcd82d376)
 ![image](https://github.com/user-attachments/assets/3a603163-4363-46c8-b8f7-9200512db184)
 
