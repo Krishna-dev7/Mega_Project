@@ -25,8 +25,11 @@ Key Features:
 
 ![image](https://github.com/user-attachments/assets/1231458d-c870-40be-b71c-7c70c542ba6d)
 ![image](https://github.com/user-attachments/assets/cfa21076-d998-4a6a-a03e-6cce70e63545)
+![image](https://github.com/user-attachments/assets/81951727-8402-4510-9916-23c5fdb7d627)
+
 ![image](https://github.com/user-attachments/assets/442ef380-1122-490f-8b77-918fc8762752)
-![image](https://github.com/user-attachments/assets/6a97f9ec-ae3e-47b4-ad10-691a13a2180b)
+![image](https://github.com/user-attachments/assets/29c3b1ac-4204-4d9c-a870-12cca2dd88ea)
+
 ![image](https://github.com/user-attachments/assets/e306fabd-40ca-4281-98b4-e25115b85ba8)
 ![image](https://github.com/user-attachments/assets/658d4dd7-6011-4207-b9e0-e851c20be01d)
 ![image](https://github.com/user-attachments/assets/ef8ec6a2-7311-4a77-94ff-3d7fcd82d376)
@@ -57,11 +60,3 @@ Key Features:
 - **Database**: MongoDB Atlas  
 - **External Services**: Stripe, SendGrid, Vercel Serverless Functions
 
-```mermaid
-flowchart TD
-  User -->|Login| Auth[JWT/NextAuth]
-  User -->|Browse| UI[Next.js + Tailwind]
-  UI --> API[API Routes]
-  API --> DB[(MongoDB)]
-  API --> Stripe
-  Admin --> Dashboard
